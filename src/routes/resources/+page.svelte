@@ -5,14 +5,6 @@
 
     let { data }: { data: PageData } = $props();
 
-    const documentation: any[] = [
-        {
-            name: "Video Demo",
-            description: "A YouTube video demonstrating the project.",
-            url: "https://youtu.be/iIVQBmexkuU",
-        }
-    ];
-
     const tools: any[] = [
         {
             name: "Sim-Link",
@@ -31,8 +23,6 @@
         </div>
     </div>
 
-    <ResourceTable title="DOCUMENTATION & MEDIA" resources={documentation} />
-
     <ResourceTable title="TOOLS & SOFTWARE" resources={tools} />
 
     {#if data.files.length > 0}
@@ -42,8 +32,7 @@
             <h2>TEAM FILES & DOWNLOADS</h2>
             <div class="hardware-box">
                 <p>
-                    No files found in <code>static/resources/</code>. Drop files
-                    there and they will appear automatically.
+                    No files found from server.
                 </p>
             </div>
         </div>

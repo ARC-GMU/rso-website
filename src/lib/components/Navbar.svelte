@@ -43,6 +43,14 @@
             : 'bg-[#eee] text-black'}">RESOURCES</a
     >
     <a
+        href="/blog"
+        class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page.url.pathname.startsWith(
+            '/blog',
+        )
+            ? 'bg-black text-white'
+            : 'bg-[#eee] text-black'}">BLOG</a
+    >
+    <a
         href="/media"
         class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page
             .url.pathname === '/media'

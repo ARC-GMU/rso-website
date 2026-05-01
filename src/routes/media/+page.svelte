@@ -23,12 +23,8 @@
 <div class="super-container">
     <div class="config-category">
         <h2>MEDIA GALLERY</h2>
-        <p style="margin-bottom: 5px;">
-            Photos and videos from field tests, team events, and flight
-            operations.
-        </p>
         <div
-            class="flex gap-0 border border-black mb-5"
+            class="flex gap-0 border border-black mb-5 mt-4"
             style="width: fit-content;"
         >
             <button
@@ -54,7 +50,7 @@
         {#if activeTab === "images"}
             {#if data.images.length === 0}
                 <div class="hardware-box">
-                    <p>No images found in <code>static/media/</code>.</p>
+                    <p>No images found from server.</p>
                 </div>
             {:else}
                 <div
@@ -81,7 +77,7 @@
         {#if activeTab === "videos"}
             {#if data.videos.length === 0}
                 <div class="hardware-box">
-                    <p>No videos found in <code>static/media/</code>.</p>
+                    <p>No videos found from server.</p>
                 </div>
             {:else}
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">

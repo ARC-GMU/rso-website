@@ -1,64 +1,22 @@
 <script lang="ts">
 	import TeamTable from "$lib/components/TeamTable.svelte";
+	import type { PageData } from "./$types";
 
-	const leadership = [
-		{
-			name: "Meah Chambers",
-			role: "Team Lead",
-			contact: "mchamb3@gmu.edu",
-		},
-		{
-			name: "Logan Teyema",
-			role: "Ground Team Lead",
-			contact: "lteyema@gmu.edu",
-		},
-		{
-			name: "Gagan Manjunatha",
-			role: "Software Lead",
-			contact: "gmanjuna@gmu.edu",
-		},
-		{
-			name: "Luis Anchundia",
-			role: "Electrical Lead",
-			contact: "lanchund@gmu.edu",
-		},
-		{
-			name: "Johnathan L Lyles",
-			role: "Raytheon Mentor",
-			contact: "jlyles@rtx.com",
-		},
-		{
-			name: "Dr. Cameron Nowzari",
-			role: "Faculty Advisor",
-			contact: "cnowzari@gmu.edu",
-		},
-		{ name: "Thomas Fletcher", role: "Mascot", contact: "tfletch@gmu.edu" },
-	];
-
-	const droneTeam = [
-		{ name: "Meah Chambers", role: "Team Lead" },
-		{ name: "Luis Anchundia", role: "Electrical Engineer" },
-		{ name: "Connor Roberts", role: "Operations Specialist" },
-		{ name: "Gagan (Adith) Manjunatha", role: "Software Engineer" },
-		{ name: "Toan Do", role: "Electrical Engineer" },
-		{ name: "William Maynard", role: "Team Member" },
-		{ name: "James Daniel", role: "Team Member" },
-		{ name: "Chris Klevisha", role: "Team Member" },
-	];
-
-	const groundTeam = [
-		{ name: "Logan Teyema", role: "Ground Team Lead" },
-		{ name: "Hassan Youssef", role: "Team Member" },
-		{ name: "Konraad Ludwig", role: "Team Member" },
-		{ name: "Emma Misevschi", role: "Team Member" },
-	];
+	let { data }: { data: PageData } = $props();
 </script>
 
 <div class="dashboard-grid">
 	<div class="column-main">
-		<TeamTable title="LEADERSHIP & ADVISORS" members={leadership} />
-		<TeamTable title="DRONE TEAM ROSTER" members={droneTeam} />
-		<TeamTable title="GROUND TEAM ROSTER" members={groundTeam} />
+		{#if data.teams && data.teams.length > 0}
+			{#each data.teams as team}
+				<TeamTable title={team.name.toUpperCase()} members={team.members} />
+			{/each}
+		{:else}
+			<div class="config-category">
+				<h2>TEAM ROSTER</h2>
+				<p>Unable to load team roster at this time.</p>
+			</div>
+		{/if}
 	</div>
 
 	<div class="column-side">

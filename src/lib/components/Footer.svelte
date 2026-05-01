@@ -13,6 +13,13 @@
 			class="text-center md:text-right flex flex-col md:flex-row items-center justify-center md:justify-end gap-[15px]"
 		>
 			<a
+				href="https://www.instagram.com/arc.gmu/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline text-blue-600 hover:text-purple-800 flex items-center gap-1.5"
+				><Icon icon="mdi:instagram" class="text-base" /> INSTAGRAM</a
+			>
+			<a
 				href="https://discord.gg/WfKAbJpZFX"
 				target="_blank"
 				rel="noopener noreferrer"

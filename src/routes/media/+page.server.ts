@@ -1,45 +1,35 @@
-import { readdirSync, statSync } from 'node:fs';
-import { join, extname } from 'node:path';
 import type { PageServerLoad } from './$types';
 
-const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'];
-const VIDEO_EXTENSIONS = ['.mp4', '.webm', '.ogg', '.mov'];
-
-export const load: PageServerLoad = async () => {
-    const mediaDir = join(process.cwd(), 'static', 'media');
-
-    let files: string[] = [];
+export const load: PageServerLoad = async ({ fetch }) => {
     try {
-        files = readdirSync(mediaDir);
-    } catch {
+        const res = await fetch('https://manage.autonomousrobotics.club/api/public/media');
+        if (!res.ok) {
+            throw new Error('Failed to fetch media');
+        }
+        const data = await res.json();
+        const mediaList = data.media || [];
+        
+        const images = mediaList
+            .filter((m: any) => m.category === 'image')
+            .map((m: any) => ({
+                src: m.url,
+                caption: m.originalName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, ' '),
+                date: m.uploadedAt ? m.uploadedAt.split('T')[0] : ''
+            }))
+            .sort((a: any, b: any) => b.date.localeCompare(a.date));
+
+        const videos = mediaList
+            .filter((m: any) => m.category === 'video')
+            .map((m: any) => ({
+                src: m.url,
+                title: m.originalName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, ' '),
+                date: m.uploadedAt ? m.uploadedAt.split('T')[0] : ''
+            }))
+            .sort((a: any, b: any) => b.date.localeCompare(a.date));
+
+        return { images, videos };
+    } catch (error) {
+        console.error("Error fetching media:", error);
         return { images: [], videos: [] };
     }
-
-    const images = files
-        .filter((f) => IMAGE_EXTENSIONS.includes(extname(f).toLowerCase()))
-        .filter((f) => !f.startsWith('.'))
-        .map((f) => {
-            const stat = statSync(join(mediaDir, f));
-            return {
-                src: `/media/${f}`,
-                caption: f.replace(extname(f), '').replace(/[-_]/g, ' '),
-                date: stat.mtime.toISOString().split('T')[0]
-            };
-        })
-        .sort((a, b) => b.date.localeCompare(a.date));
-
-    const videos = files
-        .filter((f) => VIDEO_EXTENSIONS.includes(extname(f).toLowerCase()))
-        .filter((f) => !f.startsWith('.'))
-        .map((f) => {
-            const stat = statSync(join(mediaDir, f));
-            return {
-                src: `/media/${f}`,
-                title: f.replace(extname(f), '').replace(/[-_]/g, ' '),
-                date: stat.mtime.toISOString().split('T')[0]
-            };
-        })
-        .sort((a, b) => b.date.localeCompare(a.date));
-
-    return { images, videos };
 };

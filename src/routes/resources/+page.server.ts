@@ -1,5 +1,3 @@
-import { readdirSync, statSync } from 'node:fs';
-import { join, extname } from 'node:path';
 import type { PageServerLoad } from './$types';
 
 function formatBytes(bytes: number): string {
@@ -8,28 +6,31 @@ function formatBytes(bytes: number): string {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export const load: PageServerLoad = async () => {
-    const resourcesDir = join(process.cwd(), 'static', 'resources');
-
-    let rawFiles: string[] = [];
+export const load: PageServerLoad = async ({ fetch }) => {
     try {
-        rawFiles = readdirSync(resourcesDir);
-    } catch {
+        const res = await fetch('https://manage.autonomousrobotics.club/api/public/media');
+        if (!res.ok) {
+            throw new Error('Failed to fetch media');
+        }
+        const data = await res.json();
+        const mediaList = data.media || [];
+        
+        const files = mediaList
+            .filter((m: any) => m.category === 'resource')
+            .map((m: any) => {
+                const ext = m.originalName.split('.').pop()?.toUpperCase() || 'FILE';
+                return {
+                    name: m.originalName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, ' '),
+                    description: `${ext} file`,
+                    src: m.url,
+                    size: formatBytes(m.size || 0)
+                };
+            })
+            .sort((a: any, b: any) => a.name.localeCompare(b.name));
+
+        return { files };
+    } catch (error) {
+        console.error("Error fetching resources:", error);
         return { files: [] };
     }
-
-    const files = rawFiles
-        .filter((f) => !f.startsWith('.'))
-        .map((f) => {
-            const stat = statSync(join(resourcesDir, f));
-            return {
-                name: f.replace(extname(f), '').replace(/[-_]/g, ' '),
-                description: `${extname(f).replace('.', '').toUpperCase()} file`,
-                src: `/resources/${f}`,
-                size: formatBytes(stat.size)
-            };
-        })
-        .sort((a, b) => a.name.localeCompare(b.name));
-
-    return { files };
 };
