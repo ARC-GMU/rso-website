@@ -1,14 +1,36 @@
 <script lang="ts">
+	import { onMount } from "svelte";
 	import TeamTable from "$lib/components/TeamTable.svelte";
-	import type { PageData } from "./$types";
 
-	let { data }: { data: PageData } = $props();
+	let teams = $state<{ name: string; members: any[] }[]>([]);
+	let loading = $state(true);
+
+	onMount(async () => {
+		try {
+			const res = await fetch(
+				"https://manage.autonomousrobotics.club/api/roster",
+				{ cache: "no-store" },
+			);
+			if (res.ok) {
+				teams = await res.json();
+			}
+		} catch (e) {
+			console.error("Error fetching roster:", e);
+		} finally {
+			loading = false;
+		}
+	});
 </script>
 
 <div class="dashboard-grid">
 	<div class="column-main">
-		{#if data.teams && data.teams.length > 0}
-			{#each data.teams as team}
+		{#if loading}
+			<div class="config-category">
+				<h2>TEAM ROSTER</h2>
+				<p class="text-sm text-[#555]">Loading...</p>
+			</div>
+		{:else if teams.length > 0}
+			{#each teams as team}
 				<TeamTable title={team.name.toUpperCase()} members={team.members} />
 			{/each}
 		{:else}
