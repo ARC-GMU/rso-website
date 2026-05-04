@@ -1,45 +1,82 @@
+<script lang="ts">
+	import { onMount } from "svelte";
+
+	type Project = {
+		id: string;
+		name: string;
+		description: string;
+		repoUrl: string;
+		order: number;
+		createdAt: string;
+	};
+
+	let projects = $state<Project[]>([]);
+	let loading = $state(true);
+
+	onMount(async () => {
+		try {
+			const res = await fetch(
+				"https://manage.autonomousrobotics.club/api/public/club/projects",
+				{ cache: "no-store" },
+			);
+			if (res.ok) {
+				projects = await res.json();
+			}
+		} catch (e) {
+			console.error("Error fetching projects:", e);
+		} finally {
+			loading = false;
+		}
+	});
+</script>
+
 <div class="super-container">
 	<div class="config-category">
 		<h2>CURRENT PROJECTS</h2>
-		<div class="tables-container">
-			<div class="table-wrapper">
-				<table class="config-table">
-					<thead>
-						<tr>
-							<th>PROJECT</th>
-							<th>DESCRIPTION</th>
-							<th>REPOSITORY</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><strong>ARC Simulation</strong></td>
-							<td>Simulation framework for UAV and UGV testing</td>
-							<td><a href="https://github.com/RDC-GMU/Simulation" target="_blank" rel="noopener noreferrer"><button class="edit-btn">VIEW GITHUB</button></a></td>
-						</tr>
-						<tr>
-							<td><strong>Simlink</strong></td>
-							<td>Simulation Archive Website</td>
-							<td><a href="https://github.com/RDC-GMU/sim-link" target="_blank" rel="noopener noreferrer"><button class="edit-btn">VIEW GITHUB</button></a></td>
-						</tr>
-						<tr>
-							<td><strong>Hexsoon 450</strong></td>
-							<td>ROS2 UAV Packages</td>
-							<td><a href="https://github.com/RDC-GMU/hexsoon450-gps-denied" target="_blank" rel="noopener noreferrer"><button class="edit-btn">VIEW GITHUB</button></a></td>
-						</tr>
-						<tr>
-							<td><strong>Jetson Router</strong></td>
-							<td>Jetson Router Scripts and Service</td>
-							<td><a href="https://github.com/RDC-GMU/Jetson-Router" target="_blank" rel="noopener noreferrer"><button class="edit-btn">VIEW GITHUB</button></a></td>
-						</tr>
-						<tr>
-							<td><strong>ARC Shadows</strong></td>
-							<td>ARC Shadows Tasks and Code</td>
-							<td><a href="https://github.com/RDC-GMU/Shadow-Tasks" target="_blank" rel="noopener noreferrer"><button class="edit-btn">VIEW GITHUB</button></a></td>
-						</tr>
-					</tbody>
-				</table>
+
+		{#if loading}
+			<p class="text-sm text-[#555]">Loading...</p>
+		{:else}
+			<div class="tables-container">
+				<div class="table-wrapper">
+					<table class="config-table">
+						<thead>
+							<tr>
+								<th>PROJECT</th>
+								<th>DESCRIPTION</th>
+								<th>REPOSITORY</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#if projects.length === 0}
+								<tr>
+									<td colspan="3" class="text-center py-4 text-[#555]"
+										>No projects available.</td
+									>
+								</tr>
+							{:else}
+								{#each projects as project}
+									<tr>
+										<td><strong>{project.name}</strong></td>
+										<td>{project.description}</td>
+										<td>
+											{#if project.repoUrl}
+												<a
+													href={project.repoUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													<button class="edit-btn">VIEW GITHUB</button>
+												</a>
+											{/if}
+										</td>
+									</tr>
+								{/each}
+							{/if}
+						</tbody>
+					</table>
+				</div>
 			</div>
-		</div>
+		{/if}
 	</div>
 </div>
