@@ -31,6 +31,11 @@
 	<meta property="og:url" content="https://rdc-gmu.github.io/" />
 	<meta name="twitter:card" content="summary" />
 	<link rel="icon" href="/logo.png" />
+	<script
+		defer
+		src="https://umami.sirblob.co/script.js"
+		data-website-id="46476793-0363-4cb7-8fbc-cb29dba94e03"
+	></script>
 </svelte:head>
 
 <div
