@@ -77,7 +77,7 @@
 					{#if content.whatWeDo}
 						<p class="arc-body mt-5 max-w-2xl text-[17px]">{content.whatWeDo}</p>
 					{/if}
-					<div class="mt-9 flex flex-wrap gap-3">
+					<div class="mt-9 flex flex-wrap justify-center gap-3 md:justify-start">
 						<a
 							href={discordUrl}
 							target="_blank"
