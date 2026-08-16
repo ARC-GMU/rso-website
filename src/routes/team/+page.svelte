@@ -17,7 +17,6 @@
 
 	let teams = $state<Team[]>([]);
 	let loading = $state(true);
-	let copiedContact = $state("");
 
 	const linkIcons: Record<string, string> = {
 		linkedin: "mdi:linkedin",
@@ -33,18 +32,6 @@
 	function linkLabel(link: TeamLink) {
 		if (link.type === "custom") return link.label || "Link";
 		return link.type.charAt(0).toUpperCase() + link.type.slice(1);
-	}
-
-	async function copyContact(contact: string) {
-		try {
-			await navigator.clipboard.writeText(contact);
-			copiedContact = contact;
-			setTimeout(() => {
-				if (copiedContact === contact) copiedContact = "";
-			}, 1500);
-		} catch (e) {
-			console.error("Could not copy contact:", e);
-		}
 	}
 
 	onMount(async () => {
@@ -82,39 +69,34 @@
 								<img
 									src={member.photoUrl}
 									alt={member.name}
-									class="h-24 w-24 rounded-full border border-[var(--arc-line)] object-cover"
+									class="h-36 w-36 rounded-2xl border border-[var(--arc-line)] object-cover sm:h-40 sm:w-40"
 								/>
 							{:else}
-								<Icon icon="mdi:account-circle" class="h-24 w-24 text-[var(--arc-line)]" />
+								<div
+									class="flex h-36 w-36 items-center justify-center rounded-2xl border border-[var(--arc-line)] bg-[var(--arc-surface)] sm:h-40 sm:w-40"
+								>
+									<Icon icon="mdi:account-circle" class="h-20 w-20 text-[var(--arc-line)]" />
+								</div>
 							{/if}
 							<div>
-								<div class="arc-h3">{member.name}</div>
+								<div class="arc-h3 text-xl">{member.name}</div>
 								{#if member.role}
-									<div class="arc-label mt-1">{member.role}</div>
+									<div class="arc-label mt-1 text-sm">{member.role}</div>
 								{/if}
 							</div>
-							{#if member.contact}
-								<span class="flex max-w-full flex-wrap items-center justify-center gap-2">
-									<a href="mailto:{member.contact}" class="arc-link break-all">
-										{member.contact}
-									</a>
-									<button
-										class="cursor-pointer border border-[var(--arc-line)] bg-[var(--arc-surface)] p-1 text-[var(--arc-ink)] hover:border-[var(--arc-accent)] hover:text-[var(--arc-accent)]"
-										aria-label="Copy email"
-										onclick={() => copyContact(member.contact ?? "")}
-									>
-										<Icon
-											icon={copiedContact === member.contact
-												? "mdi:check-bold"
-												: "mdi:content-copy"}
-											class="text-sm"
-										/>
-									</button>
-								</span>
-							{/if}
-							{#if member.links && member.links.length > 0}
-								<div class="flex flex-wrap justify-center gap-2">
-									{#each member.links as link}
+							{#if member.contact || (member.links && member.links.length > 0)}
+								<div class="flex flex-wrap items-center justify-center gap-1">
+									{#if member.contact}
+										<a
+											href="mailto:{member.contact}"
+											aria-label="Email {member.name}"
+											title={member.contact}
+											class="flex h-10 w-10 items-center justify-center text-[var(--arc-muted)] hover:text-[var(--arc-accent)]"
+										>
+											<Icon icon="mdi:email-outline" class="text-2xl" />
+										</a>
+									{/if}
+									{#each member.links ?? [] as link}
 										{#if link.url}
 											<a
 												href={link.url}
@@ -122,9 +104,9 @@
 												rel="noopener noreferrer"
 												aria-label={linkLabel(link)}
 												title={linkLabel(link)}
-												class="flex h-9 w-9 items-center justify-center border border-[var(--arc-line)] text-[var(--arc-ink)] no-underline hover:border-[var(--arc-accent)] hover:text-[var(--arc-accent)]"
+												class="flex h-10 w-10 items-center justify-center text-[var(--arc-muted)] hover:text-[var(--arc-accent)]"
 											>
-												<Icon icon={linkIcon(link)} class="text-base" />
+												<Icon icon={linkIcon(link)} class="text-2xl" />
 											</a>
 										{/if}
 									{/each}
