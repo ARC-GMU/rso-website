@@ -15,6 +15,10 @@
     --arc-on-accent: #ffffff;
     --arc-invert-text: #fbfaf6;
     --arc-warn: #8c2f2f;
+    --arc-instagram: #c13584;
+    --arc-linkedin: #0a66c2;
+    --arc-youtube: #e02020;
+    --arc-discord: #5865f2;
 }
 
 :root[data-theme='dark'] {
@@ -34,6 +38,10 @@
     --arc-on-accent: #0d1512;
     --arc-invert-text: #15181a;
     --arc-warn: #e08585;
+    --arc-instagram: #e884bd;
+    --arc-linkedin: #6cb4ee;
+    --arc-youtube: #ff7a7a;
+    --arc-discord: #9aa4ff;
 }
 
 :root[data-theme='dark']:has(.arc-page) {

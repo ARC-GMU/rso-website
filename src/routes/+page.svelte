@@ -17,10 +17,10 @@
 	} from "$lib/theme/content";
 
 	const socialLinks = [
-		{ label: "INSTAGRAM", url: instagramUrl, icon: "mdi:instagram", color: "#c13584" },
-		{ label: "LINKEDIN", url: linkedinUrl, icon: "mdi:linkedin", color: "#0a66c2" },
-		{ label: "YOUTUBE", url: youtubeUrl, icon: "mdi:youtube", color: "#ff0000" },
-		{ label: "DISCORD", url: discordUrl, icon: "mdi:discord", color: "#5865f2" },
+		{ label: "INSTAGRAM", url: instagramUrl, icon: "mdi:instagram", color: "var(--arc-instagram)" },
+		{ label: "LINKEDIN", url: linkedinUrl, icon: "mdi:linkedin", color: "var(--arc-linkedin)" },
+		{ label: "YOUTUBE", url: youtubeUrl, icon: "mdi:youtube", color: "var(--arc-youtube)" },
+		{ label: "DISCORD", url: discordUrl, icon: "mdi:discord", color: "var(--arc-discord)" },
 		{ label: "GITHUB", url: githubUrl, icon: "mdi:github", color: "var(--arc-ink)" }
 	];
 
