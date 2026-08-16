@@ -20,15 +20,15 @@
 
 <Page title="Blog">
 	{#if data.posts && data.posts.length > 0}
-		<div class="flex flex-col gap-6">
+		<div class="flex flex-col gap-3">
 			{#each data.posts as post}
-				<article class="arc-panel flex flex-col sm:flex-row">
+				<article class="arc-panel flex flex-row">
 					{#if post.coverImageUrl}
 						<a
 							href={postHref(post)}
 							target={post.externalUrl ? "_blank" : undefined}
 							rel="noopener noreferrer"
-							class="block h-48 shrink-0 overflow-hidden border-b border-[var(--arc-line)] sm:h-auto sm:w-64 sm:border-r sm:border-b-0 lg:w-80"
+							class="block h-auto w-28 shrink-0 overflow-hidden border-r border-[var(--arc-line)] sm:w-36"
 						>
 							<img
 								src={post.coverImageUrl}
@@ -37,8 +37,8 @@
 							/>
 						</a>
 					{/if}
-					<div class="flex min-w-0 flex-1 flex-col p-6">
-						<h2 class="arc-h2">
+					<div class="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">
+						<h2 class="arc-h2 text-base">
 							<a
 								href={postHref(post)}
 								target={post.externalUrl ? "_blank" : undefined}
@@ -48,15 +48,15 @@
 								{post.title}
 							</a>
 						</h2>
-						<div class="arc-label mt-3">
+						<div class="arc-label">
 							{formatDate(post.publishedAt || post.createdAt)} / {post.author}
 						</div>
-						<p class="arc-note mt-4 flex-1">{post.excerpt || ""}</p>
+						<p class="arc-note line-clamp-1 text-sm">{post.excerpt || ""}</p>
 						<a
 							href={postHref(post)}
 							target={post.externalUrl ? "_blank" : undefined}
 							rel="noopener noreferrer"
-							class="arc-btn-ghost mt-6 self-start"
+							class="arc-btn-ghost mt-1 self-start px-3 py-1 text-xs"
 						>
 							{post.externalUrl ? "READ ON EXTERNAL SITE" : "READ MORE"}
 						</a>
