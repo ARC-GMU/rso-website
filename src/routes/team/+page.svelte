@@ -8,6 +8,7 @@
 	type TeamLink = { type: string; url: string; icon?: string; label?: string };
 	type TeamMember = {
 		name: string;
+		slug?: string;
 		role: string;
 		contact?: string;
 		photoUrl?: string;
@@ -65,25 +66,31 @@
 						<div
 							class="flex w-full min-w-0 flex-col items-center gap-3 border border-[var(--arc-line)] bg-[var(--arc-fill)] p-5 text-center sm:p-6"
 						>
-							{#if member.photoUrl}
-								<img
-									src={member.photoUrl}
-									alt={member.name}
-									class="h-36 w-36 rounded-2xl border border-[var(--arc-line)] object-cover sm:h-40 sm:w-40"
-								/>
-							{:else}
-								<div
-									class="flex h-36 w-36 items-center justify-center rounded-2xl border border-[var(--arc-line)] bg-[var(--arc-surface)] sm:h-40 sm:w-40"
-								>
-									<Icon icon="mdi:account-circle" class="h-20 w-20 text-[var(--arc-line)]" />
-								</div>
-							{/if}
-							<div>
-								<div class="arc-h3 text-xl">{member.name}</div>
-								{#if member.role}
-									<div class="arc-label mt-1 text-sm">{member.role}</div>
+							<svelte:element
+								this={member.slug ? "a" : "div"}
+								href={member.slug ? `/team/${member.slug}` : undefined}
+								class="flex flex-col items-center gap-3 no-underline"
+							>
+								{#if member.photoUrl}
+									<img
+										src={member.photoUrl}
+										alt={member.name}
+										class="h-36 w-36 rounded-2xl border border-[var(--arc-line)] object-cover sm:h-40 sm:w-40"
+									/>
+								{:else}
+									<div
+										class="flex h-36 w-36 items-center justify-center rounded-2xl border border-[var(--arc-line)] bg-[var(--arc-surface)] sm:h-40 sm:w-40"
+									>
+										<Icon icon="mdi:account-circle" class="h-20 w-20 text-[var(--arc-line)]" />
+									</div>
 								{/if}
-							</div>
+								<div>
+									<div class="arc-h3 text-xl text-[var(--arc-ink)]">{member.name}</div>
+									{#if member.role}
+										<div class="arc-label mt-1 text-sm">{member.role}</div>
+									{/if}
+								</div>
+							</svelte:element>
 							{#if member.contact || (member.links && member.links.length > 0)}
 								<div class="flex flex-wrap items-center justify-center gap-1">
 									{#if member.contact}

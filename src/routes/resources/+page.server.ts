@@ -44,12 +44,16 @@ function groupLinks(links: PublicLink[]): LinkGroup[] {
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	try {
-		const res = await fetch('https://manage.autonomousrobotics.club/api/public/media');
-		if (!res.ok) {
+		const [mediaRes, linksRes] = await Promise.all([
+			fetch('https://manage.autonomousrobotics.club/api/public/media'),
+			fetch('https://manage.autonomousrobotics.club/api/public/links')
+		]);
+		if (!mediaRes.ok) {
 			throw new Error('Failed to fetch media');
 		}
-		const data = await res.json();
+		const data = await mediaRes.json();
 		const mediaList = data.media || [];
+		const links = linksRes.ok ? await linksRes.json() : [];
 
 		const files = mediaList
 			.filter((m: any) => m.category === 'resource')
@@ -64,7 +68,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			})
 			.sort((a: any, b: any) => a.name.localeCompare(b.name));
 
-		return { files, linkGroups: groupLinks(data.links || []) };
+		return { files, linkGroups: groupLinks(links) };
 	} catch (error) {
 		console.error('Error fetching resources:', error);
 		return { files: [], linkGroups: [] as LinkGroup[] };

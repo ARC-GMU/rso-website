@@ -1,10 +1,19 @@
 export type ScheduleEntry = { day: string; time: string };
 
+export type ProjectLink = { label: string; url: string };
+
 export type Project = {
 	id: string;
 	name: string;
 	description: string;
 	repoUrl: string;
+	requirements?: string[];
+	links?: ProjectLink[];
+	teamMembers?: string[];
+	images?: string[];
+	videos?: string[];
+	external?: boolean;
+	externalUrl?: string;
 };
 
 export type ClubContent = {

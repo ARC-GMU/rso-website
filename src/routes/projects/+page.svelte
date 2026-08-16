@@ -35,12 +35,13 @@
 							<th>PROJECT</th>
 							<th>DESCRIPTION</th>
 							<th>REPOSITORY</th>
+							<th>DETAILS</th>
 						</tr>
 					</thead>
 					<tbody>
 						{#if projects.length === 0}
 							<tr>
-								<td colspan="3" class="arc-table-empty">No projects available.</td>
+								<td colspan="4" class="arc-table-empty">No projects available.</td>
 							</tr>
 						{:else}
 							{#each projects as project}
@@ -56,6 +57,22 @@
 												class="arc-btn-small"
 											>
 												VIEW GITHUB
+											</a>
+										{/if}
+									</td>
+									<td>
+										{#if project.external && project.externalUrl}
+											<a
+												href={project.externalUrl}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="arc-btn-small"
+											>
+												VISIT PROJECT
+											</a>
+										{:else}
+											<a href="/projects/{project.id}" class="arc-btn-small">
+												VIEW DETAILS
 											</a>
 										{/if}
 									</td>
