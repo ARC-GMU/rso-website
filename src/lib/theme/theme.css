@@ -79,7 +79,7 @@
     .arc-body { @apply text-[16px] leading-[1.85] font-medium text-[var(--arc-ink-2)]; }
     .arc-note { @apply text-[15px] leading-[1.8] font-medium text-[var(--arc-muted)]; }
 
-    .arc-grid { @apply grid gap-[2px] border-2 border-[var(--arc-line)] bg-[var(--arc-line)]; }
+    .arc-grid { @apply grid w-full gap-[2px] border-2 border-[var(--arc-line)] bg-[var(--arc-line)]; }
     .arc-panel { @apply border-2 border-[var(--arc-line)] bg-[var(--arc-surface)]; }
     .arc-panel-head { @apply flex flex-wrap items-baseline justify-between gap-4 border-b border-[var(--arc-line)] px-6 py-5; }
 

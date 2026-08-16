@@ -112,14 +112,14 @@
 				{#if event.description}
 					<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 						<h2 class="arc-h2">ABOUT THIS EVENT</h2>
-						<p class="arc-body mt-4">{event.description}</p>
+						<div class="arc-body mt-4">{@html event.description}</div>
 					</section>
 				{/if}
 
 				{#each event.sections ?? [] as section}
 					<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 						<h2 class="arc-h2">{section.title.toUpperCase()}</h2>
-						<p class="arc-body mt-4 whitespace-pre-line">{section.content}</p>
+						<div class="arc-body mt-4">{@html section.content}</div>
 					</section>
 				{/each}
 
@@ -130,7 +130,7 @@
 							: 'md:col-span-6'}"
 					>
 						<h2 class="arc-h2">EVENT ADDRESS</h2>
-						<p class="arc-body mt-4 whitespace-pre-line">{event.eventAddress}</p>
+						<div class="arc-body mt-4">{@html event.eventAddress}</div>
 					</section>
 				{/if}
 
@@ -142,9 +142,9 @@
 					>
 						<h2 class="arc-h2">PARKING</h2>
 						{#if event.parkingInfo}
-							<div class="arc-label mt-3">{event.parkingInfo.toUpperCase()}</div>
+							<div class="arc-body font-bold mt-3">{@html event.parkingInfo}</div>
 						{/if}
-						<p class="arc-body mt-4 whitespace-pre-line">{event.parkingAddress}</p>
+						<div class="arc-body mt-4">{@html event.parkingAddress}</div>
 					</section>
 				{/if}
 
