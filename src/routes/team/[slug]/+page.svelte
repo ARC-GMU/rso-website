@@ -12,6 +12,7 @@
 		name: string;
 		slug: string;
 		role: string;
+		bio?: string;
 		contact?: string;
 		photoUrl?: string;
 		links?: MemberLink[];
@@ -132,6 +133,13 @@
 						</div>
 					{/if}
 				</section>
+
+				{#if member.bio}
+					<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+						<h2 class="arc-h2">ABOUT</h2>
+						<p class="arc-body mt-4 whitespace-pre-line">{member.bio}</p>
+					</section>
+				{/if}
 
 				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 					<div class="flex flex-wrap items-center justify-between gap-4">
