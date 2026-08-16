@@ -63,9 +63,10 @@
 
 @layer components {
     .arc-page {
-        @apply min-h-screen bg-[var(--arc-bg)] text-[var(--arc-ink)];
+        @apply flex min-h-screen flex-col bg-[var(--arc-bg)] text-[var(--arc-ink)];
         font-family: var(--font-mono);
     }
+    .arc-page > main { @apply flex-1; }
     .arc-shell { @apply mx-auto max-w-[1120px] px-6; }
 
     body:has(.arc-page) { background: var(--arc-bg); }

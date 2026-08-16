@@ -7,6 +7,10 @@
 	let projects = $state<Project[]>([]);
 	let loading = $state(true);
 
+	function stripHtml(html: string): string {
+		return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+	}
+
 	onMount(async () => {
 		try {
 			const res = await fetch(`${apiRoot}/public/club/projects`, {
@@ -24,7 +28,7 @@
 </script>
 
 <Page title="Projects" heading="Current Projects">
-	<Panel flush>
+	<Panel title="PROJECTS" flush>
 		{#if loading}
 			<p class="arc-table-empty">Loading...</p>
 		{:else}
@@ -32,34 +36,21 @@
 				<table class="arc-table">
 					<thead>
 						<tr>
-							<th>PROJECT</th>
-							<th>DESCRIPTION</th>
-							<th>REPOSITORY</th>
-							<th>DETAILS</th>
+							<th class="w-[22%]">PROJECT</th>
+							<th class="w-[58%]">DESCRIPTION</th>
+							<th class="w-[20%]">DETAILS</th>
 						</tr>
 					</thead>
 					<tbody>
 						{#if projects.length === 0}
 							<tr>
-								<td colspan="4" class="arc-table-empty">No projects available.</td>
+								<td colspan="3" class="arc-table-empty">No projects available.</td>
 							</tr>
 						{:else}
 							{#each projects as project}
 								<tr>
 									<td class="font-bold whitespace-nowrap">{project.name}</td>
-									<td>{project.description}</td>
-									<td>
-										{#if project.repoUrl}
-											<a
-												href={project.repoUrl}
-												target="_blank"
-												rel="noopener noreferrer"
-												class="arc-btn-small"
-											>
-												VIEW GITHUB
-											</a>
-										{/if}
-									</td>
+									<td>{project.description ? stripHtml(project.description) : ""}</td>
 									<td>
 										{#if project.external && project.externalUrl}
 											<a
