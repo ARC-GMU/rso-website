@@ -1,61 +1,82 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
+	import Header from "$lib/theme/Header.svelte";
+	import Footer from "$lib/theme/Footer.svelte";
+	import type { PageData } from "./$types";
 
-    let { data }: { data: PageData } = $props();
+	let { data }: { data: PageData } = $props();
 
-    function formatDate(dateString: string) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
-    }
+	function formatDate(dateString: string) {
+		return new Date(dateString).toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric"
+		});
+	}
 </script>
 
 <svelte:head>
-    <title>{data.post.title} | ARC Blog</title>
-    <meta name="description" content={data.post.excerpt || data.post.title} />
-    {#if data.post.coverImageUrl}
-        <meta property="og:image" content={data.post.coverImageUrl} />
-    {/if}
+	<title>{data.post.title} - Autonomous Robotics Club</title>
+	<meta name="description" content={data.post.excerpt || data.post.title} />
+	{#if data.post.coverImageUrl}
+		<meta property="og:image" content={data.post.coverImageUrl} />
+	{/if}
 </svelte:head>
 
-<div class="super-container">
-    <div class="mb-4">
-        <a href="/blog" class="text-sm font-bold no-underline hover:underline flex items-center gap-1 w-fit">
-            &larr; BACK TO BLOG
-        </a>
-    </div>
+<div class="arc-page">
+	<Header />
 
-    <div class="config-category">
-        {#if data.post.coverImageUrl}
-            <div class="w-full h-64 md:h-96 mb-6 border border-black overflow-hidden">
-                <img 
-                    src={data.post.coverImageUrl} 
-                    alt={data.post.title}
-                    class="w-full h-full object-cover"
-                />
-            </div>
-        {/if}
-        
-        <h1 class="text-3xl md:text-4xl mb-2 font-bold uppercase">{data.post.title}</h1>
-        
-        <div class="text-sm text-[#555] mb-8 pb-4 border-b border-black">
-            <span>Published on {formatDate(data.post.publishedAt || data.post.createdAt)}</span>
-            <span class="mx-2">•</span>
-            <span>By {data.post.author}</span>
-            {#if data.post.tags && data.post.tags.length > 0}
-                <div class="mt-2 flex flex-wrap gap-2">
-                    {#each data.post.tags as tag}
-                        <span class="bg-[#eee] px-2 py-1 text-xs border border-black uppercase">{tag}</span>
-                    {/each}
-                </div>
-            {/if}
-        </div>
+	<main class="arc-shell py-12">
+		<a href="/blog" class="arc-link">BACK TO BLOG</a>
 
-        <div class="prose prose-sm md:prose-base max-w-none font-mono">
-            {@html data.post.content}
-        </div>
-    </div>
+		<article class="arc-panel mt-6">
+			{#if data.post.coverImageUrl}
+				<div class="h-64 w-full overflow-hidden border-b border-[#d5dad5] md:h-96">
+					<img
+						src={data.post.coverImageUrl}
+						alt={data.post.title}
+						class="h-full w-full object-cover"
+					/>
+				</div>
+			{/if}
+
+			<div class="p-8 md:p-10">
+				<h1 class="arc-h1">{data.post.title}</h1>
+
+				<div class="arc-label mt-4">
+					{formatDate(data.post.publishedAt || data.post.createdAt)} / {data.post.author}
+				</div>
+
+				{#if data.post.tags && data.post.tags.length > 0}
+					<div class="mt-4 flex flex-wrap gap-2">
+						{#each data.post.tags as tag}
+							<span
+								class="border border-[#d5dad5] bg-[#f4f6f3] px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-[#4a5c53] uppercase"
+							>
+								{tag}
+							</span>
+						{/each}
+					</div>
+				{/if}
+
+				{#if data.post.externalUrl}
+					<a
+						href={data.post.externalUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="arc-btn mt-6"
+					>
+						READ ON EXTERNAL SITE
+					</a>
+				{/if}
+
+				<div
+					class="prose prose-sm md:prose-base mt-8 max-w-none border-t border-[#e6eae6] pt-8 text-[#2f3d37]"
+				>
+					{@html data.post.content}
+				</div>
+			</div>
+		</article>
+	</main>
+
+	<Footer />
 </div>

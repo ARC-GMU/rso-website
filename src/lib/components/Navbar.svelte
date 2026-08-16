@@ -7,60 +7,60 @@
     class="flex overflow-x-auto border border-black mb-5 whitespace-nowrap flex-shrink-0 shadow-sm"
 >
     <a
-        href="/"
+        href="/legacy"
         class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page
-            .url.pathname === '/'
+            .url.pathname === '/legacy'
             ? 'bg-black text-white'
             : 'bg-[#eee] text-black'}">OVERVIEW</a
     >
     <a
-        href="/projects"
+        href="/legacy/projects"
         class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page
-            .url.pathname === '/projects'
+            .url.pathname === '/legacy/projects'
             ? 'bg-black text-white'
             : 'bg-[#eee] text-black'}">PROJECTS</a
     >
     <a
-        href="/team"
+        href="/legacy/team"
         class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page
-            .url.pathname === '/team'
+            .url.pathname === '/legacy/team'
             ? 'bg-black text-white'
             : 'bg-[#eee] text-black'}">TEAM</a
     >
     <a
-        href="/events"
+        href="/legacy/events"
         class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page.url.pathname.startsWith(
-            '/events',
+            '/legacy/events',
         )
             ? 'bg-black text-white'
             : 'bg-[#eee] text-black'}">EVENTS</a
     >
     <a
-        href="/resources"
+        href="/legacy/resources"
         class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page
-            .url.pathname === '/resources'
+            .url.pathname === '/legacy/resources'
             ? 'bg-black text-white'
             : 'bg-[#eee] text-black'}">RESOURCES</a
     >
     <a
-        href="/blog"
+        href="/legacy/blog"
         class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page.url.pathname.startsWith(
-            '/blog',
+            '/legacy/blog',
         )
             ? 'bg-black text-white'
             : 'bg-[#eee] text-black'}">BLOG</a
     >
     <a
-        href="/media"
+        href="/legacy/media"
         class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page
-            .url.pathname === '/media'
+            .url.pathname === '/legacy/media'
             ? 'bg-black text-white'
             : 'bg-[#eee] text-black'}">MEDIA</a
     >
     <a
-        href="/calendar"
+        href="/legacy/calendar"
         class="px-5 py-2.5 no-underline font-bold text-sm border-r border-black flex-shrink-0 hover:bg-[#ddd] {$page
-            .url.pathname === '/calendar'
+            .url.pathname === '/legacy/calendar'
             ? 'bg-black text-white'
             : 'bg-[#eee] text-black'}">CALENDAR</a
     >

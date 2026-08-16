@@ -20,6 +20,20 @@
 				><Icon icon="mdi:instagram" class="text-base" /> INSTAGRAM</a
 			>
 			<a
+				href="https://www.linkedin.com/company/arcgmu/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline text-blue-600 hover:text-purple-800 flex items-center gap-1.5"
+				><Icon icon="mdi:linkedin" class="text-base" /> LINKEDIN</a
+			>
+			<a
+				href="https://www.youtube.com/@arc-gmu"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline text-blue-600 hover:text-purple-800 flex items-center gap-1.5"
+				><Icon icon="mdi:youtube" class="text-base" /> YOUTUBE</a
+			>
+			<a
 				href="https://discord.gg/WfKAbJpZFX"
 				target="_blank"
 				rel="noopener noreferrer"
@@ -27,7 +41,7 @@
 				><Icon icon="mdi:discord" class="text-base" /> DISCORD SERVER</a
 			>
 			<a
-				href="https://github.com/RDC-GMU"
+				href="https://github.com/ARC-GMU"
 				target="_blank"
 				class="underline text-blue-600 hover:text-purple-800 flex items-center gap-1.5"
 				><Icon icon="mdi:github" class="text-base" /> GITHUB / OPEN SOURCE</a

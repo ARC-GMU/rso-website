@@ -1,7 +1,5 @@
 <script lang="ts">
 	import "./layout.css";
-	import Navbar from "$lib/components/Navbar.svelte";
-	import Footer from "$lib/components/Footer.svelte";
 	import { dev } from "$app/environment";
 	import { injectAnalytics } from "@vercel/analytics/sveltekit";
 	import { injectSpeedInsights } from "@vercel/speed-insights/sveltekit";
@@ -38,26 +36,4 @@
 	></script>
 </svelte:head>
 
-<div
-	class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-[15px] mb-[20px]"
->
-	<div class="flex items-center gap-[15px]">
-		<img
-			src="/logo.png"
-			alt="ARC Logo"
-			class="h-16 md:h-24 rounded-md w-auto object-contain"
-		/>
-		<h1 class="m-0 text-xl md:text-2xl font-bold leading-tight">
-			AUTONOMOUS ROBOTICS CLUB <span
-				class="text-[14px] md:text-[18px] text-[#555] font-normal block sm:inline mt-1 sm:mt-0"
-				>(ARC)</span
-			>
-		</h1>
-	</div>
-</div>
-
-<Navbar />
-
 {@render children()}
-
-<Footer />

@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import Header from "$lib/theme/Header.svelte";
+	import Footer from "$lib/theme/Footer.svelte";
+	import { apiRoot } from "$lib/theme/content";
 
 	type Section = { title: string; content: string };
 
@@ -21,18 +24,12 @@
 
 	let event = $state<EventDetail | null>(null);
 	let loading = $state(true);
-	let notFound = $state(false);
 
 	onMount(async () => {
 		try {
-			const res = await fetch(
-				`https://manage.autonomousrobotics.club/api/public/club/events?id=${data.id}`,
-				{ cache: "no-store" },
-			);
-			if (res.status === 404) {
-				notFound = true;
-				return;
-			}
+			const res = await fetch(`${apiRoot}/public/club/events?id=${data.id}`, {
+				cache: "no-store"
+			});
 			if (res.ok) {
 				event = await res.json();
 			}
@@ -48,134 +45,131 @@
 			weekday: "long",
 			month: "long",
 			day: "numeric",
-			year: "numeric",
+			year: "numeric"
 		});
 	}
 </script>
 
-{#if loading}
-	<div class="config-category">
-		<p class="text-sm text-[#555]">Loading...</p>
-	</div>
-{:else if notFound || !event}
-	<div class="config-category">
-		<h2>EVENT NOT FOUND</h2>
-		<p class="mb-4">This event could not be found.</p>
-		<a href="/events"><button class="edit-btn">BACK TO EVENTS</button></a>
-	</div>
-{:else}
-	<!-- Page header -->
-	<div class="border border-black bg-[#f0f0f0] p-5 mb-5">
-		<a href="/events">
-			<button class="edit-btn mb-4">← BACK TO EVENTS</button>
-		</a>
+<svelte:head>
+	<title>{event ? event.title : "Event"} - Autonomous Robotics Club</title>
+</svelte:head>
 
-		<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-			<div>
-				<h1 class="text-2xl md:text-3xl font-bold m-0 mb-3 leading-tight">
-					{event.title.toUpperCase()}
-				</h1>
-				<div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[#444]">
-					<span>{formatDate(event.date)}</span>
-					<span class="text-[#bbb]">·</span>
-					<span>{event.timeRange}</span>
-					<span class="text-[#bbb]">·</span>
-					<span>{event.location}</span>
+<div class="arc-page">
+	<Header />
+
+	<main class="arc-shell py-12">
+		<div class="arc-grid md:grid-cols-6">
+			{#if loading}
+				<div class="bg-[#fbfaf6] p-8 md:col-span-6">
+					<p class="arc-note">Loading...</p>
 				</div>
-			</div>
-
-			{#if event.rsvpUrl}
-				<a
-					href={event.rsvpUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="flex-shrink-0"
-				>
-					<button
-						class="save-btn py-2.5 px-6 font-bold w-full md:w-auto hover:bg-black hover:text-white transition-colors border-2 border-black whitespace-nowrap"
-					>
-						RSVP FOR THIS EVENT →
-					</button>
-				</a>
-			{/if}
-		</div>
-	</div>
-
-	<!-- Body -->
-	<div class="dashboard-grid">
-		<div class="column-main">
-			{#if event.description}
-				<div class="config-category">
-					<h2>ABOUT THIS EVENT</h2>
-					<p class="leading-relaxed">{event.description}</p>
+			{:else if !event}
+				<div class="bg-[#fbfaf6] p-8 md:col-span-6">
+					<h1 class="arc-h1">EVENT NOT FOUND</h1>
+					<p class="arc-note mt-4">This event could not be found.</p>
+					<a href="/events" class="arc-btn-ghost mt-6">ALL EVENTS</a>
 				</div>
-			{/if}
+			{:else}
+				<section class="bg-[#fbfaf6] p-8 md:col-span-6 md:p-12">
+					<nav class="arc-label">
+						<a href="/events" class="text-[#4a5c53] no-underline hover:text-[#006633]">
+							EVENTS
+						</a>
+						<span class="mx-2 text-[#a8b5ae]">/</span>
+						<span>{event.title.toUpperCase()}</span>
+					</nav>
 
-			{#each event.sections as section}
-				<div class="config-category">
-					<h2>{section.title}</h2>
-					<p class="leading-relaxed" style="white-space: pre-line;">
-						{section.content}
-					</p>
-				</div>
-			{/each}
-		</div>
+					<h1 class="arc-h1 mt-5">{event.title.toUpperCase()}</h1>
 
-		<div class="column-side">
-			{#if event.eventAddress || event.parkingAddress}
-				<div class="config-category">
-					<h2>LOCATION & PARKING</h2>
-
-					{#if event.eventAddress}
-						<div class="mb-4">
-							<div class="text-xs font-bold text-[#555] mb-1.5 uppercase tracking-wider">
-								Event Address
-							</div>
-							<div
-								class="border border-black p-3 bg-[#f8f8f8] text-sm leading-relaxed"
-								style="white-space: pre-line;"
-							>
-								{event.eventAddress}
-							</div>
-						</div>
-					{/if}
-
-					{#if event.parkingAddress}
-						<div>
-							<div class="text-xs font-bold text-[#555] mb-1.5 uppercase tracking-wider">
-								{event.parkingInfo ? `Parking — ${event.parkingInfo}` : "Parking"}
-							</div>
-							<div
-								class="border border-black p-3 bg-[#f8f8f8] text-sm leading-relaxed"
-								style="white-space: pre-line;"
-							>
-								{event.parkingAddress}
-							</div>
-						</div>
-					{/if}
-				</div>
-			{/if}
-
-			{#if event.rsvpUrl}
-				<div class="config-category">
-					<h2>REGISTER</h2>
-					<p class="text-sm mb-4 leading-relaxed">
-						Use the link below to RSVP and secure your spot at this event.
-					</p>
-					<a
-						href={event.rsvpUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="block"
-					>
-						<button
-							class="save-btn w-full py-2.5 font-bold hover:bg-black hover:text-white transition-colors border border-black"
+					{#if event.rsvpUrl}
+						<a
+							href={event.rsvpUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="arc-btn mt-8"
 						>
-							RSVP HERE
-						</button>
-					</a>
+							RSVP FOR THIS EVENT
+						</a>
+					{/if}
+				</section>
+
+				<div class="bg-[#fbfaf6] px-6 py-5 md:col-span-2">
+					<div class="arc-label">DATE</div>
+					<div class="mt-2 text-[15px] font-medium">{formatDate(event.date)}</div>
 				</div>
+
+				<div class="bg-[#fbfaf6] px-6 py-5 md:col-span-2">
+					<div class="arc-label">TIME</div>
+					<div class="mt-2 text-[15px] font-medium">{event.timeRange}</div>
+				</div>
+
+				<div class="bg-[#fbfaf6] px-6 py-5 md:col-span-2">
+					<div class="arc-label">LOCATION</div>
+					<div class="mt-2 text-[15px] font-medium">{event.location}</div>
+				</div>
+
+				{#if event.description}
+					<section class="bg-[#fbfaf6] p-8 md:col-span-6">
+						<h2 class="arc-h2">ABOUT THIS EVENT</h2>
+						<p class="arc-body mt-4">{event.description}</p>
+					</section>
+				{/if}
+
+				{#each event.sections ?? [] as section}
+					<section class="bg-[#fbfaf6] p-8 md:col-span-6">
+						<h2 class="arc-h2">{section.title.toUpperCase()}</h2>
+						<p class="arc-body mt-4 whitespace-pre-line">{section.content}</p>
+					</section>
+				{/each}
+
+				{#if event.eventAddress}
+					<section
+						class="bg-[#fbfaf6] p-8 {event.parkingAddress
+							? 'md:col-span-3'
+							: 'md:col-span-6'}"
+					>
+						<h2 class="arc-h2">EVENT ADDRESS</h2>
+						<p class="arc-body mt-4 whitespace-pre-line">{event.eventAddress}</p>
+					</section>
+				{/if}
+
+				{#if event.parkingAddress}
+					<section
+						class="bg-[#fbfaf6] p-8 {event.eventAddress
+							? 'md:col-span-3'
+							: 'md:col-span-6'}"
+					>
+						<h2 class="arc-h2">PARKING</h2>
+						{#if event.parkingInfo}
+							<div class="arc-label mt-3">{event.parkingInfo.toUpperCase()}</div>
+						{/if}
+						<p class="arc-body mt-4 whitespace-pre-line">{event.parkingAddress}</p>
+					</section>
+				{/if}
+
+				<section class="bg-[#fbfaf6] p-8 md:col-span-6">
+					<div class="flex flex-wrap items-center justify-between gap-4">
+						<h2 class="arc-h2">
+							{event.rsvpUrl ? "RESERVE YOUR SPOT" : "SEE THE FULL SCHEDULE"}
+						</h2>
+						<div class="flex flex-wrap gap-3">
+							{#if event.rsvpUrl}
+								<a
+									href={event.rsvpUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="arc-btn"
+								>
+									RSVP HERE
+								</a>
+							{/if}
+							<a href="/events" class="arc-btn-ghost">ALL EVENTS</a>
+						</div>
+					</div>
+				</section>
 			{/if}
 		</div>
-	</div>
-{/if}
+	</main>
+
+	<Footer />
+</div>

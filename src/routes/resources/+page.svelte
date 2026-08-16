@@ -1,40 +1,92 @@
 <script lang="ts">
-    import ResourceTable from "$lib/components/ResourceTable.svelte";
-    import FileTable from "$lib/components/FileTable.svelte";
-    import type { PageData } from "./$types";
+	import Page from "$lib/theme/Page.svelte";
+	import Panel from "$lib/theme/Panel.svelte";
+	import PdfViewer from "$lib/theme/PdfViewer.svelte";
+	import type { PageData } from "./$types";
 
-    let { data }: { data: PageData } = $props();
+	let { data }: { data: PageData } = $props();
 
-    const tools: any[] = [
-        {
-            name: "Sim-Link",
-            description:
-                "A web application designed to take the results of Gazebo simulations, save them, rank the best-performing simulations.",
-            url: "https://simlink.sirblob.co/",
-        },
-    ];
+	function isPdf(src: string) {
+		return src.toLowerCase().endsWith(".pdf");
+	}
+
+	let hasSizes = $derived(data.files.some((file: { size?: string }) => file.size));
 </script>
 
-<div class="super-container">
-    <div class="config-category">
-        <h2>FEATURED VIDEO</h2>
-        <div class="hardware-box p-4 bg-white border border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex justify-center">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/iIVQBmexkuU?si=0iO24cZmjIBcFMSx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> 
-        </div>
-    </div>
+<Page title="Resources">
+	{#each data.linkGroups as group}
+		<Panel title={group.category.toUpperCase()} flush>
+			<div class="overflow-x-auto">
+				<table class="arc-table">
+					<thead>
+						<tr>
+							<th class="w-[28%]">RESOURCE</th>
+							<th class="w-[55%]">DESCRIPTION</th>
+							<th class="w-[17%]">LINK</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each group.links as link}
+							<tr>
+								<td class="font-bold whitespace-nowrap">{link.title}</td>
+								<td>{link.description}</td>
+								<td>
+									<a
+										href={link.url}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="arc-btn-small"
+									>
+										OPEN
+									</a>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		</Panel>
+	{/each}
 
-    <ResourceTable title="TOOLS & SOFTWARE" resources={tools} />
-
-    {#if data.files.length > 0}
-        <FileTable title="TEAM FILES & DOWNLOADS" files={data.files} />
-    {:else}
-        <div class="config-category">
-            <h2>TEAM FILES & DOWNLOADS</h2>
-            <div class="hardware-box">
-                <p>
-                    No files found from server.
-                </p>
-            </div>
-        </div>
-    {/if}
-</div>
+	<Panel title="TEAM FILES AND DOWNLOADS" flush>
+		<div class="overflow-x-auto">
+			<table class="arc-table">
+				<thead>
+					<tr>
+						<th>FILE</th>
+						<th>DESCRIPTION</th>
+						{#if hasSizes}
+							<th>SIZE</th>
+						{/if}
+						<th>ACTIONS</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#if data.files.length === 0}
+						<tr>
+							<td colspan="4" class="arc-table-empty">No files available.</td>
+						</tr>
+					{:else}
+						{#each data.files as file}
+							<tr>
+								<td class="font-bold">{file.name}</td>
+								<td>{file.description}</td>
+								{#if hasSizes}
+									<td class="whitespace-nowrap">{file.size ?? "-"}</td>
+								{/if}
+								<td>
+									<div class="flex flex-wrap items-center gap-2">
+										{#if isPdf(file.src)}
+											<PdfViewer src={file.src} title={file.name} />
+										{/if}
+										<a href={file.src} download class="arc-btn-small">DOWNLOAD</a>
+									</div>
+								</td>
+							</tr>
+						{/each}
+					{/if}
+				</tbody>
+			</table>
+		</div>
+	</Panel>
+</Page>

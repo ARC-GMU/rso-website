@@ -1,24 +1,17 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-
-	type Project = {
-		id: string;
-		name: string;
-		description: string;
-		repoUrl: string;
-		order: number;
-		createdAt: string;
-	};
+	import Page from "$lib/theme/Page.svelte";
+	import Panel from "$lib/theme/Panel.svelte";
+	import { apiRoot, type Project } from "$lib/theme/content";
 
 	let projects = $state<Project[]>([]);
 	let loading = $state(true);
 
 	onMount(async () => {
 		try {
-			const res = await fetch(
-				"https://manage.autonomousrobotics.club/api/public/club/projects",
-				{ cache: "no-store" },
-			);
+			const res = await fetch(`${apiRoot}/public/club/projects`, {
+				cache: "no-store"
+			});
 			if (res.ok) {
 				projects = await res.json();
 			}
@@ -30,53 +23,48 @@
 	});
 </script>
 
-<div class="super-container">
-	<div class="config-category">
-		<h2>CURRENT PROJECTS</h2>
-
+<Page title="Projects" heading="Current Projects">
+	<Panel flush>
 		{#if loading}
-			<p class="text-sm text-[#555]">Loading...</p>
+			<p class="arc-table-empty">Loading...</p>
 		{:else}
-			<div class="tables-container">
-				<div class="table-wrapper">
-					<table class="config-table">
-						<thead>
+			<div class="overflow-x-auto">
+				<table class="arc-table">
+					<thead>
+						<tr>
+							<th>PROJECT</th>
+							<th>DESCRIPTION</th>
+							<th>REPOSITORY</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#if projects.length === 0}
 							<tr>
-								<th>PROJECT</th>
-								<th>DESCRIPTION</th>
-								<th>REPOSITORY</th>
+								<td colspan="3" class="arc-table-empty">No projects available.</td>
 							</tr>
-						</thead>
-						<tbody>
-							{#if projects.length === 0}
+						{:else}
+							{#each projects as project}
 								<tr>
-									<td colspan="3" class="text-center py-4 text-[#555]"
-										>No projects available.</td
-									>
+									<td class="font-bold whitespace-nowrap">{project.name}</td>
+									<td>{project.description}</td>
+									<td>
+										{#if project.repoUrl}
+											<a
+												href={project.repoUrl}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="arc-btn-small"
+											>
+												VIEW GITHUB
+											</a>
+										{/if}
+									</td>
 								</tr>
-							{:else}
-								{#each projects as project}
-									<tr>
-										<td><strong>{project.name}</strong></td>
-										<td>{project.description}</td>
-										<td>
-											{#if project.repoUrl}
-												<a
-													href={project.repoUrl}
-													target="_blank"
-													rel="noopener noreferrer"
-												>
-													<button class="edit-btn">VIEW GITHUB</button>
-												</a>
-											{/if}
-										</td>
-									</tr>
-								{/each}
-							{/if}
-						</tbody>
-					</table>
-				</div>
+							{/each}
+						{/if}
+					</tbody>
+				</table>
 			</div>
 		{/if}
-	</div>
-</div>
+	</Panel>
+</Page>

@@ -1,0 +1,30 @@
+@layer components {
+    .arc-page {
+        @apply min-h-screen bg-[#f2f0e7] text-[#16211c];
+        font-family: var(--font-mono);
+    }
+    .arc-shell { @apply mx-auto max-w-[1120px] px-6; }
+
+    .arc-h1 { @apply m-0 text-[1.7rem] leading-[1.3] font-bold tracking-[0.02em] sm:text-[2.1rem]; }
+    .arc-h2 { @apply m-0 border-0 p-0 text-[1.3rem] font-bold; }
+    .arc-h3 { @apply m-0 text-[16px] font-bold; }
+
+    .arc-label { @apply text-[13px] font-semibold tracking-[0.16em] text-[#4a5c53]; }
+    .arc-body { @apply text-[16px] leading-[1.85] font-medium text-[#2f3d37]; }
+    .arc-note { @apply text-[15px] leading-[1.8] font-medium text-[#4a5c53]; }
+
+    .arc-grid { @apply grid gap-[2px] border-2 border-[#d5dad5] bg-[#d5dad5]; }
+    .arc-panel { @apply border-2 border-[#d5dad5] bg-[#fbfaf6]; }
+    .arc-panel-head { @apply flex flex-wrap items-baseline justify-between gap-4 border-b border-[#d5dad5] px-6 py-5; }
+
+    .arc-btn { @apply inline-block bg-[#006633] px-6 py-3 text-center text-[13px] font-bold tracking-[0.1em] text-white no-underline hover:bg-[#00542a]; }
+    .arc-btn-ghost { @apply inline-block border border-[#16211c] px-6 py-3 text-center text-[13px] font-bold tracking-[0.1em] text-[#16211c] no-underline hover:bg-[#16211c] hover:text-white; }
+    .arc-btn-small { @apply inline-block border border-[#d5dad5] bg-[#efece2] px-4 py-2 text-[12px] font-bold tracking-[0.1em] text-[#16211c] no-underline hover:border-[#006633] hover:text-[#006633]; }
+    .arc-link { @apply text-[13px] font-bold tracking-[0.08em] text-[#006633] no-underline hover:underline; }
+
+    .arc-table { @apply w-full border-collapse text-[15px]; }
+    .arc-table th { @apply border-b border-[#d5dad5] bg-[#efece2] px-5 py-3 text-left text-[13px] font-semibold tracking-[0.14em] text-[#4a5c53]; }
+    .arc-table td { @apply border-b border-[#e6eae6] px-5 py-4 text-left align-top font-medium text-[#2f3d37]; }
+    .arc-table tbody tr:last-child td { @apply border-b-0; }
+    .arc-table-empty { @apply px-5 py-6 text-center text-[15px] font-medium text-[#6b7c74]; }
+}

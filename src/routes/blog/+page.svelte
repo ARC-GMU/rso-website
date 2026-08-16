@@ -1,58 +1,72 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
+	import Page from "$lib/theme/Page.svelte";
+	import Panel from "$lib/theme/Panel.svelte";
+	import type { PageData } from "./$types";
 
-    let { data }: { data: PageData } = $props();
+	let { data }: { data: PageData } = $props();
 
-    function formatDate(dateString: string) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
-    }
+	function postHref(post: { slug: string; externalUrl?: string }) {
+		return post.externalUrl || `/blog/${post.slug}`;
+	}
+
+	function formatDate(dateString: string) {
+		return new Date(dateString).toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric"
+		});
+	}
 </script>
 
-<div class="super-container">
-    <div class="config-category">
-        <h2>CLUB BLOG</h2>
-
-        {#if data.posts && data.posts.length > 0}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {#each data.posts as post}
-                    <div class="border border-black bg-[#f8f8f8] flex flex-col h-full hover:bg-[#eee] transition-colors">
-                        {#if post.coverImageUrl}
-                            <a href={`/blog/${post.slug}`} class="w-full h-48 overflow-hidden block border-b border-black">
-                                <img
-                                    src={post.coverImageUrl}
-                                    alt={post.title}
-                                    class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                                />
-                            </a>
-                        {/if}
-                        <div class="p-4 flex flex-col flex-1">
-                            <h3 class="m-0 text-xl font-bold mb-2">
-                                <a href={`/blog/${post.slug}`} class="text-black no-underline hover:underline">
-                                    {post.title}
-                                </a>
-                            </h3>
-                            <div class="text-xs text-[#555] mb-3">
-                                {formatDate(post.publishedAt || post.createdAt)} • By {post.author}
-                            </div>
-                            <p class="text-sm m-0 mb-4 flex-1">
-                                {post.excerpt || ""}
-                            </p>
-                            <a href={`/blog/${post.slug}`} class="mt-auto block">
-                                <button class="edit-btn w-full">READ MORE</button>
-                            </a>
-                        </div>
-                    </div>
-                {/each}
-            </div>
-        {:else}
-            <div class="hardware-box">
-                <p>No blog posts available at this time.</p>
-            </div>
-        {/if}
-    </div>
-</div>
+<Page title="Blog" heading="Club Blog">
+	{#if data.posts && data.posts.length > 0}
+		<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+			{#each data.posts as post}
+				<article class="arc-panel flex flex-col">
+					{#if post.coverImageUrl}
+						<a
+							href={postHref(post)}
+							target={post.externalUrl ? "_blank" : undefined}
+							rel="noopener noreferrer"
+							class="block h-48 overflow-hidden border-b border-[#d5dad5]"
+						>
+							<img
+								src={post.coverImageUrl}
+								alt={post.title}
+								class="h-full w-full object-cover"
+							/>
+						</a>
+					{/if}
+					<div class="flex flex-1 flex-col p-6">
+						<h2 class="arc-h2">
+							<a
+								href={postHref(post)}
+								target={post.externalUrl ? "_blank" : undefined}
+								rel="noopener noreferrer"
+								class="text-[#16211c] no-underline hover:text-[#006633]"
+							>
+								{post.title}
+							</a>
+						</h2>
+						<div class="arc-label mt-3">
+							{formatDate(post.publishedAt || post.createdAt)} / {post.author}
+						</div>
+						<p class="arc-note mt-4 flex-1">{post.excerpt || ""}</p>
+						<a
+							href={postHref(post)}
+							target={post.externalUrl ? "_blank" : undefined}
+							rel="noopener noreferrer"
+							class="arc-btn-ghost mt-6"
+						>
+							{post.externalUrl ? "READ ON EXTERNAL SITE" : "READ MORE"}
+						</a>
+					</div>
+				</article>
+			{/each}
+		</div>
+	{:else}
+		<Panel>
+			<p class="arc-note">No blog posts available at this time.</p>
+		</Panel>
+	{/if}
+</Page>

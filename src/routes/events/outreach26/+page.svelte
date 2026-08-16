@@ -1,90 +1,69 @@
-<div class="dashboard-grid">
-    <div class="column-main">
-        <div class="config-category">
-            <div
-                class="flex flex-col md:flex-row md:items-center justify-between border-b border-black pb-2 mb-3 gap-3"
-            >
-                <h2 style="margin: 0; border: none; padding: 0;">
-                    ROBOTICS OUTREACH EVENT
-                </h2>
-                <a href="/events"
-                    ><button class="edit-btn">BACK TO EVENTS</button></a
-                >
-            </div>
+<script lang="ts">
+	import Page from "$lib/theme/Page.svelte";
+	import Panel from "$lib/theme/Panel.svelte";
+</script>
 
-            <p>
-                The Outreach Event will be at Research Hall on the George Mason
-                University Fairfax campus on <strong
-                    >Friday, March 27th, from 4:30-7:30 pm</strong
-                >.
-            </p>
-            <p class="mt-3">
-                It will be <strong>$12 to park at the Shenandoah Parking
-                    Deck</strong>. If you are driving, fill out the RSVP form and
-                include your driving info; we might provide reimbursements, not
-                guaranteed. I have added addresses below. I advise that anyone
-                attending the event should Carpool with Friends and Family.
-            </p>
-            <p class="mt-3">
-                This event is also not specifically for Scouts; Scouts can
-                invite friends and family. Please have interested scouts and
-                peers RSVP using the link below. Let me know if you have any
-                questions.
-            </p>
+<Page title="Robotics Outreach Event">
+	<Panel>
+		<p class="arc-body">
+			The Outreach Event will be at Research Hall on the George Mason University
+			Fairfax campus on <strong class="font-bold"
+				>Friday, March 27th, from 4:30-7:30 pm</strong
+			>.
+		</p>
+		<p class="arc-body mt-4">
+			It will be <strong class="font-bold">$12 to park at the Shenandoah Parking Deck</strong
+			>. If you are driving, fill out the RSVP form and include your driving info; we
+			might provide reimbursements, not guaranteed. I have added addresses below. I
+			advise that anyone attending the event should carpool with friends and family.
+		</p>
+		<p class="arc-body mt-4">
+			This event is also not specifically for Scouts; Scouts can invite friends and
+			family. Please have interested scouts and peers RSVP using the link below. Let
+			me know if you have any questions.
+		</p>
+		<div class="mt-7 flex flex-wrap gap-3">
+			<a
+				href="https://forms.gle/B7hGDErwgVgsoK6a6"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="arc-btn"
+			>
+				RSVP HERE
+			</a>
+			<a href="/events" class="arc-btn-ghost">BACK TO EVENTS</a>
+		</div>
+	</Panel>
 
-            <a
-                href="https://forms.gle/B7hGDErwgVgsoK6a6"
-                target="_blank"
-                rel="noopener noreferrer"
-                style="display: block; margin-top: 20px;"
-            >
-                <button
-                    class="save-btn font-bold py-2.5 px-6 w-full md:w-auto text-lg hover:bg-black hover:text-white transition-colors border-2 border-black bg-[#e0e0e0] text-black"
-                    >RSVP HERE</button
-                >
-            </a>
-        </div>
+	<Panel title="ARRIVAL INSTRUCTIONS">
+		<p class="arc-body">
+			When you arrive, use the door facing the Shenandoah Parking Deck. You should be
+			greeted inside.
+		</p>
+		<ul class="mt-4 list-disc pl-5">
+			<li class="arc-body">Doors will be open from 4:00 PM - 4:50 PM.</li>
+			<li class="arc-body text-[#8c2f2f]">
+				After 4:50 PM, you have to call +1 (301) 900-6147 to enter the Robotics lab.
+			</li>
+		</ul>
+	</Panel>
 
-        <div class="config-category">
-            <h2>ARRIVAL INSTRUCTIONS</h2>
-            <p>
-                When you arrive, use the door facing the Shenandoah Parking
-                Deck. You should be greeted inside.
-            </p>
-            <ul class="list-disc pl-5 mt-3 space-y-2 font-bold mb-2">
-                <li>Doors will be open from 4:00 PM - 4:50 PM.</li>
-                <li class="text-red-600">
-                    After 4:50 PM, you have to call +1 (301) 900-6147 to enter
-                    the Robotics lab.
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="column-side">
-        <div class="hardware-box">
-            <h3>LOCATION & PARKING</h3>
-            <div class="mt-3">
-                <strong class="text-sm">EVENT ADDRESS:</strong>
-                <div
-                    class="text-[13px] bg-white border border-black p-3 mt-1.5 mb-4"
-                >
-                    Research Hall<br />001 York River Rd<br />Fairfax, VA 22030
-                </div>
-
-                <strong class="text-sm">SHENANDOAH PARKING DECK ($12):</strong>
-                <div
-                    class="text-[13px] bg-white border border-black p-3 mt-1.5"
-                >
-                    10401 York River Rd<br />Fairfax, VA 22030
-                </div>
-            </div>
-            <div class="mt-5 text-xs text-[#555] border-t border-black pt-2">
-                <span class="font-bold text-red-600">
-                    We strongly advise carpooling with friends and family to
-                    minimize parking costs and congestion.
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
+	<Panel title="LOCATION AND PARKING">
+		<div class="grid gap-6 md:grid-cols-2">
+			<div>
+				<div class="arc-label">EVENT ADDRESS</div>
+				<p class="arc-note mt-2">
+					Research Hall<br />001 York River Rd<br />Fairfax, VA 22030
+				</p>
+			</div>
+			<div>
+				<div class="arc-label">SHENANDOAH PARKING DECK ($12)</div>
+				<p class="arc-note mt-2">10401 York River Rd<br />Fairfax, VA 22030</p>
+			</div>
+		</div>
+		<p class="mt-6 border-t border-[#e6eae6] pt-4 text-[13px] font-bold text-[#8c2f2f]">
+			We strongly advise carpooling with friends and family to minimize parking costs
+			and congestion.
+		</p>
+	</Panel>
+</Page>

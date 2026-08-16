@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-
-	type ScheduleEntry = { day: string; time: string };
+	import Page from "$lib/theme/Page.svelte";
+	import Panel from "$lib/theme/Panel.svelte";
+	import { apiRoot, type ScheduleEntry } from "$lib/theme/content";
 
 	type ClubEvent = {
 		id: string;
@@ -9,7 +10,6 @@
 		date: string;
 		timeRange: string;
 		location: string;
-		rsvpUrl?: string;
 	};
 
 	let schedule = $state<ScheduleEntry[]>([]);
@@ -19,10 +19,9 @@
 
 	onMount(async () => {
 		try {
-			const res = await fetch(
-				"https://manage.autonomousrobotics.club/api/public/club/events",
-				{ cache: "no-store" },
-			);
+			const res = await fetch(`${apiRoot}/public/club/events`, {
+				cache: "no-store"
+			});
 			if (res.ok) {
 				const data = await res.json();
 				schedule = data.schedule ?? [];
@@ -36,127 +35,104 @@
 		}
 	});
 
+	const calendarId =
+		"4ddd5a1a4f8d806829a85b10e2e7d77d1185fb5ad242551cf6d48103f2876183%40group.calendar.google.com";
+
 	function formatDate(dateStr: string) {
 		return new Date(dateStr).toLocaleDateString("en-US", {
 			weekday: "long",
 			month: "long",
 			day: "numeric",
-			year: "numeric",
+			year: "numeric"
 		});
 	}
 </script>
 
-<div class="super-container">
+{#snippet eventTable(events: ClubEvent[], emptyText: string)}
+	<div class="overflow-x-auto">
+		<table class="arc-table">
+			<thead>
+				<tr>
+					<th>DATE</th>
+					<th>EVENT</th>
+					<th>LOCATION</th>
+					<th>DETAILS</th>
+				</tr>
+			</thead>
+			<tbody>
+				{#if events.length === 0}
+					<tr>
+						<td colspan="4" class="arc-table-empty">{emptyText}</td>
+					</tr>
+				{:else}
+					{#each events as event}
+						<tr>
+							<td class="whitespace-nowrap">
+								<span class="font-bold">{formatDate(event.date)}</span>
+								<span class="mt-1 block text-[12px] text-[#6b7c74]">
+									{event.timeRange}
+								</span>
+							</td>
+							<td>{event.title}</td>
+							<td>{event.location}</td>
+							<td>
+								<a href="/events/{event.id}" class="arc-btn-small">VIEW INFO</a>
+							</td>
+						</tr>
+					{/each}
+				{/if}
+			</tbody>
+		</table>
+	</div>
+{/snippet}
+
+<Page title="Events">
 	{#if loading}
-		<div class="config-category">
-			<h2>EVENTS</h2>
-			<p class="text-sm text-[#555]">Loading...</p>
-		</div>
+		<Panel>
+			<p class="arc-note">Loading...</p>
+		</Panel>
 	{:else}
 		{#if schedule.length > 0}
-			<div class="config-category">
-				<h2>MEETING SCHEDULE</h2>
-				<div class="tables-container">
-					<div class="table-wrapper">
-						<table class="config-table">
-							<tbody>
-								{#each schedule as entry}
-									<tr>
-										<th>{entry.day.toUpperCase()}</th>
-										<td>{entry.time}</td>
-									</tr>
-								{/each}
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
+			<Panel title="MEETING SCHEDULE" flush>
+				<table class="arc-table">
+					<tbody>
+						{#each schedule as entry}
+							<tr>
+								<th class="w-48">{entry.day.toUpperCase()}</th>
+								<td>{entry.time}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</Panel>
 		{/if}
 
-		<div class="config-category">
-			<h2>UPCOMING EVENTS</h2>
-			<div class="tables-container">
-				<div class="table-wrapper">
-					<table class="config-table">
-						<thead>
-							<tr>
-								<th>DATE</th>
-								<th>EVENT</th>
-								<th>LOCATION</th>
-								<th>DETAILS</th>
-							</tr>
-						</thead>
-						<tbody>
-							{#if upcoming.length === 0}
-								<tr>
-									<td colspan="4" class="text-center py-4 text-[#555]"
-										>No upcoming events scheduled.</td
-									>
-								</tr>
-							{:else}
-								{#each upcoming as event}
-									<tr>
-										<td>
-											<strong>{formatDate(event.date)}</strong><br />
-											<span class="text-xs text-[#555]">{event.timeRange}</span>
-										</td>
-										<td>{event.title}</td>
-										<td>{event.location}</td>
-										<td>
-											<a href={`/events/${event.id}`}>
-												<button class="edit-btn">VIEW INFO</button>
-											</a>
-										</td>
-									</tr>
-								{/each}
-							{/if}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+		<Panel title="UPCOMING EVENTS" flush>
+			{@render eventTable(upcoming, "No upcoming events scheduled.")}
+		</Panel>
 
-		<div class="config-category">
-			<h2>PAST EVENTS</h2>
-			<div class="tables-container">
-				<div class="table-wrapper">
-					<table class="config-table">
-						<thead>
-							<tr>
-								<th>DATE</th>
-								<th>EVENT</th>
-								<th>LOCATION</th>
-								<th>DETAILS</th>
-							</tr>
-						</thead>
-						<tbody>
-							{#if past.length === 0}
-								<tr>
-									<td colspan="4" class="text-center py-4 text-[#555]"
-										>No past events.</td
-									>
-								</tr>
-							{:else}
-								{#each past as event}
-									<tr>
-										<td>
-											<strong>{formatDate(event.date)}</strong><br />
-											<span class="text-xs text-[#555]">{event.timeRange}</span>
-										</td>
-										<td>{event.title}</td>
-										<td>{event.location}</td>
-										<td>
-											<a href={`/events/${event.id}`}>
-												<button class="edit-btn">VIEW INFO</button>
-											</a>
-										</td>
-									</tr>
-								{/each}
-							{/if}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+		<Panel title="TEAM CALENDAR">
+			{#snippet action()}
+				<a
+					href="https://calendar.google.com/calendar/render?cid={calendarId}"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="arc-link"
+				>
+					SUBSCRIBE / SYNC
+				</a>
+			{/snippet}
+
+			<iframe
+				src="https://calendar.google.com/calendar/embed?src={calendarId}&ctz=America%2FNew_York"
+				title="Autonomous Robotics Club calendar"
+				class="h-[650px] w-full border border-[#d5dad5]"
+				scrolling="no"
+			></iframe>
+		</Panel>
+
+		<Panel title="PAST EVENTS" flush>
+			{@render eventTable(past, "No past events.")}
+		</Panel>
 	{/if}
-</div>
+</Page>

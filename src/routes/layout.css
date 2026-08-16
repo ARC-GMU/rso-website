@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
+@import '../lib/theme/theme.css';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
@@ -9,7 +10,7 @@
 
 @layer base {
     body {
-        @apply font-mono bg-white text-black p-5 max-w-[1400px] mx-auto;
+        @apply font-mono bg-white text-black;
     }
     h1 { @apply text-2xl font-bold; }
     h2 { @apply text-xl mt-[30px] border-b border-black pb-1; }
