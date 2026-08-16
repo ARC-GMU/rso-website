@@ -137,7 +137,7 @@
 				{#if member.bio}
 					<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 						<h2 class="arc-h2">ABOUT</h2>
-						<p class="arc-body mt-4 whitespace-pre-line">{member.bio}</p>
+						<div class="arc-body mt-4">{@html member.bio}</div>
 					</section>
 				{/if}
 
