@@ -17,7 +17,7 @@
 	{#each data.linkGroups as group}
 		<Panel title={group.category.toUpperCase()} flush>
 			<div class="overflow-x-auto">
-				<table class="arc-table">
+				<table class="arc-table arc-table-fixed">
 					<thead>
 						<tr>
 							<th class="w-[28%]">RESOURCE</th>

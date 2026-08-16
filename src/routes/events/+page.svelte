@@ -43,20 +43,21 @@
 			weekday: "long",
 			month: "long",
 			day: "numeric",
-			year: "numeric"
+			year: "numeric",
+			timeZone: "America/New_York"
 		});
 	}
 </script>
 
 {#snippet eventTable(events: ClubEvent[], emptyText: string)}
 	<div class="overflow-x-auto">
-		<table class="arc-table">
+		<table class="arc-table arc-table-fixed">
 			<thead>
 				<tr>
-					<th>DATE</th>
-					<th>EVENT</th>
-					<th>LOCATION</th>
-					<th>DETAILS</th>
+					<th class="w-[25%]">DATE</th>
+					<th class="w-[30%]">EVENT</th>
+					<th class="w-[25%]">LOCATION</th>
+					<th class="w-[20%]">DETAILS</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -94,7 +95,7 @@
 	{:else}
 		{#if schedule.length > 0}
 			<Panel title="MEETING SCHEDULE" flush>
-				<table class="arc-table">
+				<table class="arc-table arc-table-fixed">
 					<tbody>
 						{#each schedule as entry}
 							<tr>

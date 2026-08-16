@@ -33,7 +33,7 @@
 			<p class="arc-table-empty">Loading...</p>
 		{:else}
 			<div class="overflow-x-auto">
-				<table class="arc-table">
+				<table class="arc-table arc-table-fixed">
 					<thead>
 						<tr>
 							<th class="w-[22%]">PROJECT</th>
