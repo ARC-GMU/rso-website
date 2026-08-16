@@ -7,6 +7,7 @@
 
 	type TeamLink = { type: string; url: string; icon?: string; label?: string };
 	type TeamMember = {
+		id?: string;
 		name: string;
 		slug?: string;
 		role: string;
@@ -15,6 +16,11 @@
 		links?: TeamLink[];
 	};
 	type Team = { name: string; members: TeamMember[] };
+
+	function memberHref(member: TeamMember): string | undefined {
+		const key = member.slug || member.id;
+		return key ? `/team/${key}` : undefined;
+	}
 
 	let teams = $state<Team[]>([]);
 	let loading = $state(true);
@@ -67,9 +73,9 @@
 							class="flex w-full min-w-0 flex-col items-center gap-3 border border-[var(--arc-line)] bg-[var(--arc-fill)] p-5 text-center sm:p-6"
 						>
 							<svelte:element
-								this={member.slug ? "a" : "div"}
-								href={member.slug ? `/team/${member.slug}` : undefined}
-								class="flex flex-col items-center gap-3 no-underline"
+								this={memberHref(member) ? "a" : "div"}
+								href={memberHref(member)}
+								class="flex flex-col items-center gap-3 no-underline {memberHref(member) ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}"
 							>
 								{#if member.photoUrl}
 									<img
