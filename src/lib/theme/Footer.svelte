@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from "svelte";
+	import Icon from "@iconify/svelte";
 	import {
 		discordUrl,
 		githubUrl,
@@ -6,6 +8,23 @@
 		linkedinUrl,
 		youtubeUrl
 	} from "$lib/theme/content";
+
+	let darkMode = $state(false);
+
+	onMount(() => {
+		darkMode = document.documentElement.dataset.theme === "dark";
+	});
+
+	function toggleDarkMode() {
+		darkMode = !darkMode;
+		const mode = darkMode ? "dark" : "light";
+		document.documentElement.dataset.theme = mode;
+		try {
+			localStorage.setItem("arc-theme", mode);
+		} catch (e) {
+			console.error("Could not save theme preference:", e);
+		}
+	}
 </script>
 
 <footer class="border-t border-[var(--arc-line)] bg-[var(--arc-chrome)]">
@@ -13,11 +32,20 @@
 		<div
 			class="flex flex-col gap-4 text-center text-[13px] font-medium tracking-[0.06em] text-[var(--arc-muted)] md:flex-row md:items-center md:justify-between md:text-left"
 		>
-			<span class="flex flex-col items-center gap-1 md:flex-row md:gap-3">
+			<span class="flex flex-col items-center gap-2 md:flex-row md:gap-3">
 				<span>AUTONOMOUS ROBOTICS CLUB / GEORGE MASON UNIVERSITY</span>
 				<a href="/legacy" class="text-[var(--arc-muted)] underline hover:text-[var(--arc-accent)]">
 					OLD SITE
 				</a>
+				<button
+					class="flex cursor-pointer items-center gap-2 border border-[var(--arc-line)] px-3 py-1.5 text-[13px] font-bold tracking-[0.06em] text-[var(--arc-ink)] hover:border-[var(--arc-accent)] hover:text-[var(--arc-accent)]"
+					aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+					aria-pressed={darkMode}
+					onclick={toggleDarkMode}
+				>
+					<Icon icon={darkMode ? "mdi:weather-sunny" : "mdi:weather-night"} class="text-base" />
+					{darkMode ? "LIGHT MODE" : "DARK MODE"}
+				</button>
 			</span>
 			<div class="flex flex-wrap justify-center gap-x-6 gap-y-2 md:justify-end">
 				<a

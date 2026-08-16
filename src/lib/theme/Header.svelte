@@ -1,26 +1,9 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import { page } from "$app/stores";
 	import Icon from "@iconify/svelte";
 	import { discordUrl, navLinks } from "$lib/theme/content";
 
 	let menuOpen = $state(false);
-	let darkMode = $state(false);
-
-	onMount(() => {
-		darkMode = document.documentElement.dataset.theme === "dark";
-	});
-
-	function toggleDarkMode() {
-		darkMode = !darkMode;
-		const mode = darkMode ? "dark" : "light";
-		document.documentElement.dataset.theme = mode;
-		try {
-			localStorage.setItem("arc-theme", mode);
-		} catch (e) {
-			console.error("Could not save theme preference:", e);
-		}
-	}
 
 	function isActive(href: string) {
 		return $page.url.pathname === href || $page.url.pathname.startsWith(`${href}/`);
@@ -62,15 +45,6 @@
 			>
 				JOIN
 			</a>
-
-			<button
-				class="shrink-0 cursor-pointer border border-[var(--arc-line)] p-2 text-[var(--arc-ink)] hover:border-[var(--arc-accent)] hover:text-[var(--arc-accent)]"
-				aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-				aria-pressed={darkMode}
-				onclick={toggleDarkMode}
-			>
-				<Icon icon={darkMode ? "mdi:weather-sunny" : "mdi:weather-night"} class="text-xl" />
-			</button>
 
 			<button
 				class="shrink-0 cursor-pointer border border-[var(--arc-ink)] p-2 text-[var(--arc-ink)] lg:hidden"
