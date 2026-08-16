@@ -18,17 +18,17 @@
 	}
 </script>
 
-<Page title="Blog" heading="Club Blog">
+<Page title="Blog">
 	{#if data.posts && data.posts.length > 0}
-		<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+		<div class="flex flex-col gap-6">
 			{#each data.posts as post}
-				<article class="arc-panel flex flex-col">
+				<article class="arc-panel flex flex-col sm:flex-row">
 					{#if post.coverImageUrl}
 						<a
 							href={postHref(post)}
 							target={post.externalUrl ? "_blank" : undefined}
 							rel="noopener noreferrer"
-							class="block h-48 overflow-hidden border-b border-[#d5dad5]"
+							class="block h-48 shrink-0 overflow-hidden border-b border-[#d5dad5] sm:h-auto sm:w-64 sm:border-r sm:border-b-0 lg:w-80"
 						>
 							<img
 								src={post.coverImageUrl}
@@ -37,7 +37,7 @@
 							/>
 						</a>
 					{/if}
-					<div class="flex flex-1 flex-col p-6">
+					<div class="flex min-w-0 flex-1 flex-col p-6">
 						<h2 class="arc-h2">
 							<a
 								href={postHref(post)}
@@ -56,7 +56,7 @@
 							href={postHref(post)}
 							target={post.externalUrl ? "_blank" : undefined}
 							rel="noopener noreferrer"
-							class="arc-btn-ghost mt-6"
+							class="arc-btn-ghost mt-6 self-start"
 						>
 							{post.externalUrl ? "READ ON EXTERNAL SITE" : "READ MORE"}
 						</a>
