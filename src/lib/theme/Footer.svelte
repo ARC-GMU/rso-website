@@ -11,15 +11,15 @@
 <footer class="border-t border-[#d5dad5] bg-[#e9e6db]">
 	<div class="mx-auto flex max-w-[1120px] flex-col gap-6 px-6 py-8">
 		<div
-			class="flex flex-col gap-4 text-[13px] font-medium tracking-[0.06em] text-[#4a5c53] md:flex-row md:items-center md:justify-between"
+			class="flex flex-col gap-4 text-center text-[13px] font-medium tracking-[0.06em] text-[#4a5c53] md:flex-row md:items-center md:justify-between md:text-left"
 		>
-			<span>
-				AUTONOMOUS ROBOTICS CLUB / GEORGE MASON UNIVERSITY
-				<a href="/legacy" class="ml-3 text-[#4a5c53] underline hover:text-[#006633]">
+			<span class="flex flex-col items-center gap-1 md:flex-row md:gap-3">
+				<span>AUTONOMOUS ROBOTICS CLUB / GEORGE MASON UNIVERSITY</span>
+				<a href="/legacy" class="text-[#4a5c53] underline hover:text-[#006633]">
 					OLD SITE
 				</a>
 			</span>
-			<div class="flex gap-6">
+			<div class="flex flex-wrap justify-center gap-x-6 gap-y-2 md:justify-end">
 				<a
 					href={instagramUrl}
 					target="_blank"
