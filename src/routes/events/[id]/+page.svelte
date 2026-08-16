@@ -60,22 +60,22 @@
 	<main class="arc-shell py-12">
 		<div class="arc-grid md:grid-cols-6">
 			{#if loading}
-				<div class="bg-[#fbfaf6] p-8 md:col-span-6">
+				<div class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 					<p class="arc-note">Loading...</p>
 				</div>
 			{:else if !event}
-				<div class="bg-[#fbfaf6] p-8 md:col-span-6">
+				<div class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 					<h1 class="arc-h1">EVENT NOT FOUND</h1>
 					<p class="arc-note mt-4">This event could not be found.</p>
 					<a href="/events" class="arc-btn-ghost mt-6">ALL EVENTS</a>
 				</div>
 			{:else}
-				<section class="bg-[#fbfaf6] p-8 md:col-span-6 md:p-12">
+				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6 md:p-12">
 					<nav class="arc-label">
-						<a href="/events" class="text-[#4a5c53] no-underline hover:text-[#006633]">
+						<a href="/events" class="text-[var(--arc-muted)] no-underline hover:text-[var(--arc-accent)]">
 							EVENTS
 						</a>
-						<span class="mx-2 text-[#a8b5ae]">/</span>
+						<span class="mx-2 text-[var(--arc-faint)]">/</span>
 						<span>{event.title.toUpperCase()}</span>
 					</nav>
 
@@ -93,30 +93,30 @@
 					{/if}
 				</section>
 
-				<div class="bg-[#fbfaf6] px-6 py-5 md:col-span-2">
+				<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
 					<div class="arc-label">DATE</div>
 					<div class="mt-2 text-[15px] font-medium">{formatDate(event.date)}</div>
 				</div>
 
-				<div class="bg-[#fbfaf6] px-6 py-5 md:col-span-2">
+				<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
 					<div class="arc-label">TIME</div>
 					<div class="mt-2 text-[15px] font-medium">{event.timeRange}</div>
 				</div>
 
-				<div class="bg-[#fbfaf6] px-6 py-5 md:col-span-2">
+				<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
 					<div class="arc-label">LOCATION</div>
 					<div class="mt-2 text-[15px] font-medium">{event.location}</div>
 				</div>
 
 				{#if event.description}
-					<section class="bg-[#fbfaf6] p-8 md:col-span-6">
+					<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 						<h2 class="arc-h2">ABOUT THIS EVENT</h2>
 						<p class="arc-body mt-4">{event.description}</p>
 					</section>
 				{/if}
 
 				{#each event.sections ?? [] as section}
-					<section class="bg-[#fbfaf6] p-8 md:col-span-6">
+					<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 						<h2 class="arc-h2">{section.title.toUpperCase()}</h2>
 						<p class="arc-body mt-4 whitespace-pre-line">{section.content}</p>
 					</section>
@@ -124,7 +124,7 @@
 
 				{#if event.eventAddress}
 					<section
-						class="bg-[#fbfaf6] p-8 {event.parkingAddress
+						class="bg-[var(--arc-surface)] p-8 {event.parkingAddress
 							? 'md:col-span-3'
 							: 'md:col-span-6'}"
 					>
@@ -135,7 +135,7 @@
 
 				{#if event.parkingAddress}
 					<section
-						class="bg-[#fbfaf6] p-8 {event.eventAddress
+						class="bg-[var(--arc-surface)] p-8 {event.eventAddress
 							? 'md:col-span-3'
 							: 'md:col-span-6'}"
 					>
@@ -147,7 +147,7 @@
 					</section>
 				{/if}
 
-				<section class="bg-[#fbfaf6] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 					<div class="flex flex-wrap items-center justify-between gap-4">
 						<h2 class="arc-h2">
 							{event.rsvpUrl ? "RESERVE YOUR SPOT" : "SEE THE FULL SCHEDULE"}

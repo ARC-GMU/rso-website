@@ -10,9 +10,9 @@
 		role="dialog"
 		aria-modal="true"
 	>
-		<div class="flex h-[90vh] w-full max-w-5xl flex-col border border-[#16211c] bg-[#fbfaf6]">
+		<div class="flex h-[90vh] w-full max-w-5xl flex-col border border-[var(--arc-ink)] bg-[var(--arc-surface)]">
 			<div
-				class="flex flex-wrap items-center justify-between gap-3 border-b border-[#d5dad5] bg-[#efece2] px-5 py-3"
+				class="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--arc-line)] bg-[var(--arc-fill)] px-5 py-3"
 			>
 				<span class="text-[13px] font-bold tracking-[0.08em]">{title}</span>
 				<div class="flex gap-2">

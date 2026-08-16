@@ -21,7 +21,7 @@
 		{ label: "LINKEDIN", url: linkedinUrl, icon: "mdi:linkedin", color: "#0a66c2" },
 		{ label: "YOUTUBE", url: youtubeUrl, icon: "mdi:youtube", color: "#ff0000" },
 		{ label: "DISCORD", url: discordUrl, icon: "mdi:discord", color: "#5865f2" },
-		{ label: "GITHUB", url: githubUrl, icon: "mdi:github", color: "#24292f" }
+		{ label: "GITHUB", url: githubUrl, icon: "mdi:github", color: "var(--arc-ink)" }
 	];
 
 	type ClubEvent = {
@@ -68,7 +68,7 @@
 	<main class="arc-shell py-12">
 		<div class="arc-grid md:grid-cols-6">
 			<section
-				class="flex flex-col gap-8 bg-[#fbfaf6] p-8 md:col-span-6 md:flex-row md:items-center md:justify-between md:gap-12 md:p-12"
+				class="flex flex-col gap-8 bg-[var(--arc-surface)] p-8 md:col-span-6 md:flex-row md:items-center md:justify-between md:gap-12 md:p-12"
 			>
 				<div>
 					<h1 class="m-0 max-w-3xl text-[2rem] leading-[1.3] font-bold sm:text-[2.6rem]">
@@ -98,7 +98,7 @@
 			</section>
 
 			<div
-				class="bg-[#fbfaf6] px-6 py-5 {content.schedule.length > 0
+				class="bg-[var(--arc-surface)] px-6 py-5 {content.schedule.length > 0
 					? 'md:col-span-2'
 					: 'md:col-span-3'}"
 			>
@@ -107,7 +107,7 @@
 			</div>
 
 			{#if content.schedule.length > 0}
-				<div class="bg-[#fbfaf6] px-6 py-5 md:col-span-2">
+				<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
 					<div class="arc-label">MEETING TIMES</div>
 					<div class="mt-2 text-[15px] font-medium">
 						{#each content.schedule as entry}
@@ -121,7 +121,7 @@
 			{/if}
 
 			<div
-				class="bg-[#fbfaf6] px-6 py-5 {content.schedule.length > 0
+				class="bg-[var(--arc-surface)] px-6 py-5 {content.schedule.length > 0
 					? 'md:col-span-2'
 					: 'md:col-span-3'}"
 			>
@@ -143,7 +143,7 @@
 			</div>
 
 			<section
-				class="bg-[#fbfaf6] p-8 {content.missionStatement
+				class="bg-[var(--arc-surface)] p-8 {content.missionStatement
 					? 'md:col-span-2'
 					: 'md:col-span-3'}"
 			>
@@ -157,12 +157,12 @@
 						<p class="arc-note">No upcoming events scheduled.</p>
 					{:else}
 						{#each upcomingEvents.slice(0, 3) as event}
-							<div class="border-b border-[#e6eae6] py-4 last:border-b-0">
+							<div class="border-b border-[var(--arc-line-soft)] py-4 last:border-b-0">
 								<div class="text-[15px] font-bold">{formatDate(event.date)}</div>
-								<div class="mt-1 text-[14px] font-medium text-[#4a5c53]">
+								<div class="mt-1 text-[14px] font-medium text-[var(--arc-muted)]">
 									{event.timeRange} / {event.location}
 								</div>
-								<div class="mt-2 text-[15px] font-medium text-[#2f3d37]">
+								<div class="mt-2 text-[15px] font-medium text-[var(--arc-ink-2)]">
 									{event.title}
 								</div>
 								<a href="/events/{event.id}" class="arc-link mt-2 inline-block">
@@ -176,7 +176,7 @@
 
 			{#if content.missionStatement}
 				<section
-					class="flex flex-col justify-center bg-[#fbfaf6] p-8 text-center md:col-span-2"
+					class="flex flex-col justify-center bg-[var(--arc-surface)] p-8 text-center md:col-span-2"
 				>
 					<h2 class="arc-h2">MISSION STATEMENT</h2>
 					<p class="arc-body mt-4">{content.missionStatement}</p>
@@ -184,7 +184,7 @@
 			{/if}
 
 			<section
-				class="bg-[#fbfaf6] p-8 {content.missionStatement
+				class="bg-[var(--arc-surface)] p-8 {content.missionStatement
 					? 'md:col-span-2'
 					: 'md:col-span-3'}"
 			>
@@ -208,9 +208,9 @@
 				</div>
 			</section>
 
-			<section class="bg-[#fbfaf6] p-8 md:col-span-3">
+			<section class="bg-[var(--arc-surface)] p-8 md:col-span-3">
 				<h2 class="arc-h2">2026 EAST COAST AVC</h2>
-				<div class="mt-5 aspect-video w-full border border-[#d5dad5]">
+				<div class="mt-5 aspect-video w-full border border-[var(--arc-line)]">
 					<iframe
 						src="https://www.youtube.com/embed/J9QkS8nLYy0"
 						title="2026 East Coast Autonomous Vehicle Competition"
@@ -222,9 +222,9 @@
 				</div>
 			</section>
 
-			<section class="bg-[#fbfaf6] p-8 md:col-span-3">
+			<section class="bg-[var(--arc-surface)] p-8 md:col-span-3">
 				<h2 class="arc-h2">CLUB VIDEO</h2>
-				<div class="mt-5 aspect-video w-full border border-[#d5dad5]">
+				<div class="mt-5 aspect-video w-full border border-[var(--arc-line)]">
 					<iframe
 						src="https://www.youtube.com/embed/iIVQBmexkuU?si=0iO24cZmjIBcFMSx"
 						title="Autonomous Robotics Club video"

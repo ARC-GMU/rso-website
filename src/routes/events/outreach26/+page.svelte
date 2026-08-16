@@ -42,7 +42,7 @@
 		</p>
 		<ul class="mt-4 list-disc pl-5">
 			<li class="arc-body">Doors will be open from 4:00 PM - 4:50 PM.</li>
-			<li class="arc-body text-[#8c2f2f]">
+			<li class="arc-body text-[var(--arc-warn)]">
 				After 4:50 PM, you have to call +1 (301) 900-6147 to enter the Robotics lab.
 			</li>
 		</ul>
@@ -61,7 +61,7 @@
 				<p class="arc-note mt-2">10401 York River Rd<br />Fairfax, VA 22030</p>
 			</div>
 		</div>
-		<p class="mt-6 border-t border-[#e6eae6] pt-4 text-[13px] font-bold text-[#8c2f2f]">
+		<p class="mt-6 border-t border-[var(--arc-line-soft)] pt-4 text-[13px] font-bold text-[var(--arc-warn)]">
 			We strongly advise carpooling with friends and family to minimize parking costs
 			and congestion.
 		</p>

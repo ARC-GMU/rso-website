@@ -8,14 +8,14 @@
 	} from "$lib/theme/content";
 </script>
 
-<footer class="border-t border-[#d5dad5] bg-[#e9e6db]">
+<footer class="border-t border-[var(--arc-line)] bg-[var(--arc-chrome)]">
 	<div class="mx-auto flex max-w-[1120px] flex-col gap-6 px-6 py-8">
 		<div
-			class="flex flex-col gap-4 text-center text-[13px] font-medium tracking-[0.06em] text-[#4a5c53] md:flex-row md:items-center md:justify-between md:text-left"
+			class="flex flex-col gap-4 text-center text-[13px] font-medium tracking-[0.06em] text-[var(--arc-muted)] md:flex-row md:items-center md:justify-between md:text-left"
 		>
 			<span class="flex flex-col items-center gap-1 md:flex-row md:gap-3">
 				<span>AUTONOMOUS ROBOTICS CLUB / GEORGE MASON UNIVERSITY</span>
-				<a href="/legacy" class="text-[#4a5c53] underline hover:text-[#006633]">
+				<a href="/legacy" class="text-[var(--arc-muted)] underline hover:text-[var(--arc-accent)]">
 					OLD SITE
 				</a>
 			</span>
@@ -24,36 +24,36 @@
 					href={instagramUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-[#4a5c53] no-underline hover:text-[#006633]">INSTAGRAM</a
+					class="text-[var(--arc-muted)] no-underline hover:text-[var(--arc-accent)]">INSTAGRAM</a
 				>
 				<a
 					href={linkedinUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-[#4a5c53] no-underline hover:text-[#006633]">LINKEDIN</a
+					class="text-[var(--arc-muted)] no-underline hover:text-[var(--arc-accent)]">LINKEDIN</a
 				>
 				<a
 					href={youtubeUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-[#4a5c53] no-underline hover:text-[#006633]">YOUTUBE</a
+					class="text-[var(--arc-muted)] no-underline hover:text-[var(--arc-accent)]">YOUTUBE</a
 				>
 				<a
 					href={discordUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-[#4a5c53] no-underline hover:text-[#006633]">DISCORD</a
+					class="text-[var(--arc-muted)] no-underline hover:text-[var(--arc-accent)]">DISCORD</a
 				>
 				<a
 					href={githubUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-[#4a5c53] no-underline hover:text-[#006633]">GITHUB</a
+					class="text-[var(--arc-muted)] no-underline hover:text-[var(--arc-accent)]">GITHUB</a
 				>
 			</div>
 		</div>
 
-		<p class="m-0 text-[12px] leading-[1.8] text-[#6b7c74]">
+		<p class="m-0 text-[12px] leading-[1.8] text-[var(--arc-muted-2)]">
 			<strong class="font-bold">University Public Disclaimer:</strong> The programs
 			and services offered by George Mason University are open to all who seek them.
 			George Mason does not discriminate on the basis of race, color, religion, ethnic

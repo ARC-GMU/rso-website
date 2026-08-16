@@ -71,8 +71,8 @@
 			<button
 				class="cursor-pointer border px-5 py-2.5 text-[13px] font-bold tracking-[0.1em] {activeTab ===
 				'images'
-					? 'border-[#16211c] bg-[#16211c] text-white'
-					: 'border-[#d5dad5] bg-[#fbfaf6] text-[#16211c] hover:border-[#006633]'}"
+					? 'border-[var(--arc-ink)] bg-[var(--arc-ink)] text-[var(--arc-invert-text)]'
+					: 'border-[var(--arc-line)] bg-[var(--arc-surface)] text-[var(--arc-ink)] hover:border-[var(--arc-accent)]'}"
 				onclick={() => (activeTab = "images")}
 			>
 				IMAGES ({images.length})
@@ -80,8 +80,8 @@
 			<button
 				class="cursor-pointer border px-5 py-2.5 text-[13px] font-bold tracking-[0.1em] {activeTab ===
 				'videos'
-					? 'border-[#16211c] bg-[#16211c] text-white'
-					: 'border-[#d5dad5] bg-[#fbfaf6] text-[#16211c] hover:border-[#006633]'}"
+					? 'border-[var(--arc-ink)] bg-[var(--arc-ink)] text-[var(--arc-invert-text)]'
+					: 'border-[var(--arc-line)] bg-[var(--arc-surface)] text-[var(--arc-ink)] hover:border-[var(--arc-accent)]'}"
 				onclick={() => (activeTab = "videos")}
 			>
 				VIDEOS ({videos.length})

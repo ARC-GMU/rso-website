@@ -28,7 +28,7 @@
 							href={postHref(post)}
 							target={post.externalUrl ? "_blank" : undefined}
 							rel="noopener noreferrer"
-							class="block h-48 shrink-0 overflow-hidden border-b border-[#d5dad5] sm:h-auto sm:w-64 sm:border-r sm:border-b-0 lg:w-80"
+							class="block h-48 shrink-0 overflow-hidden border-b border-[var(--arc-line)] sm:h-auto sm:w-64 sm:border-r sm:border-b-0 lg:w-80"
 						>
 							<img
 								src={post.coverImageUrl}
@@ -43,7 +43,7 @@
 								href={postHref(post)}
 								target={post.externalUrl ? "_blank" : undefined}
 								rel="noopener noreferrer"
-								class="text-[#16211c] no-underline hover:text-[#006633]"
+								class="text-[var(--arc-ink)] no-underline hover:text-[var(--arc-accent)]"
 							>
 								{post.title}
 							</a>

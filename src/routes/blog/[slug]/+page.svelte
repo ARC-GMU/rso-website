@@ -30,7 +30,7 @@
 
 		<article class="arc-panel mt-6">
 			{#if data.post.coverImageUrl}
-				<div class="h-64 w-full overflow-hidden border-b border-[#d5dad5] md:h-96">
+				<div class="h-64 w-full overflow-hidden border-b border-[var(--arc-line)] md:h-96">
 					<img
 						src={data.post.coverImageUrl}
 						alt={data.post.title}
@@ -50,7 +50,7 @@
 					<div class="mt-4 flex flex-wrap gap-2">
 						{#each data.post.tags as tag}
 							<span
-								class="border border-[#d5dad5] bg-[#f4f6f3] px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-[#4a5c53] uppercase"
+								class="border border-[var(--arc-line)] bg-[var(--arc-fill)] px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-[var(--arc-muted)] uppercase"
 							>
 								{tag}
 							</span>
@@ -70,7 +70,7 @@
 				{/if}
 
 				<div
-					class="prose prose-sm md:prose-base mt-8 max-w-none border-t border-[#e6eae6] pt-8 text-[#2f3d37]"
+					class="prose prose-sm md:prose-base mt-8 max-w-none border-t border-[var(--arc-line-soft)] pt-8 text-[var(--arc-ink-2)]"
 				>
 					{@html data.post.content}
 				</div>

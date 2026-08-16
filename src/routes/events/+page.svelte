@@ -69,7 +69,7 @@
 						<tr>
 							<td class="whitespace-nowrap">
 								<span class="font-bold">{formatDate(event.date)}</span>
-								<span class="mt-1 block text-[12px] text-[#6b7c74]">
+								<span class="mt-1 block text-[12px] text-[var(--arc-muted-2)]">
 									{event.timeRange}
 								</span>
 							</td>
@@ -126,7 +126,7 @@
 			<iframe
 				src="https://calendar.google.com/calendar/embed?src={calendarId}&ctz=America%2FNew_York"
 				title="Autonomous Robotics Club calendar"
-				class="h-[650px] w-full border border-[#d5dad5]"
+				class="h-[650px] w-full border border-[var(--arc-line)]"
 				scrolling="no"
 			></iframe>
 		</Panel>

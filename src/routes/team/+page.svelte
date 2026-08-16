@@ -74,7 +74,7 @@
 														{member.contact}
 													</a>
 													<button
-														class="cursor-pointer border border-[#d5dad5] bg-[#efece2] p-1 text-[#16211c] hover:border-[#006633] hover:text-[#006633]"
+														class="cursor-pointer border border-[var(--arc-line)] bg-[var(--arc-fill)] p-1 text-[var(--arc-ink)] hover:border-[var(--arc-accent)] hover:text-[var(--arc-accent)]"
 														aria-label="Copy email"
 														onclick={() => copyContact(member.contact ?? "")}
 													>
