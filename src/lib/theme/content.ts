@@ -5,6 +5,7 @@ export type ProjectLink = { label: string; url: string };
 export type Project = {
 	id: string;
 	name: string;
+	slug?: string;
 	description: string;
 	repoUrl: string;
 	requirements?: string[];

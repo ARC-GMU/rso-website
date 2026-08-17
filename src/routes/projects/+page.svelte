@@ -62,7 +62,7 @@
 												VISIT PROJECT
 											</a>
 										{:else}
-											<a href="/projects/{project.id}" class="arc-btn-small">
+											<a href="/projects/{project.slug || project.id}" class="arc-btn-small">
 												VIEW DETAILS
 											</a>
 										{/if}
