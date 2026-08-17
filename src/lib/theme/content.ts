@@ -20,7 +20,6 @@ export type Project = {
 export type SocialLink = { type: string; url: string; icon?: string; label?: string };
 
 export type ClubContent = {
-	focusStatement: string;
 	missionStatement: string;
 	whatWeDo: string;
 	organization: string;
@@ -45,7 +44,6 @@ export const navLinks = [
 ];
 
 export const emptyContent: ClubContent = {
-	focusStatement: "",
 	missionStatement: "",
 	whatWeDo: "",
 	organization: "Autonomous Robotics Club",
@@ -98,8 +96,7 @@ export async function loadClubContent(): Promise<ClubContent> {
 		]);
 
 		return {
-			focusStatement: about?.focusStatement ?? "",
-			missionStatement: about?.missionStatement || about?.focusStatement || "",
+			missionStatement: about?.missionStatement ?? "",
 			whatWeDo: about?.whatWeDo ?? "",
 			organization: about?.organization || emptyContent.organization,
 			location: about?.location ?? "",
