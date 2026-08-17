@@ -12,6 +12,7 @@
 		name: string;
 		slug: string;
 		role: string;
+		major?: string;
 		bio?: string;
 		contact?: string;
 		photoUrl?: string;
@@ -106,6 +107,9 @@
 							{/if}
 							{#if member.teamName}
 								<div class="arc-note mt-1">{member.teamName}</div>
+							{/if}
+							{#if member.major}
+								<div class="arc-note mt-1">{member.major}</div>
 							{/if}
 						</div>
 					</div>
