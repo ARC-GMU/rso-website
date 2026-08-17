@@ -68,14 +68,14 @@
 				{:else}
 					{#each events as event}
 						<tr>
-							<td class="whitespace-nowrap">
-								<span class="font-bold">{formatDate(event.date)}</span>
-								<span class="mt-1 block text-[12px] text-[var(--arc-muted-2)]">
+							<td>
+								<span class="block truncate font-bold">{formatDate(event.date)}</span>
+								<span class="mt-1 block truncate text-[12px] text-[var(--arc-muted-2)]">
 									{event.timeRange}
 								</span>
 							</td>
-							<td>{event.title}</td>
-							<td>{event.location}</td>
+							<td class="truncate">{event.title}</td>
+							<td class="truncate">{event.location}</td>
 							<td>
 								<a href="/events/{event.id}" class="arc-btn-small">VIEW INFO</a>
 							</td>

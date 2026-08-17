@@ -36,8 +36,8 @@
 				<table class="arc-table arc-table-fixed">
 					<thead>
 						<tr>
-							<th class="w-[22%]">PROJECT</th>
-							<th class="w-[58%]">DESCRIPTION</th>
+							<th class="w-[40%]">PROJECT</th>
+							<th class="w-[40%]">DESCRIPTION</th>
 							<th class="w-[20%]">DETAILS</th>
 						</tr>
 					</thead>
@@ -49,7 +49,7 @@
 						{:else}
 							{#each projects as project}
 								<tr>
-									<td class="font-bold whitespace-nowrap">{project.name}</td>
+									<td class="font-bold truncate">{project.name}</td>
 									<td>{project.description ? stripHtml(project.description) : ""}</td>
 									<td>
 										{#if project.external && project.externalUrl}

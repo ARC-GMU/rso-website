@@ -23,9 +23,11 @@
 
 	let { data }: { data: { slug: string } } = $props();
 
+	type RosterMatch = { photoUrl?: string; href?: string };
+
 	let project = $state<ProjectDetail | null>(null);
 	let loading = $state(true);
-	let rosterPhotos = new Map<string, string>();
+	let rosterMembers = new Map<string, RosterMatch>();
 
 	function parseMember(entry: string): { name: string; role: string } {
 		const sep = entry.indexOf(" — ");
@@ -33,8 +35,8 @@
 		return { name: entry.slice(0, sep), role: entry.slice(sep + 3) };
 	}
 
-	function memberPhoto(name: string): string | undefined {
-		return rosterPhotos.get(name.trim().toLowerCase());
+	function rosterMatch(name: string): RosterMatch {
+		return rosterMembers.get(name.trim().toLowerCase()) ?? {};
 	}
 
 	onMount(async () => {
@@ -60,9 +62,11 @@
 				const teams = await rosterRes.json();
 				for (const team of teams ?? []) {
 					for (const member of team.members ?? []) {
-						if (member.photoUrl) {
-							rosterPhotos.set(member.name.trim().toLowerCase(), member.photoUrl);
-						}
+						const key = member.slug || member.id;
+						rosterMembers.set(member.name.trim().toLowerCase(), {
+							photoUrl: member.photoUrl || undefined,
+							href: key ? `/team/${key}` : undefined
+						});
 					}
 				}
 			}
@@ -130,11 +134,6 @@
 								{project.requirements.length} REQUIREMENT{project.requirements.length === 1 ? "" : "S"}
 							</span>
 						{/if}
-						{#if project.teamMembers?.length}
-							<span class="arc-btn-ghost pointer-events-none">
-								{project.teamMembers.length} TEAM MEMBER{project.teamMembers.length === 1 ? "" : "S"}
-							</span>
-						{/if}
 					</div>
 				</section>
 
@@ -153,11 +152,15 @@
 								<div class="mt-4 flex flex-col gap-3">
 									{#each project.teamMembers as entry}
 										{@const parsed = parseMember(entry)}
-										{@const photo = memberPhoto(parsed.name)}
-										<div class="flex items-center gap-3">
-											{#if photo}
+										{@const match = rosterMatch(parsed.name)}
+										<svelte:element
+											this={match.href ? "a" : "div"}
+											href={match.href}
+											class="flex items-center gap-3 no-underline {match.href ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}"
+										>
+											{#if match.photoUrl}
 												<img
-													src={photo}
+													src={match.photoUrl}
 													alt={parsed.name}
 													class="h-10 w-10 flex-shrink-0 rounded-full border border-[var(--arc-line)] object-cover"
 												/>
@@ -169,12 +172,12 @@
 												</div>
 											{/if}
 											<div class="min-w-0">
-												<div class="truncate text-[14px] font-bold">{parsed.name}</div>
+												<div class="truncate text-[14px] font-bold text-[var(--arc-ink)]">{parsed.name}</div>
 												{#if parsed.role}
 													<div class="truncate text-[12px] text-[var(--arc-muted)]">{parsed.role}</div>
 												{/if}
 											</div>
-										</div>
+										</svelte:element>
 									{/each}
 								</div>
 							</section>

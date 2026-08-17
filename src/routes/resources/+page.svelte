@@ -28,7 +28,7 @@
 					<tbody>
 						{#each group.links as link}
 							<tr>
-								<td class="font-bold whitespace-nowrap">{link.title}</td>
+								<td class="font-bold truncate">{link.title}</td>
 								<td>{link.description}</td>
 								<td>
 									<a
@@ -72,7 +72,7 @@
 								<td class="font-bold">{file.name}</td>
 								<td>{file.description}</td>
 								{#if hasSizes}
-									<td class="whitespace-nowrap">{file.size ?? "-"}</td>
+									<td class="truncate">{file.size ?? "-"}</td>
 								{/if}
 								<td>
 									<div class="flex flex-wrap items-center gap-2">

@@ -20,10 +20,31 @@
 		teamName?: string;
 	};
 
+	type MemberProject = {
+		id: string;
+		slug?: string;
+		name: string;
+		description?: string;
+		repoUrl?: string;
+		images?: string[];
+		external?: boolean;
+		externalUrl?: string;
+	};
+
 	let { data }: { data: { slug: string } } = $props();
 
 	let member = $state<MemberDetail | null>(null);
+	let memberProjects = $state<MemberProject[]>([]);
 	let loading = $state(true);
+
+	function stripHtml(html: string): string {
+		return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+	}
+
+	function projectMemberName(entry: string): string {
+		const sep = entry.indexOf(" — ");
+		return sep === -1 ? entry : entry.slice(0, sep);
+	}
 
 	const linkIcons: Record<string, string> = {
 		linkedin: "mdi:linkedin",
@@ -51,9 +72,24 @@
 			}
 		} catch (e) {
 			console.error("Error fetching team member:", e);
-		} finally {
-			loading = false;
 		}
+
+		if (member) {
+			try {
+				const projectsRes = await fetch(`${apiRoot}/public/club/projects`, { cache: "no-store" });
+				if (projectsRes.ok) {
+					const projects = await projectsRes.json();
+					const name = member.name.trim().toLowerCase();
+					memberProjects = (projects ?? []).filter((p: any) =>
+						(p.teamMembers ?? []).some((entry: string) => projectMemberName(entry).trim().toLowerCase() === name)
+					);
+				}
+			} catch (e) {
+				console.error("Error fetching projects:", e);
+			}
+		}
+
+		loading = false;
 	});
 </script>
 
@@ -142,6 +178,52 @@
 					<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 						<h2 class="arc-h2">ABOUT</h2>
 						<div class="arc-body mt-4">{@html member.bio}</div>
+					</section>
+				{/if}
+
+				{#if memberProjects.length > 0}
+					<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+						<h2 class="arc-h2">PROJECTS</h2>
+						<div class="mt-4 flex flex-col gap-3">
+							{#each memberProjects as project}
+								<a
+									href={project.external && project.externalUrl ? project.externalUrl : `/projects/${project.slug || project.id}`}
+									target={project.external && project.externalUrl ? "_blank" : undefined}
+									rel={project.external && project.externalUrl ? "noopener noreferrer" : undefined}
+									class="flex w-full items-stretch border border-[var(--arc-line)] bg-[var(--arc-fill)] no-underline hover:border-[var(--arc-accent)]"
+								>
+									{#if project.images?.length}
+										<img
+											src={project.images[0]}
+											alt={project.name}
+											class="w-24 flex-shrink-0 self-stretch object-cover sm:w-32"
+										/>
+									{:else}
+										<div
+											class="flex w-24 flex-shrink-0 items-center justify-center self-stretch bg-[var(--arc-surface)] sm:w-32"
+										>
+											<Icon icon="mdi:code-braces" class="text-2xl text-[var(--arc-line)]" />
+										</div>
+									{/if}
+									<div class="flex min-w-0 flex-1 items-center gap-4 p-4 sm:p-5">
+										<div class="min-w-0 flex-1">
+											<div class="flex flex-wrap items-center gap-2">
+												<div class="text-[16px] font-bold text-[var(--arc-ink)]">{project.name.toUpperCase()}</div>
+												{#if project.external}
+													<Icon icon="mdi:open-in-new" class="text-[var(--arc-muted)]" />
+												{/if}
+											</div>
+											{#if project.description}
+												<p class="arc-note mt-1 line-clamp-2">{stripHtml(project.description)}</p>
+											{/if}
+										</div>
+										{#if project.repoUrl}
+											<Icon icon="mdi:github" class="hidden flex-shrink-0 text-2xl text-[var(--arc-muted)] sm:block" />
+										{/if}
+									</div>
+								</a>
+							{/each}
+						</div>
 					</section>
 				{/if}
 
