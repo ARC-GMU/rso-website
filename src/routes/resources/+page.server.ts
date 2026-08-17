@@ -1,5 +1,7 @@
 import type { PageServerLoad } from './$types';
 
+export const prerender = false;
+
 type PublicLink = {
 	title: string;
 	description: string;
