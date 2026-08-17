@@ -7,22 +7,13 @@
 		apiRoot,
 		discordUrl,
 		emptyContent,
-		githubUrl,
-		instagramUrl,
-		linkedinUrl,
 		loadClubContent,
 		mason360Url,
-		youtubeUrl,
+		socialColor,
+		socialIcon,
+		socialLabel,
 		type ClubContent
 	} from "$lib/theme/content";
-
-	const socialLinks = [
-		{ label: "INSTAGRAM", url: instagramUrl, icon: "mdi:instagram", color: "var(--arc-instagram)" },
-		{ label: "LINKEDIN", url: linkedinUrl, icon: "mdi:linkedin", color: "var(--arc-linkedin)" },
-		{ label: "YOUTUBE", url: youtubeUrl, icon: "mdi:youtube", color: "var(--arc-youtube)" },
-		{ label: "DISCORD", url: discordUrl, icon: "mdi:discord", color: "var(--arc-discord)" },
-		{ label: "GITHUB", url: githubUrl, icon: "mdi:github", color: "var(--arc-ink)" }
-	];
 
 	type ClubEvent = {
 		id: string;
@@ -127,16 +118,16 @@
 			>
 				<div class="arc-label">FIND US</div>
 				<div class="mt-3 flex flex-wrap gap-x-5 gap-y-2">
-					{#each socialLinks as social}
+					{#each content.socialLinks as social}
 						<a
 							href={social.url}
 							target="_blank"
 							rel="noopener noreferrer"
 							class="flex items-center gap-2.5 text-[15px] font-bold tracking-[0.06em] no-underline hover:underline"
-							style="color: {social.color}"
+							style="color: {socialColor(social)}"
 						>
-							<Icon icon={social.icon} class="text-lg" />
-							{social.label}
+							<Icon icon={socialIcon(social)} class="text-lg" />
+							{socialLabel(social).toUpperCase()}
 						</a>
 					{/each}
 				</div>

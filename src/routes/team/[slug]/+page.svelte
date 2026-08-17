@@ -125,7 +125,7 @@
 										rel="noopener noreferrer"
 										class="arc-btn-ghost"
 									>
-										<Icon icon={linkIcon(link)} class="inline-block align-text-bottom" />
+										<Icon icon={linkIcon(link)} class="inline-block align-text-bottom text-lg mr-1" />
 										{linkLabel(link).toUpperCase()}
 									</a>
 								{/if}

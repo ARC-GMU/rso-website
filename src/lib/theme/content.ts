@@ -17,6 +17,8 @@ export type Project = {
 	externalUrl?: string;
 };
 
+export type SocialLink = { type: string; url: string; icon?: string; label?: string };
+
 export type ClubContent = {
 	focusStatement: string;
 	missionStatement: string;
@@ -24,16 +26,13 @@ export type ClubContent = {
 	organization: string;
 	location: string;
 	schedule: ScheduleEntry[];
+	socialLinks: SocialLink[];
 	projects: Project[];
 };
 
 export const apiRoot = "https://manage.autonomousrobotics.club/api";
 
 export const discordUrl = "https://discord.gg/WfKAbJpZFX";
-export const githubUrl = "https://github.com/ARC-GMU";
-export const instagramUrl = "https://www.instagram.com/arc.gmu/";
-export const linkedinUrl = "https://www.linkedin.com/company/arcgmu/";
-export const youtubeUrl = "https://www.youtube.com/@arc-gmu";
 export const mason360Url = "https://mason360.gmu.edu/ARC/club_signup";
 
 export const navLinks = [
@@ -52,8 +51,38 @@ export const emptyContent: ClubContent = {
 	organization: "Autonomous Robotics Club",
 	location: "",
 	schedule: [],
+	socialLinks: [],
 	projects: []
 };
+
+const socialIcons: Record<string, string> = {
+	instagram: "mdi:instagram",
+	linkedin: "mdi:linkedin",
+	youtube: "mdi:youtube",
+	discord: "mdi:discord",
+	github: "mdi:github"
+};
+
+const socialColorVars: Record<string, string> = {
+	instagram: "var(--arc-instagram)",
+	linkedin: "var(--arc-linkedin)",
+	youtube: "var(--arc-youtube)",
+	discord: "var(--arc-discord)"
+};
+
+export function socialIcon(link: SocialLink): string {
+	if (link.type === "custom") return link.icon || "mdi:link-variant";
+	return socialIcons[link.type] || "mdi:link-variant";
+}
+
+export function socialLabel(link: SocialLink): string {
+	if (link.type === "custom") return link.label || "Link";
+	return link.type.charAt(0).toUpperCase() + link.type.slice(1);
+}
+
+export function socialColor(link: SocialLink): string {
+	return socialColorVars[link.type] || "var(--arc-ink)";
+}
 
 async function fetchJson(path: string) {
 	const res = await fetch(`${apiRoot}${path}`, { cache: "no-store" });
@@ -75,6 +104,7 @@ export async function loadClubContent(): Promise<ClubContent> {
 			organization: about?.organization || emptyContent.organization,
 			location: about?.location ?? "",
 			schedule: about?.schedule ?? [],
+			socialLinks: about?.socialLinks ?? [],
 			projects: projects ?? []
 		};
 	} catch (e) {

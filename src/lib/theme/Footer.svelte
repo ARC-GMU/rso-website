@@ -1,26 +1,25 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Icon from "@iconify/svelte";
-	import {
-		discordUrl,
-		githubUrl,
-		instagramUrl,
-		linkedinUrl,
-		youtubeUrl
-	} from "$lib/theme/content";
+	import { apiRoot, socialIcon, socialLabel, type SocialLink } from "$lib/theme/content";
 
-	const socialLinks = [
-		{ label: "Instagram", url: instagramUrl, icon: "mdi:instagram" },
-		{ label: "LinkedIn", url: linkedinUrl, icon: "mdi:linkedin" },
-		{ label: "YouTube", url: youtubeUrl, icon: "mdi:youtube" },
-		{ label: "Discord", url: discordUrl, icon: "mdi:discord" },
-		{ label: "GitHub", url: githubUrl, icon: "mdi:github" }
-	];
-
+	let socialLinks = $state<SocialLink[]>([]);
 	let darkMode = $state(false);
 
 	onMount(() => {
 		darkMode = document.documentElement.dataset.theme === "dark";
+
+		(async () => {
+			try {
+				const res = await fetch(`${apiRoot}/public/club/about`, { cache: "no-store" });
+				if (res.ok) {
+					const data = await res.json();
+					socialLinks = data.socialLinks ?? [];
+				}
+			} catch (e) {
+				console.error("Error fetching social links:", e);
+			}
+		})();
 	});
 
 	function toggleDarkMode() {
@@ -55,11 +54,11 @@
 						href={social.url}
 						target="_blank"
 						rel="noopener noreferrer"
-						aria-label={social.label}
-						title={social.label}
+						aria-label={socialLabel(social)}
+						title={socialLabel(social)}
 						class="flex h-10 w-10 items-center justify-center border border-[var(--arc-line)] text-[var(--arc-ink)] no-underline hover:border-[var(--arc-accent)] hover:text-[var(--arc-accent)]"
 					>
-						<Icon icon={social.icon} class="text-lg" />
+						<Icon icon={socialIcon(social)} class="text-lg" />
 					</a>
 				{/each}
 			</div>
