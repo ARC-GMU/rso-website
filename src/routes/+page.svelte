@@ -88,18 +88,12 @@
 				/>
 			</section>
 
-			<div
-				class="bg-[var(--arc-surface)] px-6 py-5 {content.schedule.length > 0
-					? 'md:col-span-2'
-					: 'md:col-span-3'}"
-			>
+			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
 				<div class="arc-label">LOCATION</div>
 				<div class="mt-2 text-[15px] font-medium">{content.location}</div>
-			</div>
 
-			{#if content.schedule.length > 0}
-				<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
-					<div class="arc-label">MEETING TIMES</div>
+				{#if content.schedule.length > 0}
+					<div class="arc-label mt-5">MEETING TIMES</div>
 					<div class="mt-2 text-[15px] font-medium">
 						{#each content.schedule as entry}
 							<div class="flex justify-between gap-4 py-1">
@@ -108,14 +102,10 @@
 							</div>
 						{/each}
 					</div>
-				</div>
-			{/if}
+				{/if}
+			</div>
 
-			<div
-				class="bg-[var(--arc-surface)] px-6 py-5 {content.schedule.length > 0
-					? 'md:col-span-2'
-					: 'md:col-span-3'}"
-			>
+			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
 				<div class="arc-label">FIND US</div>
 				<div class="mt-3 flex flex-wrap gap-x-5 gap-y-2">
 					{#each content.socialLinks as social}
