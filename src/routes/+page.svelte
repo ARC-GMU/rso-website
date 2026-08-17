@@ -216,6 +216,22 @@
 					></iframe>
 				</div>
 			</section>
+
+			{#if content.sponsors.length > 0}
+				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+					<h2 class="arc-h2">OUR SPONSORS</h2>
+					<div class="mt-6 flex flex-wrap items-center gap-8">
+						{#each content.sponsors as sponsor}
+							<img
+								src={sponsor.imageUrl}
+								alt={sponsor.name}
+								title={sponsor.name}
+								class="h-14 w-auto max-w-[180px] object-contain"
+							/>
+						{/each}
+					</div>
+				</section>
+			{/if}
 		</div>
 	</main>
 

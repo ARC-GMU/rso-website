@@ -19,6 +19,8 @@ export type Project = {
 
 export type SocialLink = { type: string; url: string; icon?: string; label?: string };
 
+export type Sponsor = { name: string; imageUrl: string };
+
 export type ClubContent = {
 	missionStatement: string;
 	whatWeDo: string;
@@ -26,6 +28,7 @@ export type ClubContent = {
 	location: string;
 	schedule: ScheduleEntry[];
 	socialLinks: SocialLink[];
+	sponsors: Sponsor[];
 	projects: Project[];
 };
 
@@ -50,6 +53,7 @@ export const emptyContent: ClubContent = {
 	location: "",
 	schedule: [],
 	socialLinks: [],
+	sponsors: [],
 	projects: []
 };
 
@@ -102,6 +106,7 @@ export async function loadClubContent(): Promise<ClubContent> {
 			location: about?.location ?? "",
 			schedule: about?.schedule ?? [],
 			socialLinks: about?.socialLinks ?? [],
+			sponsors: about?.sponsors ?? [],
 			projects: projects ?? []
 		};
 	} catch (e) {
