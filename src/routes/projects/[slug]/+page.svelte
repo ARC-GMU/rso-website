@@ -140,7 +140,7 @@
 				{#if project.description}
 					<section class="bg-[var(--arc-surface)] p-8 {project.teamMembers?.length || project.requirements?.length ? 'md:col-span-4' : 'md:col-span-6'}">
 						<h2 class="arc-h2">ABOUT THIS PROJECT</h2>
-						<div class="arc-body mt-4">{@html project.description}</div>
+						<div class="prose prose-sm md:prose-base max-w-none text-[var(--arc-ink-2)] mt-4">{@html project.description}</div>
 					</section>
 				{/if}
 
