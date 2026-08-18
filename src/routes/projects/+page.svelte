@@ -50,7 +50,7 @@
 							{#each projects as project}
 								<tr>
 									<td class="font-bold truncate">{project.name}</td>
-									<td>{project.description ? stripHtml(project.description) : ""}</td>
+									<td class="truncate">{project.description ? stripHtml(project.description) : ""}</td>
 									<td>
 										{#if project.external && project.externalUrl}
 											<a

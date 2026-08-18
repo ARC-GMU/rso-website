@@ -138,16 +138,16 @@
 				</section>
 
 				{#if project.description}
-					<section class="bg-[var(--arc-surface)] p-8 {project.teamMembers?.length || project.requirements?.length ? 'md:col-span-4' : 'md:col-span-6'}">
+					<section class="bg-[var(--arc-surface)] p-8 {project.teamMembers?.length || project.requirements?.length || project.links?.length ? 'md:col-span-4' : 'md:col-span-6'}">
 						<h2 class="arc-h2">ABOUT THIS PROJECT</h2>
-						<div class="prose prose-sm md:prose-base max-w-none text-[var(--arc-ink-2)] mt-4">{@html project.description}</div>
+						<div class="prose prose-sm md:prose-base max-w-none text-[var(--arc-ink-2)] mt-4 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-0">{@html project.description}</div>
 					</section>
 				{/if}
 
-				{#if project.teamMembers?.length || project.requirements?.length}
+				{#if project.teamMembers?.length || project.requirements?.length || project.links?.length}
 					<div class="flex flex-col gap-[2px] md:col-span-2">
 						{#if project.teamMembers?.length}
-							<section class="bg-[var(--arc-surface)] p-8">
+							<section class="flex-1 bg-[var(--arc-surface)] p-8">
 								<h2 class="arc-h2">TEAM</h2>
 								<div class="mt-4 flex flex-col gap-3">
 									{#each project.teamMembers as entry}
@@ -183,6 +183,19 @@
 							</section>
 						{/if}
 
+						{#if project.links?.length}
+							<section class="flex-1 bg-[var(--arc-surface)] p-8">
+								<h2 class="arc-h2">LINKS</h2>
+								<div class="flex flex-wrap gap-3 mt-4">
+									{#each project.links as link}
+										<a href={link.url} target="_blank" rel="noopener noreferrer" class="arc-btn-ghost">
+											{link.label.toUpperCase()}
+										</a>
+									{/each}
+								</div>
+							</section>
+						{/if}
+
 						{#if project.requirements?.length}
 							<section class="bg-[var(--arc-surface)] p-8">
 								<h2 class="arc-h2">REQUIREMENTS</h2>
@@ -197,19 +210,6 @@
 							</section>
 						{/if}
 					</div>
-				{/if}
-
-				{#if project.links?.length}
-					<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
-						<h2 class="arc-h2">LINKS</h2>
-						<div class="flex flex-wrap gap-3 mt-4">
-							{#each project.links as link}
-								<a href={link.url} target="_blank" rel="noopener noreferrer" class="arc-btn-ghost">
-									{link.label.toUpperCase()}
-								</a>
-							{/each}
-						</div>
-					</section>
 				{/if}
 
 				{#if galleryImages.length}
