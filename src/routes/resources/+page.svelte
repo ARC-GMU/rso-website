@@ -16,7 +16,7 @@
 <Page title="Resources">
 	{#each data.linkGroups as group}
 		<Panel title={group.category.toUpperCase()} flush>
-			<div class="overflow-x-auto">
+			<div class="hidden overflow-x-auto sm:block">
 				<table class="arc-table arc-table-fixed">
 					<thead>
 						<tr>
@@ -45,28 +45,45 @@
 					</tbody>
 				</table>
 			</div>
+
+			<div class="flex flex-col divide-y divide-[var(--arc-line-soft)] sm:hidden">
+				{#each group.links as link}
+					<div class="flex flex-col gap-2 px-5 py-4">
+						<span class="font-bold text-[var(--arc-ink)]">{link.title}</span>
+						{#if link.description}
+							<span class="text-[14px] text-[var(--arc-ink-2)]">{link.description}</span>
+						{/if}
+						<a
+							href={link.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="arc-btn-small mt-1 self-start"
+						>
+							OPEN
+						</a>
+					</div>
+				{/each}
+			</div>
 		</Panel>
 	{/each}
 
 	<Panel title="TEAM FILES AND DOWNLOADS" flush>
-		<div class="overflow-x-auto">
-			<table class="arc-table">
-				<thead>
-					<tr>
-						<th>FILE</th>
-						<th>DESCRIPTION</th>
-						{#if hasSizes}
-							<th>SIZE</th>
-						{/if}
-						<th>ACTIONS</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#if data.files.length === 0}
+		{#if data.files.length === 0}
+			<p class="arc-table-empty">No files available.</p>
+		{:else}
+			<div class="hidden overflow-x-auto sm:block">
+				<table class="arc-table">
+					<thead>
 						<tr>
-							<td colspan="4" class="arc-table-empty">No files available.</td>
+							<th>FILE</th>
+							<th>DESCRIPTION</th>
+							{#if hasSizes}
+								<th>SIZE</th>
+							{/if}
+							<th>ACTIONS</th>
 						</tr>
-					{:else}
+					</thead>
+					<tbody>
 						{#each data.files as file}
 							<tr>
 								<td class="font-bold">{file.name}</td>
@@ -84,9 +101,29 @@
 								</td>
 							</tr>
 						{/each}
-					{/if}
-				</tbody>
-			</table>
-		</div>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="flex flex-col divide-y divide-[var(--arc-line-soft)] sm:hidden">
+				{#each data.files as file}
+					<div class="flex flex-col gap-2 px-5 py-4">
+						<span class="font-bold text-[var(--arc-ink)]">{file.name}</span>
+						{#if file.description}
+							<span class="text-[14px] text-[var(--arc-ink-2)]">{file.description}</span>
+						{/if}
+						{#if hasSizes && file.size}
+							<span class="text-[12px] text-[var(--arc-muted-2)]">{file.size}</span>
+						{/if}
+						<div class="mt-1 flex flex-wrap items-center gap-2">
+							{#if isPdf(file.src)}
+								<PdfViewer src={file.src} title={file.name} />
+							{/if}
+							<a href={file.src} download class="arc-btn-small">DOWNLOAD</a>
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/if}
 	</Panel>
 </Page>
