@@ -7,17 +7,18 @@
 
 	type MemberLink = { type: string; url: string; icon?: string; label?: string };
 
+	type Membership = { teamId: string; teamName: string; role: string };
+
 	type MemberDetail = {
 		id: string;
 		name: string;
 		slug: string;
-		role: string;
 		major?: string;
 		bio?: string;
 		contact?: string;
 		photoUrl?: string;
 		links?: MemberLink[];
-		teamName?: string;
+		memberships?: Membership[];
 	};
 
 	type MemberProject = {
@@ -76,10 +77,14 @@
 		}
 	});
 
+	function membershipLabel(m: Membership): string {
+		return m.role ? `${m.role} — ${m.teamName}` : m.teamName;
+	}
+
 	let metaDescription = $derived(
 		member.bio
 			? stripHtml(member.bio).slice(0, 200)
-			: [member.role, member.teamName].filter(Boolean).join(" / ") ||
+			: (member.memberships ?? []).map(membershipLabel).join(", ") ||
 					`${member.name} — Autonomous Robotics Club.`
 	);
 </script>
@@ -122,11 +127,12 @@
 					{/if}
 					<div>
 						<h1 class="arc-h1">{member.name.toUpperCase()}</h1>
-						{#if member.role}
-							<div class="arc-label mt-2 text-sm">{member.role}</div>
-						{/if}
-						{#if member.teamName}
-							<div class="arc-note mt-1">{member.teamName}</div>
+						{#if member.memberships?.length}
+							<div class="mt-2 flex flex-col gap-1 sm:items-start">
+								{#each member.memberships as m}
+									<div class="arc-label text-sm">{membershipLabel(m)}</div>
+								{/each}
+							</div>
 						{/if}
 						{#if member.major}
 							<div class="arc-note mt-1">{member.major}</div>
