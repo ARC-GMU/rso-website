@@ -82,7 +82,7 @@
 				</div>
 
 				<img
-					src="/logo.png"
+					src="/logos/logooo.png"
 					alt="ARC logo"
 					class="h-40 w-auto shrink-0 object-contain md:h-60"
 				/>
@@ -228,6 +228,38 @@
 								title={sponsor.name}
 								class="h-24 w-auto max-w-[280px] object-contain"
 							/>
+						{/each}
+					</div>
+				</section>
+			{/if}
+
+			{#if content.partners.length > 0}
+				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+					<h2 class="arc-h2">OUR PARTNERS</h2>
+					<div class="mt-6 flex flex-wrap items-center gap-10">
+						{#each content.partners as partner}
+							{#if partner.url}
+								<a
+									href={partner.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									title={partner.name}
+									class="block"
+								>
+									<img
+										src={partner.imageUrl}
+										alt={partner.name}
+										class="h-24 w-auto max-w-[280px] object-contain transition-opacity hover:opacity-80"
+									/>
+								</a>
+							{:else}
+								<img
+									src={partner.imageUrl}
+									alt={partner.name}
+									title={partner.name}
+									class="h-24 w-auto max-w-[280px] object-contain"
+								/>
+							{/if}
 						{/each}
 					</div>
 				</section>
