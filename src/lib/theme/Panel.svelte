@@ -4,11 +4,13 @@
 	let {
 		title = "",
 		flush = false,
+		padding = "p-6",
 		action,
 		children
 	}: {
 		title?: string;
 		flush?: boolean;
+		padding?: string;
 		action?: Snippet;
 		children: Snippet;
 	} = $props();
@@ -24,7 +26,7 @@
 		</div>
 	{/if}
 
-	<div class={flush ? "" : "p-6"}>
+	<div class={flush ? "" : padding}>
 		{@render children()}
 	</div>
 </section>

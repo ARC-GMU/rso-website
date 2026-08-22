@@ -50,22 +50,20 @@
 </script>
 
 {#snippet eventTable(events: ClubEvent[], emptyText: string)}
-	<div class="overflow-x-auto">
-		<table class="arc-table arc-table-fixed">
-			<thead>
-				<tr>
-					<th class="w-[25%]">DATE</th>
-					<th class="w-[30%]">EVENT</th>
-					<th class="w-[25%]">LOCATION</th>
-					<th class="w-[20%]">DETAILS</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#if events.length === 0}
+	{#if events.length === 0}
+		<p class="arc-table-empty">{emptyText}</p>
+	{:else}
+		<div class="hidden overflow-x-auto sm:block">
+			<table class="arc-table arc-table-fixed">
+				<thead>
 					<tr>
-						<td colspan="4" class="arc-table-empty">{emptyText}</td>
+						<th class="w-[25%]">DATE</th>
+						<th class="w-[30%]">EVENT</th>
+						<th class="w-[25%]">LOCATION</th>
+						<th class="w-[20%]">DETAILS</th>
 					</tr>
-				{:else}
+				</thead>
+				<tbody>
 					{#each events as event}
 						<tr>
 							<td>
@@ -81,10 +79,26 @@
 							</td>
 						</tr>
 					{/each}
-				{/if}
-			</tbody>
-		</table>
-	</div>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="flex flex-col divide-y divide-[var(--arc-line-soft)] sm:hidden">
+			{#each events as event}
+				<a
+					href="/events/{event.id}"
+					class="flex flex-col gap-1 px-5 py-4 no-underline hover:bg-[var(--arc-fill)]"
+				>
+					<span class="font-bold text-[var(--arc-ink)]">{formatDate(event.date)}</span>
+					<span class="text-[12px] text-[var(--arc-muted-2)]">{event.timeRange}</span>
+					<span class="mt-1 font-medium text-[var(--arc-ink-2)]">{event.title}</span>
+					{#if event.location}
+						<span class="text-[13px] text-[var(--arc-muted)]">{event.location}</span>
+					{/if}
+				</a>
+			{/each}
+		</div>
+	{/if}
 {/snippet}
 
 <Page title="Events">
@@ -112,7 +126,7 @@
 			{@render eventTable(upcoming, "No upcoming events scheduled.")}
 		</Panel>
 
-		<Panel title="TEAM CALENDAR">
+		<Panel title="TEAM CALENDAR" padding="p-0 sm:p-6">
 			{#snippet action()}
 				<a
 					href="https://calendar.google.com/calendar/render?cid={calendarId}"
@@ -127,7 +141,13 @@
 			<iframe
 				src="https://calendar.google.com/calendar/embed?src={calendarId}&ctz=America%2FNew_York"
 				title="Autonomous Robotics Club calendar"
-				class="h-[650px] w-full border border-[var(--arc-line)]"
+				class="hidden h-[650px] w-full border border-[var(--arc-line)] sm:block"
+				scrolling="no"
+			></iframe>
+			<iframe
+				src="https://calendar.google.com/calendar/embed?src={calendarId}&ctz=America%2FNew_York&mode=AGENDA"
+				title="Autonomous Robotics Club calendar (agenda view)"
+				class="block h-[650px] w-full border border-[var(--arc-line)] sm:hidden"
 				scrolling="no"
 			></iframe>
 		</Panel>
