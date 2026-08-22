@@ -68,7 +68,7 @@
     min-height: 1em;
 }
 
-.prose .arc-embed-youtube {
+.prose div[data-youtube-video] {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -76,7 +76,7 @@
     border: 1px solid var(--arc-line);
 }
 
-.prose .arc-embed-youtube iframe {
+.prose div[data-youtube-video] iframe {
     position: absolute;
     inset: 0;
     width: 100%;
