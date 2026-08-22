@@ -47,7 +47,7 @@ To run the project locally, you will need to have [Bun](https://bun.sh/) install
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/RDC-GMU/website.git
+   git clone https://github.com/ARC-GMU/rso-website.git
    ```
 
 2. **Install dependencies:**
