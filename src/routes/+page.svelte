@@ -236,29 +236,31 @@
 			{#if content.partners.length > 0}
 				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 					<h2 class="arc-h2">OUR PARTNERS</h2>
-					<div class="mt-6 flex flex-wrap items-center gap-10">
+					<div class="mt-6 flex flex-wrap items-start gap-10">
 						{#each content.partners as partner}
 							{#if partner.url}
 								<a
 									href={partner.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									title={partner.name}
-									class="block"
+									class="flex flex-col items-center gap-2 no-underline"
 								>
 									<img
 										src={partner.imageUrl}
 										alt={partner.name}
-										class="h-24 w-auto max-w-[280px] object-contain transition-opacity hover:opacity-80"
+										class="h-32 w-auto max-w-[320px] object-contain transition-opacity hover:opacity-80"
 									/>
+									<span class="arc-label text-center font-bold">{partner.name}</span>
 								</a>
 							{:else}
-								<img
-									src={partner.imageUrl}
-									alt={partner.name}
-									title={partner.name}
-									class="h-24 w-auto max-w-[280px] object-contain"
-								/>
+								<div class="flex flex-col items-center gap-2">
+									<img
+										src={partner.imageUrl}
+										alt={partner.name}
+										class="h-32 w-auto max-w-[320px] object-contain"
+									/>
+									<span class="arc-label text-center font-bold">{partner.name}</span>
+								</div>
 							{/if}
 						{/each}
 					</div>
