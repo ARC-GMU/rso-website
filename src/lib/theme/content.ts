@@ -38,7 +38,7 @@ export type ClubContent = {
 
 export const apiRoot = "https://manage.autonomousrobotics.club/api";
 
-export const discordUrl = "https://discord.gg/WfKAbJpZFX";
+export const discordUrl = "https://discord.gg/zn93yRNZGb";
 export const mason360Url = "https://mason360.gmu.edu/ARC/club_signup";
 
 export const navLinks = [

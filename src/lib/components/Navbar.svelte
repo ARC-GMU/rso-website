@@ -66,7 +66,7 @@
     >
 
     <a
-        href="https://discord.gg/WfKAbJpZFX"
+        href="https://discord.gg/zn93yRNZGb"
         target="_blank"
         rel="noopener noreferrer"
         class="lg:ml-auto px-5 py-2.5 flex-shrink-0 no-underline font-bold text-sm lg:border-l border-r border-black text-[#5865F2] hover:bg-[#ddd] bg-[#eee] flex items-center gap-1.5"

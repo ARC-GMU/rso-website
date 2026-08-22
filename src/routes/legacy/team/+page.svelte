@@ -54,7 +54,7 @@
 				<li>Join our Discord server.</li>
 			</ul>
 			<a
-				href="https://discord.gg/WfKAbJpZFX"
+				href="https://discord.gg/zn93yRNZGb"
 				target="_blank"
 				rel="noopener noreferrer"
 				style="display: block; width: 100%; text-decoration: none;"

@@ -34,7 +34,7 @@
 				><Icon icon="mdi:youtube" class="text-base" /> YOUTUBE</a
 			>
 			<a
-				href="https://discord.gg/WfKAbJpZFX"
+				href="https://discord.gg/zn93yRNZGb"
 				target="_blank"
 				rel="noopener noreferrer"
 				class="underline text-blue-600 hover:text-purple-800 flex items-center gap-1.5"
