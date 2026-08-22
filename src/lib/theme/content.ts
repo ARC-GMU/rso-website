@@ -15,11 +15,14 @@ export type Project = {
 	videos?: string[];
 	external?: boolean;
 	externalUrl?: string;
+	status?: "active" | "completed";
 };
 
 export type SocialLink = { type: string; url: string; icon?: string; label?: string };
 
 export type Sponsor = { name: string; imageUrl: string };
+
+export type Partner = { name: string; imageUrl: string; url?: string };
 
 export type ClubContent = {
 	missionStatement: string;
@@ -29,6 +32,7 @@ export type ClubContent = {
 	schedule: ScheduleEntry[];
 	socialLinks: SocialLink[];
 	sponsors: Sponsor[];
+	partners: Partner[];
 	projects: Project[];
 };
 
@@ -54,6 +58,7 @@ export const emptyContent: ClubContent = {
 	schedule: [],
 	socialLinks: [],
 	sponsors: [],
+	partners: [],
 	projects: []
 };
 
@@ -107,6 +112,7 @@ export async function loadClubContent(): Promise<ClubContent> {
 			schedule: about?.schedule ?? [],
 			socialLinks: about?.socialLinks ?? [],
 			sponsors: about?.sponsors ?? [],
+			partners: about?.partners ?? [],
 			projects: projects ?? []
 		};
 	} catch (e) {
