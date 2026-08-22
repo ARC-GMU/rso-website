@@ -22,6 +22,25 @@ This project is built using modern edge technologies optimized for static workfl
 - **Icons**: [@iconify/svelte](https://iconify.design/) providing scalable vector illustrations without heavy payload sizes.
 - **Runtime**: [Bun](https://bun.sh/) for ultra-fast dependency management and compilation speeds.
 
+## Logos
+
+Brand assets live in `static/logos/`.
+
+**Club logo** — homepage hero, favicon fallback, `og:image`, legacy header
+
+<img src="static/logos/logooo.png" width="160" alt="Club logo" />
+
+**ARC wordmark** — navbar, light mode (`arcc.png`) and dark mode (`arcc_light.png`)
+
+<img src="static/logos/arcc.png" width="220" alt="ARC wordmark, light mode" />
+<img src="static/logos/arcc_light.png" width="220" alt="ARC wordmark, dark mode" style="background:#15181a;" />
+
+The navbar wordmark swap between the two is handled purely with CSS in `src/lib/theme/Header.svelte`, keyed off the `data-theme` attribute set on `<html>` (see `src/app.html`).
+
+**Favicon** — `favicon.png`, available but not currently wired to `<link rel="icon">`
+
+<img src="static/logos/favicon.png" width="80" alt="Favicon" />
+
 ## Development Setup
 
 To run the project locally, you will need to have [Bun](https://bun.sh/) installed on your machine.

@@ -25,10 +25,10 @@
 		property="og:description"
 		content="Official website for the Autonomous Robotics Club (ARC) team."
 	/>
-	<meta property="og:image" content="/logo.png" />
+	<meta property="og:image" content="/logos/logooo.png" />
 	<meta property="og:url" content="https://rdc-gmu.github.io/" />
 	<meta name="twitter:card" content="summary" />
-	<link rel="icon" href="/logo.png" />
+	<link rel="icon" href="/logos/logooo.png" />
 	<script
 		defer
 		src="https://umami.sirblob.co/script.js"

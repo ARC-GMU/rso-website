@@ -10,16 +10,36 @@
 	}
 </script>
 
+<style>
+	.arc-logo-dark {
+		display: none;
+	}
+	:global(:root[data-theme="dark"]) .arc-logo-light {
+		display: none;
+	}
+	:global(:root[data-theme="dark"]) .arc-logo-dark {
+		display: block;
+	}
+</style>
+
 <header class="border-b border-[var(--arc-line)] bg-[var(--arc-chrome)]">
 	<div class="mx-auto max-w-[1120px] px-6">
 		<div class="flex items-center gap-4 py-4">
 			<a
 				href="/"
-				class="shrink-0 text-[15px] font-bold tracking-[0.06em] text-[var(--arc-ink)] no-underline"
+				class="shrink-0 no-underline"
 				onclick={() => (menuOpen = false)}
 			>
-				<span class="hidden sm:inline">AUTONOMOUS ROBOTICS CLUB (ARC)</span>
-				<span class="sm:hidden">ARC</span>
+				<img
+					src="/logos/arcc.png"
+					alt="Autonomous Robotics Club (ARC)"
+					class="arc-logo-light h-8 w-auto"
+				/>
+				<img
+					src="/logos/arcc_light.png"
+					alt="Autonomous Robotics Club (ARC)"
+					class="arc-logo-dark h-8 w-auto"
+				/>
 			</a>
 
 			<nav class="ml-auto hidden items-center gap-7 lg:flex">

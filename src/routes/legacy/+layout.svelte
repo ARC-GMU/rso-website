@@ -15,7 +15,7 @@
 	>
 		<div class="flex items-center gap-[15px]">
 			<img
-				src="/logo.png"
+				src="/logos/logooo.png"
 				alt="ARC Logo"
 				class="h-16 md:h-24 rounded-md w-auto object-contain"
 			/>
