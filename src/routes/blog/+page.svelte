@@ -23,13 +23,13 @@
 	{#if data.posts && data.posts.length > 0}
 		<div class="flex flex-col gap-3">
 			{#each data.posts as post}
-				<article class="arc-panel flex flex-row">
+				<article class="arc-panel flex flex-col sm:flex-row">
 					{#if post.coverImageUrl}
 						<a
 							href={postHref(post)}
 							target={post.externalUrl ? "_blank" : undefined}
 							rel="noopener noreferrer"
-							class="block h-auto w-28 shrink-0 overflow-hidden border-r border-[var(--arc-line)] sm:w-36"
+							class="block h-44 w-full shrink-0 overflow-hidden border-b border-[var(--arc-line)] sm:h-auto sm:w-36 sm:border-r sm:border-b-0"
 						>
 							<img
 								src={post.coverImageUrl}
@@ -38,7 +38,7 @@
 							/>
 						</a>
 					{/if}
-					<div class="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">
+					<div class="flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 sm:gap-1">
 						<h2 class="arc-h2 text-base">
 							<a
 								href={postHref(post)}
@@ -52,12 +52,12 @@
 						<div class="arc-label">
 							{formatDate(post.publishedAt || post.createdAt)} / {post.author}
 						</div>
-						<p class="arc-note line-clamp-1 text-sm">{post.excerpt || ""}</p>
+						<p class="arc-note line-clamp-2 text-sm sm:line-clamp-1">{post.excerpt || ""}</p>
 						<a
 							href={postHref(post)}
 							target={post.externalUrl ? "_blank" : undefined}
 							rel="noopener noreferrer"
-							class="arc-btn-ghost mt-1 self-start px-3 py-1 text-xs"
+							class="arc-btn-ghost mt-2 w-full text-center px-3 py-1.5 text-xs sm:mt-1 sm:w-auto sm:self-start sm:py-1"
 						>
 							{post.externalUrl ? "READ ON EXTERNAL SITE" : "READ MORE"}
 						</a>
