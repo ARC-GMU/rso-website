@@ -58,6 +58,7 @@ export const discordUrl = "https://discord.gg/zn93yRNZGb";
 export const mason360Url = "https://mason360.gmu.edu/ARC/club_signup";
 
 export const navLinks = [
+	{ label: "About", href: "/about" },
 	{ label: "Projects", href: "/projects" },
 	{ label: "Team", href: "/team" },
 	{ label: "Events", href: "/events" },
