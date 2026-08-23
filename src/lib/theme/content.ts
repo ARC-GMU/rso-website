@@ -22,7 +22,23 @@ export type SocialLink = { type: string; url: string; icon?: string; label?: str
 
 export type Sponsor = { name: string; imageUrl: string };
 
-export type Partner = { name: string; imageUrl: string; url?: string };
+export type PartnerContact = {
+	name: string;
+	role?: string;
+	contact?: string;
+	photoUrl?: string;
+	socialLinks?: SocialLink[];
+};
+
+export type Partner = {
+	name: string;
+	slug?: string;
+	imageUrl: string;
+	url?: string;
+	bio?: string;
+	socialLinks?: SocialLink[];
+	contacts?: PartnerContact[];
+};
 
 export type ClubContent = {
 	missionStatement: string;

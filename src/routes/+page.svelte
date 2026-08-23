@@ -238,11 +238,9 @@
 					<h2 class="arc-h2">OUR PARTNERS</h2>
 					<div class="mt-6 flex flex-wrap items-start gap-10">
 						{#each content.partners as partner}
-							{#if partner.url}
+							{#if partner.slug}
 								<a
-									href={partner.url}
-									target="_blank"
-									rel="noopener noreferrer"
+									href="/partner/{partner.slug}"
 									class="flex flex-col items-center gap-2 no-underline"
 								>
 									<img
