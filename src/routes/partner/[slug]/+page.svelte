@@ -109,38 +109,40 @@
 			{#if partner.contacts?.length}
 				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 					<h2 class="arc-h2">PEOPLE TO CONNECT WITH</h2>
-					<div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+					<div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						{#each partner.contacts as person}
 							<div
-								class="flex items-center gap-4 border border-[var(--arc-line)] bg-[var(--arc-fill)] p-4"
+								class="flex w-full min-w-0 flex-col items-center gap-3 border border-[var(--arc-line)] bg-[var(--arc-fill)] p-5 text-center sm:p-6"
 							>
 								{#if person.photoUrl}
 									<img
 										src={person.photoUrl}
 										alt={person.name}
-										class="h-16 w-16 flex-shrink-0 rounded-full border border-[var(--arc-line)] object-cover"
+										class="h-28 w-28 rounded-full border border-[var(--arc-line)] object-cover"
 									/>
 								{:else}
 									<div
-										class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full border border-[var(--arc-line)] bg-[var(--arc-surface)]"
+										class="flex h-28 w-28 items-center justify-center rounded-full border border-[var(--arc-line)] bg-[var(--arc-surface)]"
 									>
-										<Icon icon="mdi:account" class="text-2xl text-[var(--arc-line)]" />
+										<Icon icon="mdi:account" class="h-14 w-14 text-[var(--arc-line)]" />
 									</div>
 								{/if}
-								<div class="min-w-0 flex-1">
-									<div class="truncate text-[15px] font-bold text-[var(--arc-ink)]">{person.name}</div>
+								<div>
+									<div class="arc-h3 text-base text-[var(--arc-ink)]">{person.name}</div>
 									{#if person.role}
-										<div class="truncate text-[13px] text-[var(--arc-muted)]">{person.role}</div>
+										<div class="arc-label mt-1 text-xs">{person.role}</div>
 									{/if}
-									<div class="mt-1.5 flex flex-wrap items-center gap-2">
+								</div>
+								{#if person.contact || person.socialLinks?.length}
+									<div class="flex flex-wrap items-center justify-center gap-1">
 										{#if person.contact}
 											<a
 												href="mailto:{person.contact}"
 												aria-label="Email {person.name}"
 												title={person.contact}
-												class="text-[var(--arc-muted)] hover:text-[var(--arc-accent)]"
+												class="flex h-9 w-9 items-center justify-center text-[var(--arc-muted)] hover:text-[var(--arc-accent)]"
 											>
-												<Icon icon="mdi:email-outline" class="text-lg" />
+												<Icon icon="mdi:email-outline" class="text-xl" />
 											</a>
 										{/if}
 										{#each person.socialLinks ?? [] as link}
@@ -151,14 +153,14 @@
 													rel="noopener noreferrer"
 													aria-label={socialLabel(link)}
 													title={socialLabel(link)}
-													class="text-[var(--arc-muted)] hover:text-[var(--arc-accent)]"
+													class="flex h-9 w-9 items-center justify-center text-[var(--arc-muted)] hover:text-[var(--arc-accent)]"
 												>
-													<Icon icon={socialIcon(link)} class="text-lg" />
+													<Icon icon={socialIcon(link)} class="text-xl" />
 												</a>
 											{/if}
 										{/each}
 									</div>
-								</div>
+								{/if}
 							</div>
 						{/each}
 					</div>
