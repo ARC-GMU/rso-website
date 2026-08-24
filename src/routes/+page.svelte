@@ -220,7 +220,7 @@
 			{#if content.sponsors.length > 0}
 				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 					<h2 class="arc-h2">OUR SPONSORS</h2>
-					<div class="mt-6 flex flex-wrap items-center gap-10">
+					<div class="mt-6 flex flex-wrap items-center justify-center gap-10">
 						{#each content.sponsors as sponsor}
 							<img
 								src={sponsor.imageUrl}
@@ -236,7 +236,7 @@
 			{#if content.partners.length > 0}
 				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 					<h2 class="arc-h2">OUR PARTNERS</h2>
-					<div class="mt-6 flex flex-wrap items-start gap-10">
+					<div class="mt-6 flex flex-wrap items-start justify-center gap-10">
 						{#each content.partners as partner}
 							{#if partner.slug}
 								<a

@@ -109,10 +109,10 @@
 			{#if partner.contacts?.length}
 				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 					<h2 class="arc-h2">PEOPLE TO CONNECT WITH</h2>
-					<div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					<div class="mt-5 flex flex-wrap justify-center gap-4">
 						{#each partner.contacts as person}
 							<div
-								class="flex w-full min-w-0 flex-col items-center gap-3 border border-[var(--arc-line)] bg-[var(--arc-fill)] p-5 text-center sm:p-6"
+								class="flex w-full min-w-0 flex-col items-center gap-3 border border-[var(--arc-line)] bg-[var(--arc-fill)] p-5 text-center sm:w-[calc(50%-8px)] sm:p-6 lg:w-[calc(33.3333%-10.6667px)]"
 							>
 								{#if person.photoUrl}
 									<img

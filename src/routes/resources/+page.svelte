@@ -67,7 +67,7 @@
 		</Panel>
 	{/each}
 
-	<Panel title="TEAM FILES AND DOWNLOADS" flush>
+	<Panel title="FILES" flush>
 		{#if data.files.length === 0}
 			<p class="arc-table-empty">No files available.</p>
 		{:else}
