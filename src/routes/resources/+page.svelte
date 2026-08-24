@@ -67,11 +67,9 @@
 		</Panel>
 	{/each}
 
+	{#if data.files.length > 0}
 	<Panel title="FILES" flush>
-		{#if data.files.length === 0}
-			<p class="arc-table-empty">No files available.</p>
-		{:else}
-			<div class="hidden overflow-x-auto sm:block">
+		<div class="hidden overflow-x-auto sm:block">
 				<table class="arc-table">
 					<thead>
 						<tr>
@@ -124,6 +122,6 @@
 					</div>
 				{/each}
 			</div>
-		{/if}
 	</Panel>
+	{/if}
 </Page>
