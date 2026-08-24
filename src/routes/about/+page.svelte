@@ -14,7 +14,7 @@
 	{#if data.pages && data.pages.length > 0}
 		<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 			{#each data.pages as page}
-				<div class="flex w-full min-w-0 flex-col border border-[var(--arc-line)] bg-[var(--arc-fill)]">
+				<div class="flex w-full min-w-0 flex-col border border-[var(--arc-line)] bg-[var(--arc-surface)]">
 					<div class="flex flex-1 flex-col gap-2 p-5">
 						<div class="arc-h3 text-lg text-[var(--arc-ink)]">{page.title}</div>
 						{#if page.excerpt}
