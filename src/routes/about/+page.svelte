@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Icon from "@iconify/svelte";
 	import Page from "$lib/theme/Page.svelte";
 	import Panel from "$lib/theme/Panel.svelte";
 	import type { PageData } from "./$types";
@@ -16,17 +15,6 @@
 		<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 			{#each data.pages as page}
 				<div class="flex w-full min-w-0 flex-col border border-[var(--arc-line)] bg-[var(--arc-fill)]">
-					{#if page.coverImageUrl}
-						<img
-							src={page.coverImageUrl}
-							alt={page.title}
-							class="h-44 w-full border-b border-[var(--arc-line)] object-cover"
-						/>
-					{:else}
-						<div class="flex h-44 w-full items-center justify-center border-b border-[var(--arc-line)] bg-[var(--arc-surface)]">
-							<Icon icon="mdi:image-outline" class="h-12 w-12 text-[var(--arc-line)]" />
-						</div>
-					{/if}
 					<div class="flex flex-1 flex-col gap-2 p-5">
 						<div class="arc-h3 text-lg text-[var(--arc-ink)]">{page.title}</div>
 						{#if page.excerpt}

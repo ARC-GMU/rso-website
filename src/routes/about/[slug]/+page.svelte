@@ -18,9 +18,6 @@
 <svelte:head>
 	<title>{data.page.title} - Autonomous Robotics Club</title>
 	<meta name="description" content={data.page.excerpt || data.page.title} />
-	{#if data.page.coverImageUrl}
-		<meta property="og:image" content={data.page.coverImageUrl} />
-	{/if}
 </svelte:head>
 
 <div class="arc-page">
@@ -30,16 +27,6 @@
 		<a href="/about" class="arc-link">BACK TO ABOUT</a>
 
 		<article class="arc-panel mt-6">
-			{#if data.page.coverImageUrl}
-				<div class="h-64 w-full overflow-hidden border-b border-[var(--arc-line)] md:h-96">
-					<img
-						src={data.page.coverImageUrl}
-						alt={data.page.title}
-						class="h-full w-full object-cover"
-					/>
-				</div>
-			{/if}
-
 			<div class="p-8 md:p-10">
 				<h1 class="arc-h1">{data.page.title}</h1>
 
