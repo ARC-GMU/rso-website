@@ -1,41 +1,54 @@
 <script lang="ts">
+	import Icon from "@iconify/svelte";
 	import Page from "$lib/theme/Page.svelte";
 	import Panel from "$lib/theme/Panel.svelte";
 	import type { PageData } from "./$types";
 
 	let { data }: { data: PageData } = $props();
 
-	function formatDate(dateString: string) {
-		return new Date(dateString).toLocaleDateString("en-US", {
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-			timeZone: "America/New_York"
-		});
+	function stripHtml(html: string): string {
+		return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 	}
 </script>
 
 <Page title="About">
-	{#if data.about.content}
-		<Panel flush>
-			<div class="prose prose-sm md:prose-base max-w-none p-6 text-[var(--arc-ink-2)]">
-				{@html data.about.content}
-			</div>
+	{#if data.pages && data.pages.length > 0}
+		<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+			{#each data.pages as page}
+				<div class="flex w-full min-w-0 flex-col border border-[var(--arc-line)] bg-[var(--arc-fill)]">
+					{#if page.coverImageUrl}
+						<img
+							src={page.coverImageUrl}
+							alt={page.title}
+							class="h-44 w-full border-b border-[var(--arc-line)] object-cover"
+						/>
+					{:else}
+						<div class="flex h-44 w-full items-center justify-center border-b border-[var(--arc-line)] bg-[var(--arc-surface)]">
+							<Icon icon="mdi:image-outline" class="h-12 w-12 text-[var(--arc-line)]" />
+						</div>
+					{/if}
+					<div class="flex flex-1 flex-col gap-2 p-5">
+						<div class="arc-h3 text-lg text-[var(--arc-ink)]">{page.title}</div>
+						{#if page.excerpt}
+							<p class="arc-note line-clamp-3 flex-1">{stripHtml(page.excerpt)}</p>
+						{/if}
+						<a href={`/about/${page.slug}`} class="arc-btn mt-3 w-full text-center">
+							VIEW DETAILS
+						</a>
+					</div>
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<Panel>
+			<p class="arc-note">About content coming soon.</p>
 		</Panel>
 	{/if}
 
-	{#if data.about.updatedAt}
-		<p class="arc-label">
-			Last updated {formatDate(data.about.updatedAt)}{data.about.author
-				? ` / ${data.about.author}`
-				: ""}
-		</p>
-	{/if}
-
-	{#if data.about.faqs && data.about.faqs.length > 0}
+	{#if data.faqs && data.faqs.length > 0}
 		<Panel title="FAQ" flush>
 			<div class="flex flex-col divide-y divide-[var(--arc-line-soft)]">
-				{#each data.about.faqs as faq}
+				{#each data.faqs as faq}
 					<details class="group px-6 py-4">
 						<summary
 							class="flex cursor-pointer list-none items-center justify-between gap-3 font-bold text-[var(--arc-ink)]"
@@ -50,9 +63,5 @@
 				{/each}
 			</div>
 		</Panel>
-	{/if}
-
-	{#if !data.about.content && (!data.about.faqs || data.about.faqs.length === 0)}
-		<p class="arc-table-empty">About content coming soon.</p>
 	{/if}
 </Page>

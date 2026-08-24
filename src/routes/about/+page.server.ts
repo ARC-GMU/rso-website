@@ -4,23 +4,18 @@ export const prerender = false;
 
 type FAQ = { question: string; answer: string };
 
-type AboutPage = {
-	content: string;
-	faqs: FAQ[];
-	author: string;
-	updatedAt: string;
-};
-
-const emptyAbout: AboutPage = { content: '', faqs: [], author: '', updatedAt: '' };
-
 export const load: PageServerLoad = async ({ fetch }) => {
 	try {
-		const res = await fetch('https://manage.autonomousrobotics.club/api/public/club/about-page');
-		if (!res.ok) return { about: emptyAbout };
-		const data = await res.json();
-		return { about: { ...emptyAbout, ...data } };
+		const [pagesRes, faqRes] = await Promise.all([
+			fetch('https://manage.autonomousrobotics.club/api/public/club/about-pages'),
+			fetch('https://manage.autonomousrobotics.club/api/public/club/about-faq')
+		]);
+		const pages = pagesRes.ok ? await pagesRes.json() : [];
+		const faqData = faqRes.ok ? await faqRes.json() : { faqs: [] };
+
+		return { pages: pages || [], faqs: (faqData.faqs || []) as FAQ[] };
 	} catch (error) {
-		console.error('Error fetching about page:', error);
-		return { about: emptyAbout };
+		console.error('Error fetching about pages:', error);
+		return { pages: [], faqs: [] as FAQ[] };
 	}
 };
