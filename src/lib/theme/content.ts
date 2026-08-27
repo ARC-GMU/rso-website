@@ -10,7 +10,7 @@ export type Project = {
 	repoUrl: string;
 	requirements?: string[];
 	links?: ProjectLink[];
-	teamMembers?: string[];
+	teamMembers?: unknown[];
 	images?: string[];
 	videos?: string[];
 	external?: boolean;

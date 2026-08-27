@@ -4,6 +4,7 @@
 	import Header from "$lib/theme/Header.svelte";
 	import Footer from "$lib/theme/Footer.svelte";
 	import { apiRoot } from "$lib/theme/content";
+	import { parseProjectMember } from "$lib/projectMember";
 
 	type MemberLink = { type: string; url: string; icon?: string; label?: string };
 
@@ -41,10 +42,7 @@
 		return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 	}
 
-	function projectMemberName(entry: string): string {
-		const sep = entry.indexOf(" — ");
-		return sep === -1 ? entry : entry.slice(0, sep);
-	}
+
 
 	const linkIcons: Record<string, string> = {
 		linkedin: "mdi:linkedin",
@@ -69,7 +67,7 @@
 				const projects = await projectsRes.json();
 				const name = member.name.trim().toLowerCase();
 				memberProjects = (projects ?? []).filter((p: any) =>
-					(p.teamMembers ?? []).some((entry: string) => projectMemberName(entry).trim().toLowerCase() === name)
+					(p.teamMembers ?? []).some((entry: unknown) => parseProjectMember(entry).name.toLowerCase() === name)
 				);
 			}
 		} catch (e) {

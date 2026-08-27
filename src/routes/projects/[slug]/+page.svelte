@@ -4,6 +4,7 @@
 	import Header from "$lib/theme/Header.svelte";
 	import Footer from "$lib/theme/Footer.svelte";
 	import { apiRoot } from "$lib/theme/content";
+	import { parseProjectMember } from "$lib/projectMember";
 
 	type ProjectLink = { label: string; url: string };
 
@@ -14,7 +15,7 @@
 		repoUrl?: string;
 		requirements?: string[];
 		links?: ProjectLink[];
-		teamMembers?: string[];
+		teamMembers?: unknown[];
 		images?: string[];
 		videos?: string[];
 		external?: boolean;
@@ -29,12 +30,6 @@
 
 	let rosterMembers = new Map<string, RosterMatch>();
 	let rosterLoaded = $state(false);
-
-	function parseMember(entry: string): { name: string; role: string } {
-		const sep = entry.indexOf(" — ");
-		if (sep === -1) return { name: entry, role: "" };
-		return { name: entry.slice(0, sep), role: entry.slice(sep + 3) };
-	}
 
 	function rosterMatch(name: string): RosterMatch {
 		if (!rosterLoaded) return {};
@@ -138,17 +133,18 @@
 							<h2 class="arc-h2">TEAM</h2>
 							<div class="mt-4 flex flex-col gap-3">
 								{#each project.teamMembers as entry}
-									{@const parsed = parseMember(entry)}
-									{@const match = rosterMatch(parsed.name)}
+									{@const member = parseProjectMember(entry)}
+									{@const match = rosterMatch(member.name)}
+									{@const photoUrl = member.photoUrl || match.photoUrl}
 									<svelte:element
 										this={match.href ? "a" : "div"}
 										href={match.href}
 										class="flex items-center gap-3 no-underline {match.href ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}"
 									>
-										{#if match.photoUrl}
+										{#if photoUrl}
 											<img
-												src={match.photoUrl}
-												alt={parsed.name}
+												src={photoUrl}
+												alt={member.name}
 												class="h-10 w-10 flex-shrink-0 rounded-full border border-[var(--arc-line)] object-cover"
 											/>
 										{:else}
@@ -159,9 +155,9 @@
 											</div>
 										{/if}
 										<div class="min-w-0">
-											<div class="truncate text-[14px] font-bold text-[var(--arc-ink)]">{parsed.name}</div>
-											{#if parsed.role}
-												<div class="truncate text-[12px] text-[var(--arc-muted)]">{parsed.role}</div>
+											<div class="truncate text-[14px] font-bold text-[var(--arc-ink)]">{member.name}</div>
+											{#if member.role}
+												<div class="truncate text-[12px] text-[var(--arc-muted)]">{member.role}</div>
 											{/if}
 										</div>
 									</svelte:element>
