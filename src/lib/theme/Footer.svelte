@@ -47,6 +47,13 @@
 				<div class="mt-2 text-[13px] font-medium text-[var(--arc-muted)]">
 					George Mason University
 				</div>
+				<a
+					href="/account"
+					class="mt-3 inline-flex items-center gap-1.5 text-[12px] font-bold tracking-[0.06em] text-[var(--arc-ink)] no-underline hover:text-[var(--arc-accent)]"
+				>
+					<Icon icon="mdi:account-circle-outline" class="text-base" />
+					MEMBER ACCOUNT
+				</a>
 			</div>
 
 			<div class="flex flex-wrap justify-center gap-3">
