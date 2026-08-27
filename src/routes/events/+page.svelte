@@ -35,7 +35,8 @@
 		}
 	});
 
-	const calendarId = "arc.gmu.team%40gmail.com";
+	const calendarId =
+		"4c826a39964247488f072f2a32faf5716741eaf7fb6aaebe19eae29af306330b%40group.calendar.google.com";
 
 	function formatDate(dateStr: string) {
 		return new Date(dateStr).toLocaleDateString("en-US", {
