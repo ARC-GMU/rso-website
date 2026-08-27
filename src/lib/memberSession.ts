@@ -114,6 +114,30 @@ export async function changePassword(currentPassword: string, newPassword: strin
 	});
 }
 
+export type AttendanceRecord = {
+	id: string;
+	meetingTitle: string;
+	meetingDate: string | null;
+	signedInAt: string;
+};
+
+export async function fetchAttendanceHistory(): Promise<AttendanceRecord[]> {
+	return await send("/public/members/me/attendance");
+}
+
+export type MemberProject = {
+	id: string;
+	name: string;
+	slug: string;
+	status: string;
+	private: boolean;
+	role: string;
+};
+
+export async function fetchMyProjects(): Promise<MemberProject[]> {
+	return await send("/public/members/me/projects");
+}
+
 export async function uploadPhoto(file: File) {
 	const body = new FormData();
 	body.append("file", file);
