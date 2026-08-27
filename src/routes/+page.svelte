@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Icon from "@iconify/svelte";
+	import DecorModel from "$lib/components/DecorModel.svelte";
+	import DroneScan from "$lib/components/DroneScan.svelte";
 	import Header from "$lib/theme/Header.svelte";
 	import Footer from "$lib/theme/Footer.svelte";
 	import {
@@ -53,6 +55,8 @@
 	<title>Autonomous Robotics Club</title>
 </svelte:head>
 
+<DroneScan />
+
 <div class="arc-page">
 	<Header />
 
@@ -88,7 +92,8 @@
 				/>
 			</section>
 
-			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
+			<div class="relative overflow-hidden bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
+				<DecorModel kind="drone" size={155} />
 				<div class="arc-label">LOCATION</div>
 				<div class="mt-2 text-[15px] font-medium">{content.location}</div>
 
@@ -124,10 +129,11 @@
 			</div>
 
 			<section
-				class="bg-[var(--arc-surface)] p-8 {content.missionStatement
+				class="relative overflow-hidden bg-[var(--arc-surface)] p-8 {content.missionStatement
 					? 'md:col-span-2'
 					: 'md:col-span-3'}"
 			>
+				<DecorModel kind="rotor" size={115} />
 				<div class="flex flex-wrap items-baseline justify-between gap-4">
 					<h2 class="arc-h2">UPCOMING EVENTS</h2>
 					<a href="/events" class="arc-link">ALL EVENTS</a>
@@ -157,8 +163,9 @@
 
 			{#if content.missionStatement}
 				<section
-					class="flex flex-col justify-center bg-[var(--arc-surface)] p-8 text-center md:col-span-2"
+					class="relative flex flex-col justify-center overflow-hidden bg-[var(--arc-surface)] p-8 text-center md:col-span-2"
 				>
+					<DecorModel kind="rover" size={125} />
 					<h2 class="arc-h2">MISSION STATEMENT</h2>
 					<p class="arc-body mt-4">{content.missionStatement}</p>
 				</section>
@@ -218,7 +225,8 @@
 			</section>
 
 			{#if content.sponsors.length > 0}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="relative overflow-hidden bg-[var(--arc-surface)] p-8 md:col-span-6">
+					<DecorModel kind="arm" size={135} />
 					<h2 class="arc-h2">OUR SPONSORS</h2>
 					<div class="mt-6 flex flex-wrap items-center justify-center gap-10">
 						{#each content.sponsors as sponsor}
