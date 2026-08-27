@@ -38,6 +38,22 @@ Both are desktop only (`min-width: 768px`), so phones never download the three.j
 
 When motion is reduced, `<html>` carries `data-reduce-motion="true"`. That attribute is set before first paint by the inline script in `src/app.html`, and `src/lib/theme/theme.css` uses it to collapse CSS animations and transitions. The two three.js components subscribe to the store directly: the flyover never starts (and stops if it is already in the air), and the decor models render a single static frame.
 
+## Member accounts and attendance
+
+Club members have accounts on this site only. They cannot sign in to ARC Manage, which
+is for officers; the two use separate credentials and separately signed tokens.
+
+- `/account` — set up an account with the club ID an officer issued, then sign in to
+  edit name, email, major and year, upload a profile picture, or change password.
+- `/attendance` — sign in to a meeting that is currently running.
+
+`src/lib/memberSession.ts` holds the session: it keeps the token in `localStorage` under
+`arc-member-token` and exposes a `member` store the pages subscribe to.
+
+Meeting sign in asks for a club ID, a GMU email, and the code an officer puts on screen
+at the meeting. A member who is already signed in to their account skips the first two,
+since the page fills them in from the session.
+
 ## Images
 
 Photos, logos, and cover images all come from ARC Manage, which compresses them on
