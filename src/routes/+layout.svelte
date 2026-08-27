@@ -1,6 +1,8 @@
 <script lang="ts">
 	import "./layout.css";
+	import { onMount } from "svelte";
 	import { dev } from "$app/environment";
+	import { initReduceMotion } from "$lib/motion";
 	import { injectAnalytics } from "@vercel/analytics/sveltekit";
 	import { injectSpeedInsights } from "@vercel/speed-insights/sveltekit";
 
@@ -8,6 +10,8 @@
 	injectSpeedInsights();
 
 	let { children } = $props();
+
+	onMount(initReduceMotion);
 </script>
 
 <svelte:head>

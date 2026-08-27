@@ -21,6 +21,22 @@ This project is built using modern edge technologies optimized for static workfl
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) implementing inline utilities mapped via `@theme`.
 - **Icons**: [@iconify/svelte](https://iconify.design/) providing scalable vector illustrations without heavy payload sizes.
 - **Runtime**: [Bun](https://bun.sh/) for ultra-fast dependency management and compilation speeds.
+- **3D**: [three.js](https://threejs.org/) loaded through a dynamic import so it ships as its own chunk.
+
+## Motion and 3D
+
+The homepage carries two three.js features, both built from primitive shapes in `src/lib/models/`:
+
+- `DroneScan.svelte` — a full-viewport quadcopter flyover. It plays on roughly half of homepage loads, flies in, turns to look around, then leaves and tears itself down.
+- `DecorModel.svelte` — small looping models tucked into the corner of four homepage cells. Each can be spun with the mouse and keeps its momentum after release.
+
+Both are desktop only (`min-width: 768px`), so phones never download the three.js chunk, and both pause their render loop while off-screen.
+
+### Reducing motion
+
+`src/lib/motion.ts` holds the site-wide motion preference as a Svelte store. It starts from the visitor's `prefers-reduced-motion` setting and is overridden by the toggle in the footer, which persists to `localStorage` under `arc-reduce-motion`.
+
+When motion is reduced, `<html>` carries `data-reduce-motion="true"`. That attribute is set before first paint by the inline script in `src/app.html`, and `src/lib/theme/theme.css` uses it to collapse CSS animations and transitions. The two three.js components subscribe to the store directly: the flyover never starts (and stops if it is already in the air), and the decor models render a single static frame.
 
 ## Logos
 

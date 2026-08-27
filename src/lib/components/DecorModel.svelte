@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, tick } from "svelte";
 	import { buildDecorModel, type DecorKind } from "$lib/models/buildDecor";
+	import { motionIsReduced, reduceMotion } from "$lib/motion";
 
 	const DESKTOP_QUERY = "(min-width: 768px)";
 	const DRAG_SPEED = 0.011;
@@ -21,7 +22,7 @@
 		if (typeof window === "undefined") return;
 		if (!window.matchMedia(DESKTOP_QUERY).matches) return;
 
-		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+		let motionReduced = motionIsReduced();
 
 		enabled = true;
 
@@ -99,7 +100,7 @@
 				dragPitch = clamp(dragPitch + (event.movementY || 0) * DRAG_SPEED, MAX_PITCH);
 				spin = deltaX;
 
-				if (reduceMotion.matches) drawOnce();
+				if (motionReduced) drawOnce();
 			};
 
 			const onPointerUp = (event: PointerEvent) => {
@@ -134,16 +135,22 @@
 				frame = visible ? requestAnimationFrame(renderFrame) : 0;
 			};
 
-			if (reduceMotion.matches) {
-				decor.update(0, 0);
-				drawOnce();
-			} else {
-				frame = requestAnimationFrame(renderFrame);
-			}
+			const unsubscribe = reduceMotion.subscribe((reduced) => {
+				motionReduced = reduced;
+				if (reduced) {
+					cancelAnimationFrame(frame);
+					frame = 0;
+					decor.update(0, 0);
+					drawOnce();
+				} else if (visible && frame === 0) {
+					previous = performance.now();
+					frame = requestAnimationFrame(renderFrame);
+				}
+			});
 
 			const visibility = new IntersectionObserver(([entry]) => {
 				visible = entry.isIntersecting;
-				if (reduceMotion.matches) return;
+				if (motionReduced) return;
 				if (visible && frame === 0) {
 					previous = performance.now();
 					frame = requestAnimationFrame(renderFrame);
@@ -153,6 +160,7 @@
 
 			cleanup = () => {
 				cancelAnimationFrame(frame);
+				unsubscribe();
 				visibility.disconnect();
 				element.removeEventListener("pointerdown", onPointerDown);
 				element.removeEventListener("pointermove", onPointerMove);

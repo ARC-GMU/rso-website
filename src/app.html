@@ -10,6 +10,12 @@
 				if (stored === 'dark' || (!stored && prefersDark)) {
 					document.documentElement.dataset.theme = 'dark';
 				}
+
+				const motion = localStorage.getItem('arc-reduce-motion');
+				const prefersLessMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+				if (motion === 'on' || (!motion && prefersLessMotion)) {
+					document.documentElement.dataset.reduceMotion = 'true';
+				}
 			} catch (e) {}
 		</script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />

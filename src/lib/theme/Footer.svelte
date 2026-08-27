@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import Icon from "@iconify/svelte";
 	import { apiRoot, socialIcon, socialLabel, type SocialLink } from "$lib/theme/content";
+	import { reduceMotion, toggleReduceMotion } from "$lib/motion";
 
 	let socialLinks = $state<SocialLink[]>([]);
 	let darkMode = $state(false);
@@ -97,6 +98,21 @@
 				>
 					<Icon icon="mdi:history" class="text-lg" />
 				</a>
+
+				<button
+					class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center border text-[var(--arc-ink)] hover:border-[var(--arc-accent)] hover:text-[var(--arc-accent)] {$reduceMotion
+						? 'border-[var(--arc-accent)] text-[var(--arc-accent)]'
+						: 'border-[var(--arc-line)]'}"
+					aria-label={$reduceMotion ? "Turn animations on" : "Turn animations off"}
+					aria-pressed={$reduceMotion}
+					title={$reduceMotion ? "Turn animations on" : "Turn animations off"}
+					onclick={toggleReduceMotion}
+				>
+					<Icon
+						icon={$reduceMotion ? "mdi:motion-pause-outline" : "mdi:motion-outline"}
+						class="text-lg"
+					/>
+				</button>
 
 				<button
 					class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center border border-[var(--arc-line)] text-[var(--arc-ink)] hover:border-[var(--arc-accent)] hover:text-[var(--arc-accent)]"

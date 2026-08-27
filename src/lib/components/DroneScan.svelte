@@ -1,24 +1,25 @@
 <script lang="ts">
 	import { onMount, tick } from "svelte";
 	import { buildDrone, type Drone } from "$lib/models/buildDrone";
+	import { motionIsReduced, reduceMotion } from "$lib/motion";
 
 	const DESKTOP_QUERY = "(min-width: 768px)";
 	const PLAY_CHANCE = 0.5;
 
-	const ENTER_END = 3.6;
-	const LOOK_END = 12.4;
-	const EXIT_END = 15.8;
+	const ENTER_END = 1.5;
+	const LOOK_END = 5.1;
+	const EXIT_END = 6.5;
 
 	const QUARTER_TURN = Math.PI / 2;
 
 	const YAW_KEYFRAMES: [time: number, angle: number][] = [
 		[0, 0],
-		[0.8, 0],
-		[3, -Math.PI],
-		[4.4, -Math.PI],
-		[6, -QUARTER_TURN],
-		[7.2, -QUARTER_TURN],
-		[8.8, 0]
+		[0.35, 0],
+		[1.2, -Math.PI],
+		[1.8, -Math.PI],
+		[2.45, -QUARTER_TURN],
+		[2.9, -QUARTER_TURN],
+		[3.6, 0]
 	];
 
 	let container: HTMLDivElement | undefined = $state();
@@ -63,8 +64,7 @@
 		if (typeof window === "undefined") return;
 
 		const desktop = window.matchMedia(DESKTOP_QUERY);
-		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-		if (!desktop.matches || reduceMotion.matches) return;
+		if (!desktop.matches || motionIsReduced()) return;
 		if (Math.random() >= PLAY_CHANCE) return;
 
 		enabled = true;
@@ -72,6 +72,12 @@
 		let stopped = false;
 		let frame = 0;
 		let cleanup: (() => void) | undefined;
+
+		const unsubscribe = reduceMotion.subscribe((reduced) => {
+			if (!reduced) return;
+			cleanup?.();
+			enabled = false;
+		});
 
 		(async () => {
 			await tick();
@@ -171,6 +177,7 @@
 
 		return () => {
 			stopped = true;
+			unsubscribe();
 			cleanup?.();
 		};
 	});
