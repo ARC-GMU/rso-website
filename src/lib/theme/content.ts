@@ -64,8 +64,7 @@ export const navLinks = [
 	{ label: "Events", href: "/events" },
 	{ label: "Resources", href: "/resources" },
 	{ label: "Blog", href: "/blog" },
-	{ label: "Media", href: "/media" },
-	{ label: "Attendance", href: "/attendance" }
+	{ label: "Media", href: "/media" }
 ];
 
 export const emptyContent: ClubContent = {

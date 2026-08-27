@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { page } from "$app/stores";
 	import Icon from "@iconify/svelte";
 	import Page from "$lib/theme/Page.svelte";
 	import Panel from "$lib/theme/Panel.svelte";
@@ -7,13 +8,16 @@
 	import { member, loadProfile } from "$lib/memberSession";
 
 	type MeetingStatus = {
+		found: boolean;
 		open: boolean;
 		title?: string;
 		date?: string;
 		location?: string;
 	};
 
-	let status = $state<MeetingStatus>({ open: false });
+	const token = $derived($page.params.token ?? "");
+
+	let status = $state<MeetingStatus>({ found: false, open: false });
 	let checking = $state(true);
 
 	let clubId = $state("");
@@ -27,10 +31,13 @@
 
 	async function loadStatus() {
 		try {
-			const res = await fetch(`${apiRoot}/public/checkin/status`, { cache: "no-store" });
+			const res = await fetch(
+				`${apiRoot}/public/checkin/status?token=${encodeURIComponent(token)}`,
+				{ cache: "no-store" }
+			);
 			if (res.ok) status = await res.json();
 		} catch {
-			status = { open: false };
+			status = { found: false, open: false };
 		} finally {
 			checking = false;
 		}
@@ -55,7 +62,7 @@
 			const res = await fetch(`${apiRoot}/public/checkin`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ clubId, email, code })
+				body: JSON.stringify({ token, clubId, email, code })
 			});
 
 			if (!res.ok) {
@@ -123,16 +130,29 @@
 				CHECKING FOR AN OPEN MEETING...
 			</div>
 		</Panel>
+	{:else if !status.found}
+		<Panel flush>
+			<div class="flex flex-col items-center gap-3 px-6 py-12 text-center">
+				<Icon icon="mdi:link-variant-off" class="text-5xl text-[var(--arc-faint)]" />
+				<div class="text-[18px] font-bold text-[var(--arc-ink)]">
+					This sign in link is not valid
+				</div>
+				<p class="m-0 max-w-[420px] text-[15px] leading-[1.7] text-[var(--arc-muted)]">
+					Sign in links are given out by an officer at the meeting. Ask for the current
+					link or scan the code shown on screen.
+				</p>
+			</div>
+		</Panel>
 	{:else if !status.open}
 		<Panel flush>
 			<div class="flex flex-col items-center gap-3 px-6 py-12 text-center">
 				<Icon icon="mdi:calendar-clock" class="text-5xl text-[var(--arc-faint)]" />
 				<div class="text-[18px] font-bold text-[var(--arc-ink)]">
-					No meeting is open for sign in
+					Sign in is closed for {status.title}
 				</div>
 				<p class="m-0 max-w-[420px] text-[15px] leading-[1.7] text-[var(--arc-muted)]">
-					An officer opens sign in at the start of each meeting. Check back once the
-					meeting has started, or ask an officer for help.
+					An officer opens sign in at the start of the meeting and closes it at the end.
+					Ask an officer if you still need to be marked present.
 				</p>
 			</div>
 		</Panel>

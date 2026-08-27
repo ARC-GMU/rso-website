@@ -46,8 +46,11 @@ is for officers; the two use separate credentials and separately signed tokens.
 - `/account` — set up an account with the club ID an officer issued, then sign in to
   edit name, email, major and year, upload a profile picture, or change password.
   Linked from the footer rather than the main nav, since it is only for members.
-- `/attendance` — sign in to a meeting that is currently running. This one is in the
-  main nav, because members need to reach it quickly during a meeting.
+- `/attendance/[token]` — sign in to a meeting. Neither this page nor the attendance
+  system appears in the navigation, and there is no page at `/attendance` itself. The
+  only way in is a per-meeting link that an officer shares, which ARC Manage shows
+  alongside a QR code while check in is open. An unknown token says so and reveals
+  nothing about any meeting.
 
 `src/lib/memberSession.ts` holds the session: it keeps the token in `localStorage` under
 `arc-member-token` and exposes a `member` store the pages subscribe to.
