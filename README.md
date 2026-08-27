@@ -43,9 +43,10 @@ When motion is reduced, `<html>` carries `data-reduce-motion="true"`. That attri
 Club members have accounts on this site only. They cannot sign in to ARC Manage, which
 is for officers; the two use separate credentials and separately signed tokens.
 
-- `/account` — set up an account with the club ID an officer issued, then sign in to
-  edit name, email, major and year, upload a profile picture, or change password.
-  Linked from the footer rather than the main nav, since it is only for members.
+- `/account` — sign up with a GMU email, then sign in to edit name, email, major and
+  year, upload a profile picture, or change password. Club IDs are never typed in: the
+  server assigns one and the account page shows it. Linked from the footer rather than
+  the main nav, since it is only for members.
 - `/attendance/[token]` — sign in to a meeting. Neither this page nor the attendance
   system appears in the navigation, and there is no page at `/attendance` itself. The
   only way in is a per-meeting link that an officer shares, which ARC Manage shows

@@ -7,7 +7,7 @@
 	let identifier = $state("");
 	let password = $state("");
 
-	let clubId = $state("");
+	let name = $state("");
 	let email = $state("");
 	let newPassword = $state("");
 
@@ -21,7 +21,7 @@
 
 		try {
 			if (mode === "login") await login(identifier, password);
-			else await register(clubId, email, newPassword);
+			else await register(name, email, newPassword);
 		} catch (e: any) {
 			errorMessage = e.message;
 		} finally {
@@ -85,12 +85,13 @@
 			</label>
 		{:else}
 			<p class="m-0 text-[15px] leading-[1.7] text-[var(--arc-muted)]">
-				Use the club ID an officer gave you to set a password for the first time.
+				Sign up with your GMU email. Your club ID is assigned for you and shown on your
+				account once you are in.
 			</p>
 
 			<label class="flex flex-col gap-2">
-				<span class="arc-label">CLUB ID</span>
-				<input class={inputClass} type="text" bind:value={clubId} placeholder="ARC-XXXX" required />
+				<span class="arc-label">FULL NAME</span>
+				<input class={inputClass} type="text" bind:value={name} autocomplete="name" required />
 			</label>
 
 			<label class="flex flex-col gap-2">

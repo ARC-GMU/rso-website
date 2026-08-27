@@ -68,12 +68,12 @@ export async function login(identifier: string, password: string) {
 	);
 }
 
-export async function register(clubId: string, email: string, password: string) {
+export async function register(name: string, email: string, password: string) {
 	return adopt(
 		await send("/public/members/register", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ clubId, email, password })
+			body: JSON.stringify({ name, email, password })
 		})
 	);
 }
