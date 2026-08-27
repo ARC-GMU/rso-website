@@ -146,6 +146,8 @@
 												src={photoUrl}
 												alt={member.name}
 												class="h-10 w-10 flex-shrink-0 rounded-full border border-[var(--arc-line)] object-cover"
+												loading="lazy"
+												decoding="async"
 											/>
 										{:else}
 											<div
@@ -200,7 +202,13 @@
 					<h2 class="arc-h2">IMAGES</h2>
 					<div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
 						{#each galleryImages as image}
-							<img src={image} alt={project.name} class="w-full h-auto object-cover" loading="lazy" />
+							<img
+								src={image}
+								alt={project.name}
+								class="w-full h-auto object-cover"
+								loading="lazy"
+								decoding="async"
+							/>
 						{/each}
 					</div>
 				</section>

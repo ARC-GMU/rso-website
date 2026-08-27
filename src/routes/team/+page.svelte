@@ -82,6 +82,8 @@
 										src={member.photoUrl}
 										alt={member.name}
 										class="h-36 w-36 rounded-2xl border border-[var(--arc-line)] object-cover sm:h-40 sm:w-40"
+										loading="lazy"
+										decoding="async"
 									/>
 								{:else}
 									<div

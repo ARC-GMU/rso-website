@@ -42,7 +42,13 @@
 					>
 						<div class="flex h-32 w-full items-center justify-center border-b border-[var(--arc-line)] bg-[var(--arc-surface)] p-6">
 							{#if partner.imageUrl}
-								<img src={partner.imageUrl} alt={partner.name} class="max-h-full max-w-full object-contain" />
+								<img
+									src={partner.imageUrl}
+									alt={partner.name}
+									class="max-h-full max-w-full object-contain"
+									loading="lazy"
+									decoding="async"
+								/>
 							{:else}
 								<Icon icon="mdi:image-outline" class="h-12 w-12 text-[var(--arc-line)]" />
 							{/if}

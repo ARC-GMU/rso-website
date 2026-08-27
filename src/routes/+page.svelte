@@ -235,6 +235,8 @@
 								alt={sponsor.name}
 								title={sponsor.name}
 								class="h-24 w-auto max-w-[280px] object-contain"
+								loading="lazy"
+								decoding="async"
 							/>
 						{/each}
 					</div>
@@ -255,6 +257,8 @@
 										src={partner.imageUrl}
 										alt={partner.name}
 										class="h-32 w-auto max-w-[320px] object-contain transition-opacity hover:opacity-80"
+										loading="lazy"
+										decoding="async"
 									/>
 									<span class="arc-label text-center font-bold">{partner.name}</span>
 								</a>
@@ -264,6 +268,8 @@
 										src={partner.imageUrl}
 										alt={partner.name}
 										class="h-32 w-auto max-w-[320px] object-contain"
+										loading="lazy"
+										decoding="async"
 									/>
 									<span class="arc-label text-center font-bold">{partner.name}</span>
 								</div>

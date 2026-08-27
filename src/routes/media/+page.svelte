@@ -104,6 +104,8 @@
 								src={image.src}
 								alt={image.caption}
 								class="h-48 w-full object-cover"
+								loading="lazy"
+								decoding="async"
 							/>
 						</button>
 					{/each}

@@ -185,6 +185,8 @@
 										src={project.images[0]}
 										alt={project.name}
 										class="w-24 flex-shrink-0 self-stretch object-cover sm:w-32"
+										loading="lazy"
+										decoding="async"
 									/>
 								{:else}
 									<div

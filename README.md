@@ -38,6 +38,24 @@ Both are desktop only (`min-width: 768px`), so phones never download the three.j
 
 When motion is reduced, `<html>` carries `data-reduce-motion="true"`. That attribute is set before first paint by the inline script in `src/app.html`, and `src/lib/theme/theme.css` uses it to collapse CSS animations and transitions. The two three.js components subscribe to the store directly: the flyover never starts (and stops if it is already in the air), and the decor models render a single static frame.
 
+## Images
+
+Photos, logos, and cover images all come from ARC Manage, which compresses them on
+upload and serves them from `/api/media/serve/<filename>` with a one-year immutable
+cache header. Nothing here keys off the file extension or MIME type, so it does not
+matter whether a given file is stored as JPEG or PNG.
+
+Every image that sits in a list, grid, or gallery carries `loading="lazy"` and
+`decoding="async"`, so a page only fetches the pictures a visitor actually scrolls to.
+The exceptions are deliberate and should stay eager:
+
+- The static logos in the header and the two homepage and legacy heroes.
+- The one large cover image at the top of a blog post, project, team member, or partner
+  page. That image is the largest contentful paint on its page, and deferring it would
+  make the page measurably slower.
+- The lightbox images on the media pages, which are only rendered once opened and have
+  to appear immediately.
+
 ## Logos
 
 Brand assets live in `static/logos/`.

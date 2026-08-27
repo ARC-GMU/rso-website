@@ -47,6 +47,8 @@
 						src={project.images[0]}
 						alt={project.name}
 						class="h-44 w-full border-b border-[var(--arc-line)] object-cover"
+						loading="lazy"
+						decoding="async"
 					/>
 				{:else}
 					<div

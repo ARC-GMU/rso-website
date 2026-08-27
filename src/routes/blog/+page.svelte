@@ -35,6 +35,8 @@
 								src={post.coverImageUrl}
 								alt={post.title}
 								class="h-full w-full object-cover"
+								loading="lazy"
+								decoding="async"
 							/>
 						</a>
 					{/if}

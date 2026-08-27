@@ -119,6 +119,8 @@
 										src={person.photoUrl}
 										alt={person.name}
 										class="h-28 w-28 rounded-full border border-[var(--arc-line)] object-cover"
+										loading="lazy"
+										decoding="async"
 									/>
 								{:else}
 									<div
