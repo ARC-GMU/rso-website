@@ -8,6 +8,15 @@
 	function stripHtml(html: string): string {
 		return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 	}
+
+	function formatDate(dateString: string) {
+		return new Date(dateString).toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+			timeZone: "America/New_York"
+		});
+	}
 </script>
 
 <Page title="About">
@@ -19,6 +28,11 @@
 						<div class="arc-h3 text-lg text-[var(--arc-ink)]">{page.title}</div>
 						{#if page.excerpt}
 							<p class="arc-note line-clamp-3 flex-1">{stripHtml(page.excerpt)}</p>
+						{/if}
+						{#if page.updatedAt || page.createdAt}
+							<div class="arc-label mt-1 text-[var(--arc-muted)]">
+								UPDATED {formatDate(page.updatedAt || page.createdAt)}
+							</div>
 						{/if}
 						<a href={`/about/${page.slug}`} class="arc-btn mt-3 w-full text-center">
 							VIEW DETAILS
