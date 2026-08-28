@@ -27,11 +27,9 @@
 			<div class="min-w-0">
 				<div class="flex items-center gap-2">
 					{#if project.private}
-						<Icon
-							icon="mdi:lock-outline"
-							class="shrink-0 text-[var(--arc-faint)]"
-							title="Not shown publicly"
-						/>
+						<span class="shrink-0 text-[var(--arc-faint)]" title="Not shown publicly">
+							<Icon icon="mdi:lock-outline" />
+						</span>
 					{/if}
 					<span class="text-[17px] font-bold text-[var(--arc-ink)]">{project.name}</span>
 				</div>

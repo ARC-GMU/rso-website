@@ -27,7 +27,7 @@
 	let activeTab: (typeof TABS)[number]["id"] = $state("profile");
 
 	let loading = $state(true);
-	let photoInput: HTMLInputElement;
+	let photoInput: HTMLInputElement | undefined = $state();
 
 	let name = $state("");
 	let email = $state("");
@@ -157,7 +157,7 @@
 
 						<button
 							class="arc-btn-small cursor-pointer"
-							onclick={() => photoInput.click()}
+							onclick={() => photoInput?.click()}
 							disabled={uploadingPhoto}
 						>
 							<Icon icon="mdi:camera" class="inline-block align-text-bottom" />
