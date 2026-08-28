@@ -61,6 +61,12 @@ is for officers; the two use separate credentials and separately signed tokens.
   alongside a QR code while check in is open. An unknown token says so and reveals
   nothing about any meeting.
 
+  The site prerenders by default through `src/routes/+layout.ts`, but this route sets
+  `prerender = false` in its own `+page.ts`. Prerendering works by crawling links, and
+  this page is deliberately unlinked, so the build would otherwise fail on a
+  prerenderable route it could never reach. It is rendered on request instead, which is
+  also what a per-meeting link needs.
+
 `src/lib/memberSession.ts` holds the session: it keeps the token in `localStorage` under
 `arc-member-token` and exposes a `member` store the pages subscribe to.
 
