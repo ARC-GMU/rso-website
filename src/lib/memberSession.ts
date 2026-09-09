@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import { apiRoot } from "$lib/theme/content";
+import type { SocialLink } from "$lib/socialLink";
 
 const STORAGE_KEY = "arc-member-token";
 
@@ -10,8 +11,11 @@ export type MemberProfile = {
 	email: string;
 	major: string;
 	year: string;
+	bio: string;
+	links: SocialLink[];
 	photoUrl: string;
 	active: boolean;
+	minutesLogged: number;
 };
 
 export const member = writable<MemberProfile | null>(null);
@@ -96,6 +100,8 @@ export async function saveProfile(updates: {
 	email: string;
 	major: string;
 	year: string;
+	bio: string;
+	links: SocialLink[];
 }) {
 	return adopt(
 		await send("/public/members/me", {
@@ -119,6 +125,7 @@ export type AttendanceRecord = {
 	meetingTitle: string;
 	meetingDate: string | null;
 	signedInAt: string;
+	durationMinutes: number;
 };
 
 export async function fetchAttendanceHistory(): Promise<AttendanceRecord[]> {
@@ -137,6 +144,21 @@ export type MemberProject = {
 export async function fetchMyProjects(): Promise<MemberProject[]> {
 	return await send("/public/members/me/projects");
 }
+
+export type PublicMemberProfile = {
+	clubId: string;
+	name: string;
+	major: string;
+	year: string;
+	bio: string;
+	links: SocialLink[];
+	photoUrl: string;
+	active: boolean;
+	joinedAt: string | null;
+	meetingsAttended: number;
+	minutesLogged: number;
+	projects: MemberProject[];
+};
 
 export async function uploadPhoto(file: File) {
 	const body = new FormData();

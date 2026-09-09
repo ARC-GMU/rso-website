@@ -36,6 +36,10 @@
 		return rosterMembers.get(name.trim().toLowerCase()) ?? {};
 	}
 
+	function memberHref(member: { clubId: string; name: string }, match: RosterMatch) {
+		return member.clubId ? `/member/${member.clubId}` : match.href;
+	}
+
 	function stripHtml(html: string): string {
 		return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 	}
@@ -136,10 +140,11 @@
 									{@const member = parseProjectMember(entry)}
 									{@const match = rosterMatch(member.name)}
 									{@const photoUrl = member.photoUrl || match.photoUrl}
+									{@const href = memberHref(member, match)}
 									<svelte:element
-										this={match.href ? "a" : "div"}
-										href={match.href}
-										class="flex items-center gap-3 no-underline {match.href ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}"
+										this={href ? "a" : "div"}
+										href={href}
+										class="flex items-center gap-3 no-underline {href ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}"
 									>
 										{#if photoUrl}
 											<img

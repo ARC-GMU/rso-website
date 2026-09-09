@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Icon from "@iconify/svelte";
+	import { goto } from "$app/navigation";
 	import Page from "$lib/theme/Page.svelte";
 	import Panel from "$lib/theme/Panel.svelte";
-	import MemberSignIn from "$lib/components/MemberSignIn.svelte";
 	import AccountMeetings from "$lib/components/AccountMeetings.svelte";
 	import AccountProjects from "$lib/components/AccountProjects.svelte";
+	import SocialLinksEditor from "$lib/components/SocialLinksEditor.svelte";
+	import { formatDuration } from "$lib/duration";
+	import type { SocialLink } from "$lib/socialLink";
 	import {
 		member,
 		loadProfile,
@@ -33,6 +36,8 @@
 	let email = $state("");
 	let major = $state("");
 	let year = $state("");
+	let bio = $state("");
+	let links = $state<SocialLink[]>([]);
 	let profileMessage = $state("");
 	let profileError = $state("");
 	let savingProfile = $state(false);
@@ -48,7 +53,11 @@
 	let uploadingPhoto = $state(false);
 
 	onMount(async () => {
-		await loadProfile();
+		const profile = await loadProfile();
+		if (!profile) {
+			await goto("/account/signin");
+			return;
+		}
 		loading = false;
 	});
 
@@ -59,6 +68,8 @@
 		email = profile.email;
 		major = profile.major ?? "";
 		year = profile.year ?? "";
+		bio = profile.bio ?? "";
+		links = (profile.links ?? []).map((link) => ({ ...link }));
 	});
 
 	async function submitProfile(event: SubmitEvent) {
@@ -67,7 +78,7 @@
 		profileError = "";
 		savingProfile = true;
 		try {
-			await saveProfile({ name, email, major, year });
+			await saveProfile({ name, email, major, year, bio, links });
 			profileMessage = "Saved.";
 		} catch (e: any) {
 			profileError = e.message;
@@ -100,6 +111,11 @@
 		}
 	}
 
+	async function handleSignOut() {
+		logout();
+		await goto("/account/signin");
+	}
+
 	async function handlePhoto(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0];
 		if (!file) return;
@@ -128,7 +144,11 @@
 			</div>
 		</Panel>
 	{:else if !$member}
-		<MemberSignIn />
+		<Panel flush>
+			<div class="px-6 py-12 text-center text-[15px] font-medium text-[var(--arc-muted)]">
+				REDIRECTING TO SIGN IN...
+			</div>
+		</Panel>
 	{:else}
 		<div class="grid gap-6 md:grid-cols-[minmax(0,260px)_minmax(0,1fr)] md:items-start">
 			<div class="flex flex-col gap-4 md:sticky md:top-6">
@@ -154,6 +174,18 @@
 								{$member.clubId}
 							</div>
 						</div>
+
+						<div class="w-full border-y border-[var(--arc-line)] py-3">
+							<div class="arc-label text-[var(--arc-muted)]">TIME LOGGED</div>
+							<div class="mt-1 text-[22px] font-bold text-[var(--arc-ink)]">
+								{formatDuration($member.minutesLogged ?? 0)}
+							</div>
+						</div>
+
+						<a class="arc-btn-small" href="/member/{$member.clubId}">
+							<Icon icon="mdi:open-in-new" class="inline-block align-text-bottom" />
+							VIEW PUBLIC PROFILE
+						</a>
 
 						<button
 							class="arc-btn-small cursor-pointer"
@@ -195,7 +227,7 @@
 					</nav>
 				</Panel>
 
-				<button class="arc-btn-ghost cursor-pointer" onclick={logout}>SIGN OUT</button>
+				<button class="arc-btn-ghost cursor-pointer" onclick={handleSignOut}>SIGN OUT</button>
 			</div>
 
 			<div class="flex flex-col gap-6">
@@ -232,6 +264,24 @@
 										{/each}
 									</select>
 								</label>
+							</div>
+
+							<label class="flex flex-col gap-2">
+								<span class="arc-label">BIO</span>
+								<textarea
+									class="{inputClass} min-h-[140px] resize-y leading-[1.6]"
+									bind:value={bio}
+									maxlength="2000"
+									placeholder="What you work on at ARC, what you are studying, what you want to build."
+								></textarea>
+								<span class="text-[13px] font-medium text-[var(--arc-muted-2)]">
+									{bio.length}/2000 characters. Shown on your public profile.
+								</span>
+							</label>
+
+							<div class="flex flex-col gap-3">
+								<span class="arc-label">SOCIAL LINKS</span>
+								<SocialLinksEditor bind:links />
 							</div>
 
 							<button

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { fetchAttendanceHistory, type AttendanceRecord } from "$lib/memberSession";
+	import { formatDuration } from "$lib/duration";
 
 	let meetings = $state<AttendanceRecord[]>([]);
 	let loading = $state(true);
@@ -15,6 +16,10 @@
 			loading = false;
 		}
 	});
+
+	const totalMinutes = $derived(
+		meetings.reduce((total, record) => total + (record.durationMinutes ?? 0), 0)
+	);
 
 	function formatDate(value: string | null) {
 		if (!value) return "";
@@ -50,7 +55,9 @@
 {:else}
 	<div class="px-6 py-6">
 		<div class="text-[13px] font-bold tracking-[0.08em] text-[var(--arc-muted)]">
-			{meetings.length} MEETING{meetings.length === 1 ? "" : "S"} ATTENDED
+			{meetings.length} MEETING{meetings.length === 1 ? "" : "S"} ATTENDED · {formatDuration(
+				totalMinutes
+			)} LOGGED
 		</div>
 
 		<ul class="m-0 mt-4 list-none p-0">
@@ -64,6 +71,9 @@
 					<span class="text-[13px] font-medium text-[var(--arc-muted)]">
 						{formatDate(record.meetingDate ?? record.signedInAt)} · signed in
 						{formatTime(record.signedInAt)}
+						{#if record.durationMinutes > 0}
+							· {formatDuration(record.durationMinutes)} logged
+						{/if}
 					</span>
 				</li>
 			{/each}
