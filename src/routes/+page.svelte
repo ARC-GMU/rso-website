@@ -45,8 +45,8 @@
 
 	function formatDate(dateStr: string) {
 		return new Date(dateStr).toLocaleDateString("en-US", {
-			weekday: "long",
-			month: "long",
+			weekday: "short",
+			month: "short",
 			day: "numeric"
 		});
 	}
@@ -58,8 +58,10 @@
 
 <DroneScan />
 
-{#snippet modelCell(kind: DecorKind)}
-	<section class="overflow-hidden bg-[var(--arc-fill)] md:col-span-2">
+{#snippet modelCell(kind: DecorKind, narrow = false)}
+	<section
+		class="overflow-hidden bg-[var(--arc-fill)] {narrow ? 'md:col-span-1' : 'md:col-span-2'}"
+	>
 		<div class="h-full min-h-[200px] w-full">
 			<ModelTile {kind} />
 		</div>
@@ -102,7 +104,7 @@
 				</div>
 			</section>
 
-			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
+			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
 				<div class="arc-label">LOCATION</div>
 				<div class="mt-2 text-[15px] font-medium">{content.location}</div>
 
@@ -119,7 +121,7 @@
 				{/if}
 			</div>
 
-			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
+			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
 				<div class="arc-label">FIND US</div>
 				<div class="mt-3 flex flex-wrap gap-x-5 gap-y-2">
 					{#each content.socialLinks as social}
@@ -137,8 +139,6 @@
 				</div>
 			</div>
 
-			{@render modelCell("rover")}
-
 			<section
 				class="bg-[var(--arc-surface)] p-8 {content.missionStatement
 					? 'md:col-span-2'
@@ -149,23 +149,32 @@
 					<a href="/events" class="arc-link">ALL EVENTS</a>
 				</div>
 
-				<div class="mt-5">
+				<div class="mt-4">
 					{#if upcomingEvents.length === 0}
 						<p class="arc-note">No upcoming events scheduled.</p>
 					{:else}
 						{#each upcomingEvents.slice(0, 3) as event}
-							<div class="border-b border-[var(--arc-line-soft)] py-4 last:border-b-0">
-								<div class="text-[15px] font-bold">{formatDate(event.date)}</div>
-								<div class="mt-1 text-[14px] font-medium text-[var(--arc-muted)]">
-									{event.timeRange} / {event.location}
+							<a
+								href="/events/{event.id}"
+								class="block border-b border-[var(--arc-line-soft)] py-2.5 no-underline last:border-b-0 hover:bg-[var(--arc-fill)]"
+							>
+								<div class="flex flex-wrap items-baseline justify-between gap-x-3">
+									<span class="text-[14px] font-bold text-[var(--arc-ink)]">
+										{formatDate(event.date)}
+									</span>
+									<span class="text-[13px] font-medium text-[var(--arc-muted)]">
+										{event.timeRange}
+									</span>
 								</div>
-								<div class="mt-2 text-[15px] font-medium text-[var(--arc-ink-2)]">
+								<div class="mt-0.5 truncate text-[14px] font-medium text-[var(--arc-ink-2)]">
 									{event.title}
 								</div>
-								<a href="/events/{event.id}" class="arc-link mt-2 inline-block">
-									VIEW INFO
-								</a>
-							</div>
+								{#if event.location}
+									<div class="truncate text-[12px] text-[var(--arc-muted-2)]">
+										{event.location}
+									</div>
+								{/if}
+							</a>
 						{/each}
 					{/if}
 				</div>
@@ -236,6 +245,8 @@
 			</section>
 
 			{#if content.sponsors.length > 0}
+				{@render modelCell("rover", true)}
+
 				<section class="bg-[var(--arc-surface)] p-8 md:col-span-4">
 					<h2 class="arc-h2">OUR SPONSORS</h2>
 					<div class="mt-6 flex flex-wrap items-center justify-center gap-10">
@@ -252,7 +263,7 @@
 					</div>
 				</section>
 
-				{@render modelCell("arm")}
+				{@render modelCell("arm", true)}
 			{/if}
 
 			{#if content.partners.length > 0}
