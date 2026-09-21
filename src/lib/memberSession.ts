@@ -136,6 +136,44 @@ export async function changePassword(currentPassword: string, newPassword: strin
 	});
 }
 
+export type UploadProgressHandler = (percent: number) => void;
+
+function uploadWithProgress(
+	path: string,
+	body: FormData,
+	onProgress?: UploadProgressHandler
+): Promise<any> {
+	return new Promise((resolve, reject) => {
+		const request = new XMLHttpRequest();
+		request.open("POST", `${apiRoot}${path}`);
+
+		const token = storedToken();
+		if (token) request.setRequestHeader("Authorization", `Bearer ${token}`);
+
+		request.upload.onprogress = (event) => {
+			if (onProgress && event.lengthComputable) {
+				onProgress(Math.round((event.loaded / event.total) * 100));
+			}
+		};
+
+		request.onload = () => {
+			if (request.status >= 200 && request.status < 300) {
+				onProgress?.(100);
+				try {
+					resolve(JSON.parse(request.responseText || "{}"));
+				} catch {
+					resolve({});
+				}
+				return;
+			}
+			reject(new Error(request.responseText.trim() || "Upload failed."));
+		};
+
+		request.onerror = () => reject(new Error("Upload failed."));
+		request.send(body);
+	});
+}
+
 export type AttendanceRecord = {
 	id: string;
 	meetingTitle: string;
@@ -179,19 +217,23 @@ export type PublicMemberProfile = {
 	projects: MemberProject[];
 };
 
-export async function uploadPhoto(file: File) {
+export async function uploadPhoto(file: File, onProgress?: UploadProgressHandler) {
 	const body = new FormData();
 	body.append("file", file);
-	const data = await send("/public/members/me/photo", { method: "POST", body });
+	const data = await uploadWithProgress("/public/members/me/photo", body, onProgress);
 	member.update((current) => (current ? { ...current, photoUrl: data.photoUrl } : current));
 	return data.photoUrl as string;
 }
 
-export async function uploadMedia(file: File, caption: string) {
+export async function uploadMedia(
+	file: File,
+	caption: string,
+	onProgress?: UploadProgressHandler
+) {
 	const body = new FormData();
 	body.append("file", file);
 	if (caption.trim()) body.append("caption", caption.trim());
-	const data = await send("/public/members/me/media", { method: "POST", body });
+	const data = await uploadWithProgress("/public/members/me/media", body, onProgress);
 	const gallery = (data.gallery ?? []) as MemberMedia[];
 	member.update((current) => (current ? { ...current, gallery } : current));
 	return gallery;
@@ -219,10 +261,10 @@ export type ProjectUpdate = {
 	postedAt: string;
 };
 
-export async function uploadUpdateImage(file: File) {
+export async function uploadUpdateImage(file: File, onProgress?: UploadProgressHandler) {
 	const body = new FormData();
 	body.append("file", file);
-	const data = await send("/public/members/me/uploads", { method: "POST", body });
+	const data = await uploadWithProgress("/public/members/me/uploads", body, onProgress);
 	return data.url as string;
 }
 
@@ -237,6 +279,17 @@ export async function postProjectUpdate(update: {
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(update)
 	})) as ProjectUpdate;
+}
+
+export async function editProjectUpdate(
+	id: string,
+	update: { title: string; body: string; images: string[] }
+) {
+	await send(`/public/members/me/project-updates?id=${encodeURIComponent(id)}`, {
+		method: "PUT",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(update)
+	});
 }
 
 export async function deleteProjectUpdate(id: string) {

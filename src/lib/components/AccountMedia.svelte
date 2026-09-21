@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from "@iconify/svelte";
+	import UploadProgress from "$lib/components/UploadProgress.svelte";
 	import { deleteMedia, member, uploadMedia, type MemberMedia } from "$lib/memberSession";
 
 	const MAX_ITEMS = 12;
@@ -7,6 +8,7 @@
 	let fileInput: HTMLInputElement | undefined = $state();
 	let caption = $state("");
 	let uploading = $state(false);
+	let uploadPercent = $state(0);
 	let errorMessage = $state("");
 
 	let gallery = $derived(($member?.gallery ?? []) as MemberMedia[]);
@@ -20,8 +22,9 @@
 
 		errorMessage = "";
 		uploading = true;
+		uploadPercent = 0;
 		try {
-			await uploadMedia(file, caption);
+			await uploadMedia(file, caption, (percent) => (uploadPercent = percent));
 			caption = "";
 		} catch (e: any) {
 			errorMessage = e.message;
@@ -69,6 +72,10 @@
 			<Icon icon="mdi:upload" class="inline-block align-text-bottom" />
 			{uploading ? "UPLOADING..." : full ? "PROFILE FULL" : "UPLOAD IMAGE OR VIDEO"}
 		</button>
+
+		{#if uploading}
+			<UploadProgress percent={uploadPercent} />
+		{/if}
 
 		<input
 			bind:this={fileInput}

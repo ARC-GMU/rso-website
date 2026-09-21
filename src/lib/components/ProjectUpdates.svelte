@@ -2,8 +2,10 @@
 	import Icon from "@iconify/svelte";
 	import { invalidateAll } from "$app/navigation";
 	import RichEditor from "$lib/components/RichEditor.svelte";
+	import UploadProgress from "$lib/components/UploadProgress.svelte";
 	import {
 		deleteProjectUpdate,
+		editProjectUpdate,
 		member,
 		postProjectUpdate,
 		uploadUpdateImage,
@@ -17,19 +19,36 @@
 	}: { projectId: string; updates?: ProjectUpdate[]; canPost?: boolean } = $props();
 
 	let composing = $state(false);
+	let editingId = $state<string | null>(null);
 	let title = $state("");
 	let body = $state("");
 	let images = $state<string[]>([]);
 	let saving = $state(false);
 	let uploading = $state(false);
+	let uploadPercent = $state(0);
 	let errorMessage = $state("");
 	let fileInput: HTMLInputElement | undefined = $state();
 
 	function reset() {
+		editingId = null;
 		title = "";
 		body = "";
 		images = [];
 		errorMessage = "";
+	}
+
+	function startPost() {
+		reset();
+		composing = true;
+	}
+
+	function startEdit(update: ProjectUpdate) {
+		editingId = update.id;
+		title = update.title;
+		body = update.body ?? "";
+		images = [...(update.images ?? [])];
+		errorMessage = "";
+		composing = true;
 	}
 
 	async function handleImage(event: Event) {
@@ -40,8 +59,12 @@
 
 		errorMessage = "";
 		uploading = true;
+		uploadPercent = 0;
 		try {
-			images = [...images, await uploadUpdateImage(file)];
+			images = [
+				...images,
+				await uploadUpdateImage(file, (percent) => (uploadPercent = percent))
+			];
 		} catch (e: any) {
 			errorMessage = e.message;
 		} finally {
@@ -64,7 +87,11 @@
 
 		saving = true;
 		try {
-			await postProjectUpdate({ projectId, title: title.trim(), body, images });
+			if (editingId) {
+				await editProjectUpdate(editingId, { title: title.trim(), body, images });
+			} else {
+				await postProjectUpdate({ projectId, title: title.trim(), body, images });
+			}
 			reset();
 			composing = false;
 			await invalidateAll();
@@ -107,7 +134,7 @@
 	<div class="flex flex-wrap items-baseline justify-between gap-4">
 		<h2 class="arc-h2">PROJECT UPDATES</h2>
 		{#if canPost && !composing}
-			<button class="arc-btn-small cursor-pointer" onclick={() => (composing = true)}>
+			<button class="arc-btn-small cursor-pointer" onclick={startPost}>
 				<Icon icon="mdi:plus" class="inline-block align-text-bottom" />
 				POST AN UPDATE
 			</button>
@@ -120,6 +147,10 @@
 
 	{#if canPost && composing}
 		<form class="mt-6 flex flex-col gap-4 border border-[var(--arc-line)] p-5" onsubmit={submit}>
+			<div class="arc-label text-[var(--arc-muted)]">
+				{editingId ? "EDIT YOUR UPDATE" : "NEW UPDATE"}
+			</div>
+
 			<label class="flex flex-col gap-2">
 				<span class="arc-label">TITLE</span>
 				<input class={inputClass} type="text" bind:value={title} maxlength="120" required />
@@ -159,6 +190,10 @@
 					{uploading ? "UPLOADING..." : "ADD IMAGE"}
 				</button>
 
+				{#if uploading}
+					<UploadProgress percent={uploadPercent} />
+				{/if}
+
 				<input
 					bind:this={fileInput}
 					type="file"
@@ -170,7 +205,7 @@
 
 			<div class="flex flex-wrap gap-3">
 				<button class="arc-btn cursor-pointer disabled:opacity-60" type="submit" disabled={saving}>
-					{saving ? "POSTING..." : "POST UPDATE"}
+					{saving ? "SAVING..." : editingId ? "SAVE CHANGES" : "POST UPDATE"}
 				</button>
 				<button
 					type="button"
@@ -195,12 +230,20 @@
 					<div class="flex flex-wrap items-baseline justify-between gap-3">
 						<h3 class="arc-h3 text-[18px] text-[var(--arc-ink)]">{update.title}</h3>
 						{#if isMine(update)}
-							<button
-								class="cursor-pointer text-[12px] font-bold tracking-[0.08em] text-[var(--arc-warn)]"
-								onclick={() => remove(update)}
-							>
-								DELETE
-							</button>
+							<div class="flex flex-shrink-0 items-center gap-3">
+								<button
+									class="cursor-pointer text-[12px] font-bold tracking-[0.08em] text-[var(--arc-accent)]"
+									onclick={() => startEdit(update)}
+								>
+									EDIT
+								</button>
+								<button
+									class="cursor-pointer text-[12px] font-bold tracking-[0.08em] text-[var(--arc-warn)]"
+									onclick={() => remove(update)}
+								>
+									DELETE
+								</button>
+							</div>
 						{/if}
 					</div>
 

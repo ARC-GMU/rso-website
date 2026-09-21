@@ -8,6 +8,7 @@
 	import AccountProjects from "$lib/components/AccountProjects.svelte";
 	import AccountMedia from "$lib/components/AccountMedia.svelte";
 	import SocialLinksEditor from "$lib/components/SocialLinksEditor.svelte";
+	import UploadProgress from "$lib/components/UploadProgress.svelte";
 	import { formatDuration } from "$lib/duration";
 	import type { SocialLink } from "$lib/socialLink";
 	import {
@@ -53,6 +54,7 @@
 
 	let photoError = $state("");
 	let uploadingPhoto = $state(false);
+	let photoPercent = $state(0);
 
 	onMount(async () => {
 		const profile = await loadProfile();
@@ -124,8 +126,9 @@
 
 		photoError = "";
 		uploadingPhoto = true;
+		photoPercent = 0;
 		try {
-			await uploadPhoto(file);
+			await uploadPhoto(file, (percent) => (photoPercent = percent));
 		} catch (e: any) {
 			photoError = e.message;
 		} finally {
@@ -213,6 +216,10 @@
 							<Icon icon="mdi:camera" class="inline-block align-text-bottom" />
 							{uploadingPhoto ? "UPLOADING..." : "CHANGE PHOTO"}
 						</button>
+
+						{#if uploadingPhoto}
+							<UploadProgress percent={photoPercent} />
+						{/if}
 
 						{#if photoError}
 							<div class="text-[13px] font-bold text-[var(--arc-warn)]">{photoError}</div>
