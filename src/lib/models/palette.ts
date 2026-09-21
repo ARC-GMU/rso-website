@@ -77,32 +77,32 @@ export function createPalette(three: ThreeModule, paint: PaintScheme | null = nu
 	return {
 		body: new three.MeshStandardMaterial({
 			color: paint?.body ?? 0x1b2124,
-			roughness: 0.45,
-			metalness: 0.5
+			roughness: 0.94,
+			metalness: 0.04
 		}),
 		trim: new three.MeshStandardMaterial({
 			color: paint?.trim ?? 0x2c3237,
-			roughness: 0.62,
-			metalness: 0.25
+			roughness: 0.97,
+			metalness: 0.03
 		}),
 		metal: new three.MeshStandardMaterial({
 			color: paint?.metal ?? 0xb9c2c6,
-			roughness: 0.26,
-			metalness: 0.95
+			roughness: 0.88,
+			metalness: 0.12
 		}),
 		glass: new three.MeshStandardMaterial({
 			color: paint?.glass ?? 0x101c1a,
-			roughness: 0.12,
-			metalness: 0.6,
+			roughness: 0.7,
+			metalness: 0.08,
 			transparent: true,
 			opacity: 0.88
 		}),
 		accent: new three.MeshStandardMaterial({
 			color: accent,
-			roughness: 0.3,
-			metalness: 0.45,
+			roughness: 0.9,
+			metalness: 0.05,
 			emissive: accent,
-			emissiveIntensity: paint ? 0.5 : 0.15
+			emissiveIntensity: paint ? 0.45 : 0.12
 		})
 	};
 }
