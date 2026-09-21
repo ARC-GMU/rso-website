@@ -13,6 +13,13 @@
 		return `/projects/${project.slug || project.id}`;
 	}
 
+	function stripHtml(html: string): string {
+		return html
+			.replace(/<[^>]*>/g, " ")
+			.replace(/\s+/g, " ")
+			.trim();
+	}
+
 	function memberDetails(member: SubTeamMember) {
 		return [member.major, member.year].filter(Boolean).join(" · ");
 	}
@@ -36,18 +43,56 @@
 				{team.members.length} member{team.members.length === 1 ? "" : "s"} building together at ARC.
 			</p>
 		{/if}
-
-		{#if team.projects.length > 0}
-			<div class="mt-5">
-				<div class="arc-label text-[var(--arc-muted)]">TEAM PROJECTS</div>
-				<div class="mt-3 flex flex-wrap gap-3">
-					{#each team.projects as project (project.id)}
-						<a href={projectHref(project)} class="arc-btn-ghost">{project.name.toUpperCase()}</a>
-					{/each}
-				</div>
-			</div>
-		{/if}
 	</Panel>
+
+	{#if team.projects.length > 0}
+		<Panel title="TEAM PROJECTS">
+			<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+				{#each team.projects as project (project.id)}
+					<a
+						href={projectHref(project)}
+						class="flex min-w-0 flex-col border border-[var(--arc-line)] bg-[var(--arc-fill)] no-underline hover:border-[var(--arc-accent)]"
+					>
+						{#if project.image}
+							<img
+								src={project.image}
+								alt={project.name}
+								class="h-44 w-full border-b border-[var(--arc-line)] object-cover"
+								loading="lazy"
+								decoding="async"
+							/>
+						{:else}
+							<div
+								class="flex h-44 w-full items-center justify-center border-b border-[var(--arc-line)] bg-[var(--arc-surface)]"
+							>
+								<Icon icon="mdi:image-outline" class="h-12 w-12 text-[var(--arc-line)]" />
+							</div>
+						{/if}
+
+						<div class="flex flex-1 flex-col gap-2 p-5">
+							<div class="flex flex-wrap items-baseline justify-between gap-2">
+								<div class="arc-h3 text-lg text-[var(--arc-ink)]">{project.name}</div>
+								{#if project.status === "completed"}
+									<span class="arc-label text-[var(--arc-muted-2)]">PAST</span>
+								{/if}
+							</div>
+
+							{#if project.description}
+								<p class="arc-note line-clamp-3 flex-1">{stripHtml(project.description)}</p>
+							{:else}
+								<div class="flex-1"></div>
+							{/if}
+
+							<span class="arc-link mt-2 inline-flex items-center gap-1">
+								VIEW PROJECT
+								<Icon icon="mdi:chevron-right" class="text-base" />
+							</span>
+						</div>
+					</a>
+				{/each}
+			</div>
+		</Panel>
+	{/if}
 
 	{#if team.images.length > 0}
 		<Panel title="PHOTOS">
@@ -71,7 +116,7 @@
 		{:else}
 			<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
 				{#each team.members as member, index (memberKey(member, index))}
-					<div class="flex min-w-0 flex-col border border-[var(--arc-line)] bg-[var(--arc-fill)] p-5">
+					<div class="min-w-0 border border-[var(--arc-line)] bg-[var(--arc-fill)] p-5">
 						<div class="flex items-start gap-4">
 							{#if member.photoUrl}
 								<img
@@ -108,36 +153,6 @@
 									<div class="arc-note mt-1">{memberDetails(member)}</div>
 								{/if}
 							</div>
-						</div>
-
-						<div class="mt-4 border-t border-[var(--arc-line)] pt-4">
-							<div class="arc-label text-[var(--arc-muted)]">WORKING ON</div>
-							{#if member.projects.length === 0}
-								<p class="arc-note mt-2">Not on a project team yet.</p>
-							{:else}
-								<div class="mt-2 flex flex-col gap-2">
-									{#each member.projects as project (project.id)}
-										<a
-											href={projectHref(project)}
-											class="flex items-center justify-between gap-3 border border-[var(--arc-line)] bg-[var(--arc-surface)] px-3 py-2 no-underline hover:border-[var(--arc-accent)]"
-										>
-											<span class="min-w-0">
-												<span class="block truncate text-[14px] font-bold text-[var(--arc-ink)]">
-													{project.name}
-												</span>
-												{#if project.role}
-													<span class="block truncate text-[12px] text-[var(--arc-muted)]">
-														{project.role}
-													</span>
-												{/if}
-											</span>
-											{#if project.status === "completed"}
-												<span class="arc-label flex-shrink-0 text-[var(--arc-muted-2)]">PAST</span>
-											{/if}
-										</a>
-									{/each}
-								</div>
-							{/if}
 						</div>
 					</div>
 				{/each}

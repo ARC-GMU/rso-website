@@ -27,23 +27,11 @@
 						href={subTeamHref(team)}
 						class="flex min-w-0 flex-col border border-[var(--arc-line)] bg-[var(--arc-fill)] no-underline hover:border-[var(--arc-accent)]"
 					>
-						{#if team.images.length > 0}
-							<img
-								src={team.images[0]}
-								alt="{team.name} photo"
-								class="h-40 w-full border-b border-[var(--arc-line)] object-cover"
-								loading="lazy"
-								decoding="async"
-							/>
-						{/if}
-
 						<div class="flex flex-1 flex-col p-6">
-							{#if team.images.length === 0}
-								<Icon
-									icon="mdi:account-multiple-outline"
-									class="mb-4 text-3xl text-[var(--arc-accent)]"
-								/>
-							{/if}
+							<Icon
+								icon="mdi:account-multiple-outline"
+								class="mb-4 text-3xl text-[var(--arc-accent)]"
+							/>
 
 							<div class="arc-h3 text-[17px] text-[var(--arc-ink)]">
 								{team.name.toUpperCase()}

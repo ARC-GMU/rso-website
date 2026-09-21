@@ -6,6 +6,8 @@ export type SubTeamProject = {
 	slug: string;
 	status: string;
 	role: string;
+	description: string;
+	image: string;
 };
 
 export type SubTeamMember = {
@@ -34,7 +36,9 @@ function toProject(raw: any): SubTeamProject {
 		name: raw?.name ?? "",
 		slug: raw?.slug ?? "",
 		status: raw?.status ?? "active",
-		role: raw?.role ?? ""
+		role: raw?.role ?? "",
+		description: raw?.description ?? "",
+		image: raw?.image ?? ""
 	};
 }
 
