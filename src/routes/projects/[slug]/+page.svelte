@@ -11,6 +11,7 @@
 	type ProjectSubTeam = {
 		id: string;
 		name: string;
+		slug?: string;
 		description?: string;
 		members?: unknown[];
 	};
@@ -199,7 +200,12 @@
 										<div
 											class="flex flex-wrap items-baseline justify-between gap-3 border-b border-[var(--arc-line)] pb-2"
 										>
-											<div class="arc-label">{subTeam.name.toUpperCase()}</div>
+											<a
+												href="/subteams/{subTeam.slug || subTeam.id}"
+												class="arc-label text-[var(--arc-ink)] no-underline hover:text-[var(--arc-accent)]"
+											>
+												{subTeam.name.toUpperCase()}
+											</a>
 											<div class="text-[12px] font-medium text-[var(--arc-muted)]">
 												{(subTeam.members ?? []).length} PEOPLE
 											</div>

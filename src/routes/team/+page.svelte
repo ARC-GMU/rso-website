@@ -134,6 +134,17 @@
 		{/each}
 	{/if}
 
+	<Panel title="PROJECT SUB TEAMS">
+		<p class="arc-body">
+			Members work in sub teams built around the projects they are on. Each sub team page
+			lists who is on it and what they are building.
+		</p>
+		<a href="/subteams" class="arc-btn mt-6 inline-flex items-center gap-2">
+			<Icon icon="mdi:account-multiple-outline" class="text-lg" />
+			VIEW SUB TEAMS
+		</a>
+	</Panel>
+
 	<Panel title="JOIN US AND CONTRIBUTE">
 		<p class="arc-body">
 			Interested in joining the ARC team? We are looking for members who are

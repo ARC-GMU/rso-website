@@ -70,7 +70,6 @@ export const navLinks = [
 	{ label: "About", href: "/about" },
 	{ label: "Projects", href: "/projects" },
 	{ label: "Team", href: "/team" },
-	{ label: "Sub Teams", href: "/subteams" },
 	{ label: "Events", href: "/events" },
 	{ label: "Resources", href: "/resources" },
 	{ label: "Blog", href: "/blog" },

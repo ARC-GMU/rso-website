@@ -105,11 +105,12 @@
 						{#if subTeams.length > 0}
 							<div class="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
 								{#each subTeams as subTeam (subTeam.id)}
-									<span
-										class="border border-[var(--arc-line)] bg-[var(--arc-fill)] px-3 py-1.5 text-[13px] font-bold tracking-[0.06em] text-[var(--arc-ink-2)]"
+									<a
+										href="/subteams/{subTeam.slug || subTeam.id}"
+										class="border border-[var(--arc-line)] bg-[var(--arc-fill)] px-3 py-1.5 text-[13px] font-bold tracking-[0.06em] text-[var(--arc-ink-2)] no-underline hover:border-[var(--arc-accent)] hover:text-[var(--arc-accent)]"
 									>
 										{subTeam.name.toUpperCase()}{subTeam.role ? ` / ${subTeam.role.toUpperCase()}` : ""}
-									</span>
+									</a>
 								{/each}
 							</div>
 						{/if}
