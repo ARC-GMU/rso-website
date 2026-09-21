@@ -6,6 +6,7 @@
 	import Panel from "$lib/theme/Panel.svelte";
 	import AccountMeetings from "$lib/components/AccountMeetings.svelte";
 	import AccountProjects from "$lib/components/AccountProjects.svelte";
+	import AccountMedia from "$lib/components/AccountMedia.svelte";
 	import SocialLinksEditor from "$lib/components/SocialLinksEditor.svelte";
 	import { formatDuration } from "$lib/duration";
 	import type { SocialLink } from "$lib/socialLink";
@@ -23,6 +24,7 @@
 	const TABS = [
 		{ id: "profile", label: "PROFILE", icon: "mdi:account-outline" },
 		{ id: "projects", label: "PROJECTS", icon: "mdi:folder-outline" },
+		{ id: "media", label: "MEDIA", icon: "mdi:image-multiple-outline" },
 		{ id: "meetings", label: "MEETINGS", icon: "mdi:history" },
 		{ id: "password", label: "PASSWORD", icon: "mdi:lock-outline" }
 	] as const;
@@ -175,6 +177,22 @@
 							</div>
 						</div>
 
+						{#if ($member.subTeams ?? []).length > 0}
+							<div class="flex w-full flex-col gap-2 border-t border-[var(--arc-line)] pt-3">
+								<div class="arc-label text-[var(--arc-muted)]">SUB TEAM</div>
+								{#each $member.subTeams as subTeam (subTeam.id)}
+									<div class="text-[14px] font-bold text-[var(--arc-ink)]">
+										{subTeam.name}
+										{#if subTeam.role}
+											<span class="block text-[13px] font-medium text-[var(--arc-muted)]">
+												{subTeam.role}
+											</span>
+										{/if}
+									</div>
+								{/each}
+							</div>
+						{/if}
+
 						<div class="w-full border-y border-[var(--arc-line)] py-3">
 							<div class="arc-label text-[var(--arc-muted)]">TIME LOGGED</div>
 							<div class="mt-1 text-[22px] font-bold text-[var(--arc-ink)]">
@@ -296,6 +314,10 @@
 				{:else if activeTab === "projects"}
 					<Panel title="MY PROJECTS" flush>
 						<AccountProjects />
+					</Panel>
+				{:else if activeTab === "media"}
+					<Panel title="MY IMAGES AND VIDEOS" flush>
+						<AccountMedia />
 					</Panel>
 				{:else if activeTab === "meetings"}
 					<Panel title="MEETING HISTORY" flush>

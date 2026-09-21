@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, tick } from "svelte";
 	import { buildDrone, type Drone } from "$lib/models/buildDrone";
+	import { pickPaintScheme } from "$lib/models/palette";
 	import { motionIsReduced, reduceMotion } from "$lib/motion";
 
 	const DESKTOP_QUERY = "(min-width: 768px)";
@@ -85,10 +86,6 @@
 			const element = container;
 			if (stopped || !element) return;
 
-			const accent =
-				getComputedStyle(document.documentElement).getPropertyValue("--arc-accent").trim() ||
-				"#006633";
-			const accentColor = new three.Color(accent).getHex();
 
 			const scene = new three.Scene();
 
@@ -105,11 +102,15 @@
 			keyLight.position.set(4, 6, 5);
 			scene.add(keyLight);
 
-			const rimLight = new three.DirectionalLight(accentColor, 2.2);
+			const rimLight = new three.DirectionalLight(0xc7d8e2, 2.2);
 			rimLight.position.set(-5, 2, -4);
 			scene.add(rimLight);
 
-			const drone: Drone = buildDrone(three, accentColor);
+			const fillLight = new three.DirectionalLight(0xffe0ad, 1.2);
+			fillLight.position.set(-2, -1.5, 3.5);
+			scene.add(fillLight);
+
+			const drone: Drone = buildDrone(three, pickPaintScheme());
 			scene.add(drone.group);
 
 			let travel = 12;

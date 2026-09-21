@@ -1,7 +1,13 @@
 import type * as THREE from "three";
 import { buildDrone } from "./buildDrone";
-
-type ThreeModule = typeof import("three");
+import {
+	createPalette,
+	paletteMaterials,
+	type PaintScheme,
+	type Palette,
+	type ThreeModule,
+	type Track
+} from "./palette";
 
 export type DecorKind = "drone" | "rover" | "rotor" | "arm";
 
@@ -11,29 +17,7 @@ export type Decor = {
 	dispose: () => void;
 };
 
-type Palette = {
-	body: THREE.MeshStandardMaterial;
-	trim: THREE.MeshStandardMaterial;
-	accent: THREE.MeshStandardMaterial;
-};
-
-type Track = <T extends { dispose: () => void }>(item: T) => T;
-
 const BASE_YAW = -0.6;
-
-function createPalette(three: ThreeModule, accentColor: number): Palette {
-	return {
-		body: new three.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.42, metalness: 0.45 }),
-		trim: new three.MeshStandardMaterial({ color: 0x161616, roughness: 0.6, metalness: 0.2 }),
-		accent: new three.MeshStandardMaterial({
-			color: accentColor,
-			roughness: 0.3,
-			metalness: 0.1,
-			emissive: accentColor,
-			emissiveIntensity: 0.5
-		})
-	};
-}
 
 function buildRover(three: ThreeModule, palette: Palette, track: Track) {
 	const group = new three.Group();
@@ -46,7 +30,7 @@ function buildRover(three: ThreeModule, palette: Palette, track: Track) {
 	deck.position.set(-0.15, 0.26, 0);
 	group.add(deck);
 
-	const mast = new three.Mesh(track(new three.BoxGeometry(0.1, 0.55, 0.1)), palette.trim);
+	const mast = new three.Mesh(track(new three.BoxGeometry(0.1, 0.55, 0.1)), palette.metal);
 	mast.position.set(0.42, 0.42, 0);
 	group.add(mast);
 
@@ -79,7 +63,7 @@ function buildRover(three: ThreeModule, palette: Palette, track: Track) {
 function buildRotor(three: ThreeModule, palette: Palette, track: Track) {
 	const group = new three.Group();
 
-	const motor = new three.Mesh(track(new three.CylinderGeometry(0.3, 0.34, 0.44, 20)), palette.body);
+	const motor = new three.Mesh(track(new three.CylinderGeometry(0.3, 0.34, 0.44, 20)), palette.metal);
 	group.add(motor);
 
 	const collar = new three.Mesh(track(new three.CylinderGeometry(0.34, 0.34, 0.07, 20)), palette.accent);
@@ -90,12 +74,12 @@ function buildRotor(three: ThreeModule, palette: Palette, track: Track) {
 	blades.position.y = 0.3;
 	group.add(blades);
 
-	const hub = new three.Mesh(track(new three.CylinderGeometry(0.12, 0.12, 0.14, 14)), palette.trim);
+	const hub = new three.Mesh(track(new three.CylinderGeometry(0.12, 0.12, 0.14, 14)), palette.metal);
 	blades.add(hub);
 
 	const bladeGeometry = track(new three.BoxGeometry(1.7, 0.035, 0.22));
 	for (const angle of [0, Math.PI / 2]) {
-		const blade = new three.Mesh(bladeGeometry, palette.trim);
+		const blade = new three.Mesh(bladeGeometry, palette.metal);
 		blade.rotation.y = angle;
 		blade.rotation.z = 0.12;
 		blade.position.y = 0.04;
@@ -112,7 +96,7 @@ function buildArm(three: ThreeModule, palette: Palette, track: Track) {
 	base.position.y = -0.9;
 	group.add(base);
 
-	const column = new three.Mesh(track(new three.CylinderGeometry(0.24, 0.28, 0.36, 18)), palette.trim);
+	const column = new three.Mesh(track(new three.CylinderGeometry(0.24, 0.28, 0.36, 18)), palette.metal);
 	column.position.y = -0.64;
 	group.add(column);
 
@@ -147,13 +131,13 @@ function buildArm(three: ThreeModule, palette: Palette, track: Track) {
 	wrist.position.y = 0.85;
 	elbow.add(wrist);
 
-	const wristBlock = new three.Mesh(track(new three.BoxGeometry(0.24, 0.18, 0.22)), palette.trim);
+	const wristBlock = new three.Mesh(track(new three.BoxGeometry(0.24, 0.18, 0.22)), palette.metal);
 	wrist.add(wristBlock);
 
 	const fingers: THREE.Mesh[] = [];
 	const fingerGeometry = track(new three.BoxGeometry(0.06, 0.3, 0.07));
 	for (const x of [0.09, -0.09]) {
-		const finger = new three.Mesh(fingerGeometry, palette.trim);
+		const finger = new three.Mesh(fingerGeometry, palette.metal);
 		finger.position.set(x, 0.21, 0);
 		wrist.add(finger);
 		fingers.push(finger);
@@ -165,9 +149,13 @@ function buildArm(three: ThreeModule, palette: Palette, track: Track) {
 	return { group, shoulder, elbow, wrist, fingers };
 }
 
-export function buildDecorModel(three: ThreeModule, kind: DecorKind, accentColor: number): Decor {
+export function buildDecorModel(
+	three: ThreeModule,
+	kind: DecorKind,
+	paint: PaintScheme | null = null
+): Decor {
 	if (kind === "drone") {
-		const drone = buildDrone(three, accentColor);
+		const drone = buildDrone(three, paint);
 		drone.group.scale.setScalar(0.95);
 
 		return {
@@ -188,8 +176,8 @@ export function buildDecorModel(three: ThreeModule, kind: DecorKind, accentColor
 		return item;
 	};
 
-	const palette = createPalette(three, accentColor);
-	disposables.push(palette.body, palette.trim, palette.accent);
+	const palette = createPalette(three, paint);
+	disposables.push(...paletteMaterials(palette));
 
 	const dispose = () => disposables.forEach((item) => item.dispose());
 

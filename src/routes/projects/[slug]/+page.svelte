@@ -8,6 +8,13 @@
 
 	type ProjectLink = { label: string; url: string };
 
+	type ProjectSubTeam = {
+		id: string;
+		name: string;
+		description?: string;
+		members?: unknown[];
+	};
+
 	type ProjectDetail = {
 		id: string;
 		name: string;
@@ -16,6 +23,7 @@
 		requirements?: string[];
 		links?: ProjectLink[];
 		teamMembers?: unknown[];
+		subTeams?: ProjectSubTeam[];
 		images?: string[];
 		videos?: string[];
 		external?: boolean;
@@ -65,6 +73,11 @@
 		rosterLoaded = true;
 	});
 
+	let subTeams = $derived(project.subTeams ?? []);
+	let hasTeam = $derived(
+		Boolean(project.teamMembers?.length) || subTeams.some((team) => (team.members ?? []).length > 0)
+	);
+
 	let coverImage = $derived(project.images?.[0]);
 	let galleryImages = $derived(project.images?.slice(1) ?? []);
 	let metaDescription = $derived(
@@ -81,6 +94,42 @@
 		<meta property="og:image" content={coverImage} />
 	{/if}
 </svelte:head>
+
+{#snippet teamMemberRow(entry: unknown)}
+	{@const member = parseProjectMember(entry)}
+	{@const match = rosterMatch(member.name)}
+	{@const photoUrl = member.photoUrl || match.photoUrl}
+	{@const href = memberHref(member, match)}
+	<svelte:element
+		this={href ? "a" : "div"}
+		href={href}
+		class="flex items-center gap-3 no-underline {href
+			? 'cursor-pointer transition-opacity hover:opacity-80'
+			: ''}"
+	>
+		{#if photoUrl}
+			<img
+				src={photoUrl}
+				alt={member.name}
+				class="h-10 w-10 flex-shrink-0 rounded-full border border-[var(--arc-line)] object-cover"
+				loading="lazy"
+				decoding="async"
+			/>
+		{:else}
+			<div
+				class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-[var(--arc-line)] bg-[var(--arc-fill)]"
+			>
+				<Icon icon="mdi:account" class="text-lg text-[var(--arc-line)]" />
+			</div>
+		{/if}
+		<div class="min-w-0">
+			<div class="truncate text-[14px] font-bold text-[var(--arc-ink)]">{member.name}</div>
+			{#if member.role}
+				<div class="truncate text-[12px] text-[var(--arc-muted)]">{member.role}</div>
+			{/if}
+		</div>
+	</svelte:element>
+{/snippet}
 
 <div class="arc-page">
 	<Header />
@@ -124,52 +173,48 @@
 			</section>
 
 			{#if project.description}
-				<section class="bg-[var(--arc-surface)] p-8 {project.teamMembers?.length || project.requirements?.length || project.links?.length ? 'md:col-span-4' : 'md:col-span-6'}">
+				<section class="bg-[var(--arc-surface)] p-8 {hasTeam || project.requirements?.length || project.links?.length ? 'md:col-span-4' : 'md:col-span-6'}">
 					<h2 class="arc-h2">ABOUT THIS PROJECT</h2>
 					<div class="prose prose-sm md:prose-base max-w-none text-[var(--arc-ink-2)] mt-4 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-0">{@html project.description}</div>
 				</section>
 			{/if}
 
-			{#if project.teamMembers?.length || project.requirements?.length || project.links?.length}
+			{#if hasTeam || project.requirements?.length || project.links?.length}
 				<div class="flex flex-col gap-[2px] md:col-span-2">
-					{#if project.teamMembers?.length}
+					{#if hasTeam}
 						<section class="flex-1 bg-[var(--arc-surface)] p-8">
 							<h2 class="arc-h2">TEAM</h2>
-							<div class="mt-4 flex flex-col gap-3">
-								{#each project.teamMembers as entry}
-									{@const member = parseProjectMember(entry)}
-									{@const match = rosterMatch(member.name)}
-									{@const photoUrl = member.photoUrl || match.photoUrl}
-									{@const href = memberHref(member, match)}
-									<svelte:element
-										this={href ? "a" : "div"}
-										href={href}
-										class="flex items-center gap-3 no-underline {href ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}"
-									>
-										{#if photoUrl}
-											<img
-												src={photoUrl}
-												alt={member.name}
-												class="h-10 w-10 flex-shrink-0 rounded-full border border-[var(--arc-line)] object-cover"
-												loading="lazy"
-												decoding="async"
-											/>
-										{:else}
-											<div
-												class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-[var(--arc-line)] bg-[var(--arc-fill)]"
-											>
-												<Icon icon="mdi:account" class="text-lg text-[var(--arc-line)]" />
+
+							{#if project.teamMembers?.length}
+								<div class="mt-4 flex flex-col gap-3">
+									{#each project.teamMembers as entry}
+										{@render teamMemberRow(entry)}
+									{/each}
+								</div>
+							{/if}
+
+							{#each subTeams as subTeam (subTeam.id)}
+								{#if (subTeam.members ?? []).length > 0}
+									<div class="mt-6">
+										<div
+											class="flex flex-wrap items-baseline justify-between gap-3 border-b border-[var(--arc-line)] pb-2"
+										>
+											<div class="arc-label">{subTeam.name.toUpperCase()}</div>
+											<div class="text-[12px] font-medium text-[var(--arc-muted)]">
+												{(subTeam.members ?? []).length} PEOPLE
 											</div>
-										{/if}
-										<div class="min-w-0">
-											<div class="truncate text-[14px] font-bold text-[var(--arc-ink)]">{member.name}</div>
-											{#if member.role}
-												<div class="truncate text-[12px] text-[var(--arc-muted)]">{member.role}</div>
-											{/if}
 										</div>
-									</svelte:element>
-								{/each}
-							</div>
+										{#if subTeam.description}
+											<p class="arc-note mt-2">{subTeam.description}</p>
+										{/if}
+										<div class="mt-3 flex flex-col gap-3">
+											{#each subTeam.members ?? [] as entry}
+												{@render teamMemberRow(entry)}
+											{/each}
+										</div>
+									</div>
+								{/if}
+							{/each}
 						</section>
 					{/if}
 

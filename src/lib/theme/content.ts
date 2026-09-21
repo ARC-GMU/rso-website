@@ -2,6 +2,14 @@ export type ScheduleEntry = { day: string; time: string };
 
 export type ProjectLink = { label: string; url: string };
 
+export type ProjectSubTeam = {
+	id: string;
+	name: string;
+	slug?: string;
+	description?: string;
+	members?: unknown[];
+};
+
 export type Project = {
 	id: string;
 	name: string;
@@ -11,6 +19,7 @@ export type Project = {
 	requirements?: string[];
 	links?: ProjectLink[];
 	teamMembers?: unknown[];
+	subTeams?: ProjectSubTeam[];
 	images?: string[];
 	videos?: string[];
 	external?: boolean;

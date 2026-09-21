@@ -4,6 +4,20 @@ import type { SocialLink } from "$lib/socialLink";
 
 const STORAGE_KEY = "arc-member-token";
 
+export type MemberSubTeam = {
+	id: string;
+	name: string;
+	slug: string;
+	role: string;
+};
+
+export type MemberMedia = {
+	url: string;
+	type: string;
+	caption: string;
+	addedAt: string;
+};
+
 export type MemberProfile = {
 	id: string;
 	clubId: string;
@@ -16,6 +30,8 @@ export type MemberProfile = {
 	photoUrl: string;
 	active: boolean;
 	minutesLogged: number;
+	subTeams: MemberSubTeam[];
+	gallery: MemberMedia[];
 };
 
 export const member = writable<MemberProfile | null>(null);
@@ -148,6 +164,7 @@ export async function fetchMyProjects(): Promise<MemberProject[]> {
 export type PublicMemberProfile = {
 	clubId: string;
 	name: string;
+	email: string;
 	major: string;
 	year: string;
 	bio: string;
@@ -157,6 +174,8 @@ export type PublicMemberProfile = {
 	joinedAt: string | null;
 	meetingsAttended: number;
 	minutesLogged: number;
+	subTeams: MemberSubTeam[];
+	gallery: MemberMedia[];
 	projects: MemberProject[];
 };
 
@@ -166,6 +185,25 @@ export async function uploadPhoto(file: File) {
 	const data = await send("/public/members/me/photo", { method: "POST", body });
 	member.update((current) => (current ? { ...current, photoUrl: data.photoUrl } : current));
 	return data.photoUrl as string;
+}
+
+export async function uploadMedia(file: File, caption: string) {
+	const body = new FormData();
+	body.append("file", file);
+	if (caption.trim()) body.append("caption", caption.trim());
+	const data = await send("/public/members/me/media", { method: "POST", body });
+	const gallery = (data.gallery ?? []) as MemberMedia[];
+	member.update((current) => (current ? { ...current, gallery } : current));
+	return gallery;
+}
+
+export async function deleteMedia(url: string) {
+	const data = await send(`/public/members/me/media?url=${encodeURIComponent(url)}`, {
+		method: "DELETE"
+	});
+	const gallery = (data.gallery ?? []) as MemberMedia[];
+	member.update((current) => (current ? { ...current, gallery } : current));
+	return gallery;
 }
 
 export function logout() {

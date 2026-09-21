@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Icon from "@iconify/svelte";
-	import DecorModel from "$lib/components/DecorModel.svelte";
+	import ModelTile from "$lib/components/ModelTile.svelte";
+	import type { DecorKind } from "$lib/models/buildDecor";
 	import DroneScan from "$lib/components/DroneScan.svelte";
 	import Header from "$lib/theme/Header.svelte";
 	import Footer from "$lib/theme/Footer.svelte";
@@ -57,43 +58,51 @@
 
 <DroneScan />
 
+{#snippet modelCell(kind: DecorKind)}
+	<section class="overflow-hidden bg-[var(--arc-fill)] md:col-span-2">
+		<div class="h-full min-h-[200px] w-full">
+			<ModelTile {kind} />
+		</div>
+	</section>
+{/snippet}
+
 <div class="arc-page">
 	<Header />
 
 	<main class="arc-shell py-12">
 		<div class="arc-grid md:grid-cols-6">
-			<section
-				class="flex flex-col gap-8 bg-[var(--arc-surface)] p-8 md:col-span-6 md:flex-row md:items-center md:justify-between md:gap-12 md:p-12"
-			>
-				<div>
-					<h1 class="m-0 max-w-3xl text-[2rem] leading-[1.3] font-bold sm:text-[2.6rem]">
-						Autonomous Robotics Club
-					</h1>
-					{#if content.whatWeDo}
-						<p class="arc-body mt-5 max-w-2xl text-[17px]">{content.whatWeDo}</p>
-					{/if}
-					<div class="mt-9 flex flex-wrap justify-center gap-3 md:justify-start">
-						<a
-							href={discordUrl}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="arc-btn"
-						>
-							JOIN THE CLUB
-						</a>
-						<a href="/projects" class="arc-btn-ghost">VIEW PROJECTS</a>
-					</div>
-				</div>
+			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6 md:p-12">
+				<div
+					class="flex flex-col items-center gap-10 text-center md:flex-row md:justify-between md:gap-12 md:text-left"
+				>
+					<div class="max-w-2xl">
+						<div class="arc-label text-[var(--arc-muted)]">GEORGE MASON UNIVERSITY</div>
 
-				<img
-					src="/logos/logooo.png"
-					alt="ARC logo"
-					class="h-40 w-auto shrink-0 object-contain md:h-60"
-				/>
+						<h1 class="mt-3 text-[2rem] leading-[1.2] font-bold sm:text-[2.6rem]">
+							Autonomous Robotics Club
+						</h1>
+
+						{#if content.whatWeDo}
+							<p class="arc-body mt-5 text-[17px]">{content.whatWeDo}</p>
+						{/if}
+
+						<div class="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
+							<a href={discordUrl} target="_blank" rel="noopener noreferrer" class="arc-btn">
+								JOIN THE CLUB
+							</a>
+							<a href="/projects" class="arc-btn-ghost">VIEW PROJECTS</a>
+						</div>
+					</div>
+
+					<img
+						src="/logos/logooo.png"
+						alt="ARC logo"
+						class="h-40 w-auto shrink-0 object-contain md:h-56"
+					/>
+				</div>
 			</section>
 
-			<div class="relative overflow-hidden bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
-				<DecorModel kind="drone" size={155} />
+			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
 				<div class="arc-label">LOCATION</div>
 				<div class="mt-2 text-[15px] font-medium">{content.location}</div>
 
@@ -110,7 +119,7 @@
 				{/if}
 			</div>
 
-			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
+			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
 				<div class="arc-label">FIND US</div>
 				<div class="mt-3 flex flex-wrap gap-x-5 gap-y-2">
 					{#each content.socialLinks as social}
@@ -128,12 +137,13 @@
 				</div>
 			</div>
 
+			{@render modelCell("rover")}
+
 			<section
-				class="relative overflow-hidden bg-[var(--arc-surface)] p-8 {content.missionStatement
+				class="bg-[var(--arc-surface)] p-8 {content.missionStatement
 					? 'md:col-span-2'
 					: 'md:col-span-3'}"
 			>
-				<DecorModel kind="rotor" size={115} />
 				<div class="flex flex-wrap items-baseline justify-between gap-4">
 					<h2 class="arc-h2">UPCOMING EVENTS</h2>
 					<a href="/events" class="arc-link">ALL EVENTS</a>
@@ -163,9 +173,8 @@
 
 			{#if content.missionStatement}
 				<section
-					class="relative flex flex-col justify-center overflow-hidden bg-[var(--arc-surface)] p-8 text-center md:col-span-2"
+					class="bg-[var(--arc-surface)] p-8 text-left md:col-span-2"
 				>
-					<DecorModel kind="rover" size={125} />
 					<h2 class="arc-h2">MISSION STATEMENT</h2>
 					<p class="arc-body mt-4">{content.missionStatement}</p>
 				</section>
@@ -196,7 +205,7 @@
 				</div>
 			</section>
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-3">
+			<section class="bg-[var(--arc-surface)] p-8 md:col-span-2">
 				<h2 class="arc-h2">2026 EAST COAST AVC</h2>
 				<div class="mt-5 aspect-video w-full border border-[var(--arc-line)]">
 					<iframe
@@ -210,7 +219,9 @@
 				</div>
 			</section>
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-3">
+			{@render modelCell("drone")}
+
+			<section class="bg-[var(--arc-surface)] p-8 md:col-span-2">
 				<h2 class="arc-h2">CLUB VIDEO</h2>
 				<div class="mt-5 aspect-video w-full border border-[var(--arc-line)]">
 					<iframe
@@ -225,8 +236,7 @@
 			</section>
 
 			{#if content.sponsors.length > 0}
-				<section class="relative overflow-hidden bg-[var(--arc-surface)] p-8 md:col-span-6">
-					<DecorModel kind="arm" size={135} />
+				<section class="bg-[var(--arc-surface)] p-8 md:col-span-4">
 					<h2 class="arc-h2">OUR SPONSORS</h2>
 					<div class="mt-6 flex flex-wrap items-center justify-center gap-10">
 						{#each content.sponsors as sponsor}
@@ -241,6 +251,8 @@
 						{/each}
 					</div>
 				</section>
+
+				{@render modelCell("arm")}
 			{/if}
 
 			{#if content.partners.length > 0}

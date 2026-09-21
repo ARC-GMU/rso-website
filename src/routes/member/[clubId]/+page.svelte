@@ -9,6 +9,8 @@
 	let { data }: { data: { profile: PublicMemberProfile } } = $props();
 
 	let profile = $derived(data.profile);
+	let subTeams = $derived(profile.subTeams ?? []);
+	let gallery = $derived(profile.gallery ?? []);
 	let activeProjects = $derived(profile.projects.filter((p) => p.status !== "completed"));
 	let completedProjects = $derived(profile.projects.filter((p) => p.status === "completed"));
 
@@ -90,8 +92,26 @@
 								{[profile.major, profile.year].filter(Boolean).join(" · ")}
 							</div>
 						{/if}
+						{#if profile.email}
+							<div class="mt-1">
+								<a class="arc-link text-[14px]" href="mailto:{profile.email}">
+									{profile.email}
+								</a>
+							</div>
+						{/if}
 						{#if profile.joinedAt}
 							<div class="arc-note mt-1">Member since {joinedLabel(profile.joinedAt)}</div>
+						{/if}
+						{#if subTeams.length > 0}
+							<div class="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
+								{#each subTeams as subTeam (subTeam.id)}
+									<span
+										class="border border-[var(--arc-line)] bg-[var(--arc-fill)] px-3 py-1.5 text-[13px] font-bold tracking-[0.06em] text-[var(--arc-ink-2)]"
+									>
+										{subTeam.name.toUpperCase()}{subTeam.role ? ` / ${subTeam.role.toUpperCase()}` : ""}
+									</span>
+								{/each}
+							</div>
 						{/if}
 					</div>
 				</div>
@@ -139,6 +159,36 @@
 					<p class="mt-4 text-[16px] leading-[1.8] whitespace-pre-line text-[var(--arc-ink-2)]">
 						{profile.bio}
 					</p>
+				</section>
+			{/if}
+
+			{#if gallery.length > 0}
+				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+					<h2 class="arc-h2">WORK</h2>
+					<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+						{#each gallery as item (item.url)}
+							<figure class="m-0 border border-[var(--arc-line)] bg-[var(--arc-fill)]">
+								{#if item.type === "video"}
+									<!-- svelte-ignore a11y_media_has_caption -->
+									<video src={item.url} controls class="h-52 w-full bg-black object-contain"
+									></video>
+								{:else}
+									<img
+										src={item.url}
+										alt={item.caption || profile.name}
+										class="h-52 w-full object-cover"
+										loading="lazy"
+										decoding="async"
+									/>
+								{/if}
+								{#if item.caption}
+									<figcaption class="px-4 py-3 text-[14px] font-medium text-[var(--arc-muted)]">
+										{item.caption}
+									</figcaption>
+								{/if}
+							</figure>
+						{/each}
+					</div>
 				</section>
 			{/if}
 
