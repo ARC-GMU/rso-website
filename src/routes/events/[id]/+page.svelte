@@ -16,6 +16,9 @@
 		parkingAddress?: string;
 		parkingInfo?: string;
 		sections: Section[];
+		recurring?: boolean;
+		recurrenceSummary?: string;
+		upcomingDates?: string[];
 	};
 
 	let { data }: { data: { event: EventDetail } } = $props();
@@ -77,8 +80,13 @@
 			</section>
 
 			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
-				<div class="arc-label">DATE</div>
+				<div class="arc-label">{event.recurring ? "NEXT DATE" : "DATE"}</div>
 				<div class="mt-2 text-[15px] font-medium">{formatDate(event.date)}</div>
+				{#if event.recurring && event.recurrenceSummary}
+					<div class="mt-2 text-[13px] font-medium text-[var(--arc-muted)]">
+						{event.recurrenceSummary}
+					</div>
+				{/if}
 			</div>
 
 			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-2">
@@ -90,6 +98,21 @@
 				<div class="arc-label">LOCATION</div>
 				<div class="mt-2 text-[15px] font-medium">{event.location}</div>
 			</div>
+
+			{#if event.recurring && (event.upcomingDates ?? []).length > 1}
+				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+					<h2 class="arc-h2">UPCOMING DATES</h2>
+					<div class="mt-4 flex flex-wrap gap-2">
+						{#each event.upcomingDates ?? [] as occurrence (occurrence)}
+							<span
+								class="border border-[var(--arc-line)] bg-[var(--arc-fill)] px-3 py-1.5 text-[14px] font-medium text-[var(--arc-ink-2)]"
+							>
+								{formatDate(occurrence)}
+							</span>
+						{/each}
+					</div>
+				</section>
+			{/if}
 
 			{#if event.description}
 				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">

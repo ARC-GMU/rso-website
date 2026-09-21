@@ -10,6 +10,8 @@
 		date: string;
 		timeRange: string;
 		location: string;
+		recurring?: boolean;
+		recurrenceSummary?: string;
 	};
 
 	let schedule = $state<ScheduleEntry[]>([]);
@@ -72,7 +74,14 @@
 									{event.timeRange}
 								</span>
 							</td>
-							<td class="truncate">{event.title}</td>
+							<td class="truncate">
+								<span class="block truncate">{event.title}</span>
+								{#if event.recurring && event.recurrenceSummary}
+									<span class="mt-1 block truncate text-[12px] text-[var(--arc-muted-2)]">
+										{event.recurrenceSummary}
+									</span>
+								{/if}
+							</td>
 							<td class="truncate">{event.location}</td>
 							<td>
 								<a href="/events/{event.id}" class="arc-btn-small">VIEW INFO</a>
@@ -92,6 +101,9 @@
 					<span class="font-bold text-[var(--arc-ink)]">{formatDate(event.date)}</span>
 					<span class="text-[12px] text-[var(--arc-muted-2)]">{event.timeRange}</span>
 					<span class="mt-1 font-medium text-[var(--arc-ink-2)]">{event.title}</span>
+					{#if event.recurring && event.recurrenceSummary}
+						<span class="text-[12px] text-[var(--arc-muted-2)]">{event.recurrenceSummary}</span>
+					{/if}
 					{#if event.location}
 						<span class="text-[13px] text-[var(--arc-muted)]">{event.location}</span>
 					{/if}
