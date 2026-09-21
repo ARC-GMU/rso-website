@@ -206,6 +206,45 @@ export async function deleteMedia(url: string) {
 	return gallery;
 }
 
+export type ProjectUpdate = {
+	id: string;
+	projectId: string;
+	title: string;
+	body: string;
+	images: string[];
+	author: string;
+	authorClubId?: string;
+	authorMemberId?: string;
+	authorPhotoUrl?: string;
+	postedAt: string;
+};
+
+export async function uploadUpdateImage(file: File) {
+	const body = new FormData();
+	body.append("file", file);
+	const data = await send("/public/members/me/uploads", { method: "POST", body });
+	return data.url as string;
+}
+
+export async function postProjectUpdate(update: {
+	projectId: string;
+	title: string;
+	body: string;
+	images: string[];
+}) {
+	return (await send("/public/members/me/project-updates", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(update)
+	})) as ProjectUpdate;
+}
+
+export async function deleteProjectUpdate(id: string) {
+	await send(`/public/members/me/project-updates?id=${encodeURIComponent(id)}`, {
+		method: "DELETE"
+	});
+}
+
 export function logout() {
 	saveToken("");
 	member.set(null);

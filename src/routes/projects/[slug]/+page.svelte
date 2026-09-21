@@ -5,6 +5,8 @@
 	import Footer from "$lib/theme/Footer.svelte";
 	import { apiRoot } from "$lib/theme/content";
 	import { parseProjectMember } from "$lib/projectMember";
+	import ProjectUpdates from "$lib/components/ProjectUpdates.svelte";
+	import { loadProfile, member, type ProjectUpdate } from "$lib/memberSession";
 
 	type ProjectLink = { label: string; url: string };
 
@@ -25,6 +27,7 @@
 		links?: ProjectLink[];
 		teamMembers?: unknown[];
 		subTeams?: ProjectSubTeam[];
+		updates?: ProjectUpdate[];
 		images?: string[];
 		videos?: string[];
 		external?: boolean;
@@ -54,6 +57,8 @@
 	}
 
 	onMount(async () => {
+		loadProfile();
+
 		try {
 			const rosterRes = await fetch(`${apiRoot}/roster`, { cache: "no-store" });
 			if (rosterRes.ok) {
@@ -75,6 +80,21 @@
 	});
 
 	let subTeams = $derived(project.subTeams ?? []);
+	let updates = $derived(project.updates ?? []);
+
+	let canPostUpdate = $derived.by(() => {
+		const clubId = $member?.clubId;
+		if (!clubId) return false;
+
+		const listed = (project.teamMembers ?? []).some(
+			(entry) => parseProjectMember(entry).clubId === clubId
+		);
+		if (listed) return true;
+
+		return subTeams.some((team) =>
+			(team.members ?? []).some((entry) => parseProjectMember(entry).clubId === clubId)
+		);
+	});
 	let hasTeam = $derived(
 		Boolean(project.teamMembers?.length) || subTeams.some((team) => (team.members ?? []).length > 0)
 	);
@@ -281,6 +301,8 @@
 					</div>
 				</section>
 			{/if}
+
+			<ProjectUpdates projectId={project.id} {updates} canPost={canPostUpdate} />
 
 			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
 				<div class="flex flex-wrap items-center justify-between gap-4">
