@@ -27,7 +27,7 @@
 	<Header />
 
 	<main class="arc-shell py-12">
-		<a href="/blog" class="arc-link">BACK TO BLOG</a>
+		<a href="/activity" class="arc-link">BACK TO ACTIVITY</a>
 
 		<article class="arc-panel mt-6">
 			{#if data.post.coverImageUrl}
