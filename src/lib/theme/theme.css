@@ -61,6 +61,25 @@
     --tw-prose-td-borders: var(--arc-line-soft);
 }
 
+.prose :where(img, video, iframe) {
+    max-width: 100%;
+    height: auto;
+}
+
+.prose :where(table) {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.prose :where(pre) {
+    overflow-x: auto;
+}
+
+.prose :where(a, code) {
+    overflow-wrap: anywhere;
+}
+
 /* An empty <p></p> from the rich text editor (a blank line) has no content
    to give it height, so its margins collapse into its neighbors' and the
    blank line disappears. Force it to hold one line of space instead. */
@@ -88,9 +107,10 @@
     .arc-page {
         @apply flex min-h-screen flex-col bg-[var(--arc-bg)] text-[var(--arc-ink)];
         font-family: var(--font-mono);
+        overflow-wrap: break-word;
     }
     .arc-page > main { @apply w-full flex-1; }
-    .arc-shell { @apply mx-auto max-w-[1120px] px-6; }
+    .arc-shell { @apply mx-auto w-full max-w-[1120px] px-4 sm:px-6; }
 
     body:has(.arc-page) { background: var(--arc-bg); }
 
@@ -104,7 +124,7 @@
 
     .arc-grid { @apply grid w-full gap-[2px] border-2 border-[var(--arc-line)] bg-[var(--arc-line)]; }
     .arc-panel { @apply border-2 border-[var(--arc-line)] bg-[var(--arc-surface)]; }
-    .arc-panel-head { @apply flex flex-wrap items-baseline justify-between gap-4 border-b border-[var(--arc-line)] px-6 py-5; }
+    .arc-panel-head { @apply flex flex-wrap items-baseline justify-between gap-3 border-b border-[var(--arc-line)] px-4 py-4 sm:gap-4 sm:px-6 sm:py-5; }
 
     .arc-btn { @apply inline-block bg-[var(--arc-accent)] px-6 py-3 text-center text-[13px] font-bold tracking-[0.1em] text-[var(--arc-on-accent)] no-underline hover:bg-[var(--arc-accent-hover)]; }
     .arc-btn-ghost { @apply inline-block border border-[var(--arc-ink)] px-6 py-3 text-center text-[13px] font-bold tracking-[0.1em] text-[var(--arc-ink)] no-underline hover:bg-[var(--arc-ink)] hover:text-[var(--arc-invert-text)]; }
@@ -113,8 +133,8 @@
 
     .arc-table { @apply w-full border-collapse text-[15px]; }
     .arc-table-fixed { table-layout: fixed; }
-    .arc-table th { @apply border-b border-[var(--arc-line)] bg-[var(--arc-fill)] px-5 py-3 text-left text-[13px] font-semibold tracking-[0.14em] text-[var(--arc-muted)]; }
-    .arc-table td { @apply border-b border-[var(--arc-line-soft)] px-5 py-4 text-left align-top font-medium text-[var(--arc-ink-2)]; }
+    .arc-table th { @apply border-b border-[var(--arc-line)] bg-[var(--arc-fill)] px-3 py-3 text-left text-[13px] font-semibold tracking-[0.14em] text-[var(--arc-muted)] sm:px-5; }
+    .arc-table td { @apply border-b border-[var(--arc-line-soft)] px-3 py-4 text-left align-top font-medium text-[var(--arc-ink-2)] sm:px-5; }
     .arc-table tbody tr:last-child td { @apply border-b-0; }
     .arc-table-empty { @apply px-5 py-6 text-center text-[15px] font-medium text-[var(--arc-muted-2)]; }
 }

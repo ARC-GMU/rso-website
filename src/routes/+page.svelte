@@ -9,6 +9,7 @@
 	import {
 		apiRoot,
 		discordUrl,
+		donateUrl,
 		emptyContent,
 		loadClubContent,
 		mason360Url,
@@ -71,11 +72,11 @@
 <div class="arc-page">
 	<Header />
 
-	<main class="arc-shell py-12">
+	<main class="arc-shell py-8 sm:py-12">
 		<div class="arc-grid md:grid-cols-6">
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6 md:p-12">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6 md:p-12">
 				<div
-					class="flex flex-col items-center gap-10 text-center md:flex-row md:justify-between md:gap-12 md:text-left"
+					class="flex flex-col items-center gap-6 text-center sm:gap-10 md:flex-row md:justify-between md:gap-12 md:text-left"
 				>
 					<div class="max-w-2xl">
 						<div class="arc-label text-[var(--arc-muted)]">GEORGE MASON UNIVERSITY</div>
@@ -88,7 +89,7 @@
 							<p class="arc-body mt-5 text-[17px]">{content.whatWeDo}</p>
 						{/if}
 
-						<div class="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
+						<div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start">
 							<a href={discordUrl} target="_blank" rel="noopener noreferrer" class="arc-btn">
 								JOIN THE CLUB
 							</a>
@@ -99,12 +100,12 @@
 					<img
 						src="/logos/logooo.png"
 						alt="ARC logo"
-						class="h-40 w-auto shrink-0 object-contain md:h-56"
+						class="h-28 w-auto shrink-0 object-contain sm:h-40 md:h-56"
 					/>
 				</div>
 			</section>
 
-			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
+			<div class="bg-[var(--arc-surface)] px-5 py-5 sm:px-6 md:col-span-3">
 				<div class="arc-label">LOCATION</div>
 				<div class="mt-2 text-[15px] font-medium">{content.location}</div>
 
@@ -121,7 +122,7 @@
 				{/if}
 			</div>
 
-			<div class="bg-[var(--arc-surface)] px-6 py-5 md:col-span-3">
+			<div class="bg-[var(--arc-surface)] px-5 py-5 sm:px-6 md:col-span-3">
 				<div class="arc-label">FIND US</div>
 				<div class="mt-3 flex flex-wrap gap-x-5 gap-y-2">
 					{#each content.socialLinks as social}
@@ -140,7 +141,7 @@
 			</div>
 
 			<section
-				class="bg-[var(--arc-surface)] p-8 {content.missionStatement
+				class="bg-[var(--arc-surface)] p-5 sm:p-8 {content.missionStatement
 					? 'md:col-span-2'
 					: 'md:col-span-3'}"
 			>
@@ -182,7 +183,7 @@
 
 			{#if content.missionStatement}
 				<section
-					class="bg-[var(--arc-surface)] p-8 text-left md:col-span-2"
+					class="bg-[var(--arc-surface)] p-5 sm:p-8 text-left md:col-span-2"
 				>
 					<h2 class="arc-h2">MISSION STATEMENT</h2>
 					<p class="arc-body mt-4">{content.missionStatement}</p>
@@ -190,7 +191,7 @@
 			{/if}
 
 			<section
-				class="bg-[var(--arc-surface)] p-8 {content.missionStatement
+				class="bg-[var(--arc-surface)] p-5 sm:p-8 {content.missionStatement
 					? 'md:col-span-2'
 					: 'md:col-span-3'}"
 			>
@@ -211,10 +212,13 @@
 					>
 						JOIN THE DISCORD
 					</a>
+					<a href={donateUrl} target="_blank" rel="noopener noreferrer" class="arc-btn-ghost">
+						DONATE TO THE CLUB
+					</a>
 				</div>
 			</section>
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-2">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-2">
 				<h2 class="arc-h2">2026 EAST COAST AVC</h2>
 				<div class="mt-5 aspect-video w-full border border-[var(--arc-line)]">
 					<iframe
@@ -230,7 +234,7 @@
 
 			{@render modelCell("drone")}
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-2">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-2">
 				<h2 class="arc-h2">CLUB VIDEO</h2>
 				<div class="mt-5 aspect-video w-full border border-[var(--arc-line)]">
 					<iframe
@@ -247,15 +251,15 @@
 			{#if content.sponsors.length > 0}
 				{@render modelCell("rover", true)}
 
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-4">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-4">
 					<h2 class="arc-h2">OUR SPONSORS</h2>
-					<div class="mt-6 flex flex-wrap items-center justify-center gap-10">
+					<div class="mt-6 flex flex-wrap items-center justify-center gap-6 sm:gap-10">
 						{#each content.sponsors as sponsor}
 							<img
 								src={sponsor.imageUrl}
 								alt={sponsor.name}
 								title={sponsor.name}
-								class="h-24 w-auto max-w-[280px] object-contain"
+								class="h-16 w-auto max-w-full object-contain sm:h-24 sm:max-w-[280px]"
 								loading="lazy"
 								decoding="async"
 							/>
@@ -267,9 +271,9 @@
 			{/if}
 
 			{#if content.partners.length > 0}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">OUR PARTNERS</h2>
-					<div class="mt-6 flex flex-wrap items-start justify-center gap-10">
+					<div class="mt-6 flex flex-wrap items-start justify-center gap-6 sm:gap-10">
 						{#each content.partners as partner}
 							{#if partner.slug}
 								<a
@@ -279,7 +283,7 @@
 									<img
 										src={partner.imageUrl}
 										alt={partner.name}
-										class="h-32 w-auto max-w-[320px] object-contain transition-opacity hover:opacity-80"
+										class="h-20 w-auto max-w-full object-contain sm:h-32 sm:max-w-[320px] transition-opacity hover:opacity-80"
 										loading="lazy"
 										decoding="async"
 									/>
@@ -290,7 +294,7 @@
 									<img
 										src={partner.imageUrl}
 										alt={partner.name}
-										class="h-32 w-auto max-w-[320px] object-contain"
+										class="h-20 w-auto max-w-full object-contain sm:h-32 sm:max-w-[320px]"
 										loading="lazy"
 										decoding="async"
 									/>

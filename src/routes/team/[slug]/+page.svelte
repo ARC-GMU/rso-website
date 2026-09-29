@@ -98,9 +98,9 @@
 <div class="arc-page">
 	<Header />
 
-	<main class="arc-shell py-12">
+	<main class="arc-shell py-8 sm:py-12">
 		<div class="arc-grid md:grid-cols-6">
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6 md:p-12">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6 md:p-12">
 				<nav class="arc-label">
 					<a href="/team" class="text-[var(--arc-muted)] no-underline hover:text-[var(--arc-accent)]">
 						TEAM
@@ -163,14 +163,14 @@
 			</section>
 
 			{#if member.bio}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">ABOUT</h2>
 					<div class="prose prose-sm md:prose-base max-w-none text-[var(--arc-ink-2)] mt-4">{@html member.bio}</div>
 				</section>
 			{/if}
 
 			{#if memberProjects.length > 0}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">PROJECTS</h2>
 					<div class="mt-4 flex flex-col gap-3">
 						{#each memberProjects as project}
@@ -217,7 +217,7 @@
 				</section>
 			{/if}
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 				<div class="flex flex-wrap items-center justify-between gap-4">
 					<h2 class="arc-h2">MEET THE REST OF THE TEAM</h2>
 					<a href="/team" class="arc-btn-ghost">ALL TEAM</a>

@@ -65,6 +65,7 @@ export const apiRoot = "https://manage.autonomousrobotics.club/api";
 
 export const discordUrl = "https://discord.gg/zn93yRNZGb";
 export const mason360Url = "https://mason360.gmu.edu/ARC/club_signup";
+export const donateUrl = "https://www.paypal.com/donate/?hosted_button_id=SSLHXAKTR8C5L";
 
 export const navLinks = [
 	{ label: "About", href: "/about" },

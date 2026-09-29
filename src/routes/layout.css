@@ -70,3 +70,14 @@
     .console-input { @apply flex-1 bg-transparent border-none outline-none text-black font-mono text-[13px] py-2 px-1 placeholder-gray-400; }
     .console-input-row .edit-btn { @apply border-none border-l border-black bg-[#e0e0e0] text-black py-2 px-[15px] text-[13px] hover:bg-[#d0d0d0]; }
 }
+
+.prose table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.prose iframe,
+.prose video {
+    max-width: 100%;
+}

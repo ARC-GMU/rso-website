@@ -17,10 +17,10 @@
 <div class="arc-page">
 	<Header />
 
-	<main class="arc-shell py-12">
+	<main class="arc-shell py-8 sm:py-12">
 		<h1 class="arc-h1">{(heading || title).toUpperCase()}</h1>
 
-		<div class="mt-8 flex flex-col gap-6">
+		<div class="mt-6 flex flex-col gap-6 sm:mt-8">
 			{@render children()}
 		</div>
 	</main>

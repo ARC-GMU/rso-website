@@ -29,7 +29,7 @@
 </script>
 
 <Panel flush>
-	<form class="flex flex-col gap-5 px-6 py-6" onsubmit={submit}>
+	<form class="flex flex-col gap-5 px-4 py-5 sm:px-6 sm:py-6" onsubmit={submit}>
 		{#if errorMessage}
 			<div
 				class="border border-[var(--arc-warn)] px-4 py-3 text-[14px] font-bold text-[var(--arc-warn)]"

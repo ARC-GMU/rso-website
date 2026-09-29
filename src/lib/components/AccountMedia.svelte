@@ -45,7 +45,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-6 px-6 py-6">
+<div class="flex flex-col gap-6 px-4 py-5 sm:px-6 sm:py-6">
 	{#if errorMessage}
 		<div class="text-[14px] font-bold text-[var(--arc-warn)]">{errorMessage}</div>
 	{/if}

@@ -26,7 +26,7 @@
 <div class="arc-page">
 	<Header />
 
-	<main class="arc-shell py-12">
+	<main class="arc-shell py-8 sm:py-12">
 		<a href="/activity" class="arc-link">BACK TO ACTIVITY</a>
 
 		<article class="arc-panel mt-6">
@@ -40,7 +40,7 @@
 				</div>
 			{/if}
 
-			<div class="p-8 md:p-10">
+			<div class="p-5 sm:p-8 md:p-10">
 				<h1 class="arc-h1">{data.post.title}</h1>
 
 				<div class="arc-label mt-4">

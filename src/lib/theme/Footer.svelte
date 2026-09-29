@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Icon from "@iconify/svelte";
-	import { apiRoot, socialIcon, socialLabel, type SocialLink } from "$lib/theme/content";
+	import {
+		apiRoot,
+		donateUrl,
+		socialIcon,
+		socialLabel,
+		type SocialLink
+	} from "$lib/theme/content";
 	import { reduceMotion, toggleReduceMotion } from "$lib/motion";
 
 	let socialLinks = $state<SocialLink[]>([]);
@@ -36,7 +42,7 @@
 </script>
 
 <footer class="border-t border-[var(--arc-line)] bg-[var(--arc-chrome)]">
-	<div class="mx-auto max-w-[1120px] px-6 py-10">
+	<div class="mx-auto max-w-[1120px] px-4 py-8 sm:px-6 sm:py-10">
 		<div
 			class="flex flex-col items-center gap-6 text-center md:flex-row md:items-start md:justify-between md:text-left"
 		>
@@ -53,6 +59,15 @@
 				>
 					<Icon icon="mdi:account-circle-outline" class="text-base" />
 					MEMBER ACCOUNT
+				</a>
+				<a
+					href={donateUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="mt-3 ml-4 inline-flex items-center gap-1.5 text-[12px] font-bold tracking-[0.06em] text-[var(--arc-ink)] no-underline hover:text-[var(--arc-accent)]"
+				>
+					<Icon icon="mdi:hand-heart-outline" class="text-base" />
+					DONATE
 				</a>
 			</div>
 

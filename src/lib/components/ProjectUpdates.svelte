@@ -130,7 +130,7 @@
 		"w-full border border-[var(--arc-line)] bg-[var(--arc-surface)] px-4 py-3 text-[16px] font-medium text-[var(--arc-ink)] outline-none focus:border-[var(--arc-accent)]";
 </script>
 
-<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 	<div class="flex flex-wrap items-baseline justify-between gap-4">
 		<h2 class="arc-h2">PROJECT UPDATES</h2>
 		{#if canPost && !composing}
@@ -146,7 +146,7 @@
 	{/if}
 
 	{#if canPost && composing}
-		<form class="mt-6 flex flex-col gap-4 border border-[var(--arc-line)] p-5" onsubmit={submit}>
+		<form class="mt-6 flex flex-col gap-4 border border-[var(--arc-line)] p-4 sm:p-5" onsubmit={submit}>
 			<div class="arc-label text-[var(--arc-muted)]">
 				{editingId ? "EDIT YOUR UPDATE" : "NEW UPDATE"}
 			</div>

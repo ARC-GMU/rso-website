@@ -61,7 +61,7 @@
 		LOADING...
 	</div>
 {:else if errorMessage}
-	<div class="px-6 py-6 text-[14px] font-bold text-[var(--arc-warn)]">{errorMessage}</div>
+	<div class="px-4 py-5 sm:px-6 sm:py-6 text-[14px] font-bold text-[var(--arc-warn)]">{errorMessage}</div>
 {:else if projects.length === 0}
 	<div class="flex flex-col items-center gap-3 px-6 py-12 text-center">
 		<Icon icon="mdi:folder-outline" class="text-5xl text-[var(--arc-faint)]" />
@@ -72,7 +72,7 @@
 		<a class="arc-btn-ghost mt-2" href="/projects">BROWSE ALL PROJECTS</a>
 	</div>
 {:else}
-	<div class="flex flex-col gap-8 px-6 py-6">
+	<div class="flex flex-col gap-8 px-4 py-5 sm:px-6 sm:py-6">
 		{#if active.length}
 			<div>
 				<div class="text-[13px] font-bold tracking-[0.08em] text-[var(--arc-muted)]">

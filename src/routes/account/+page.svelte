@@ -156,7 +156,7 @@
 		</Panel>
 	{:else}
 		<div class="grid gap-6 md:grid-cols-[minmax(0,260px)_minmax(0,1fr)] md:items-start">
-			<div class="flex flex-col gap-4 md:sticky md:top-6">
+			<div class="flex flex-col gap-4 md:sticky md:top-22">
 				<Panel flush>
 					<div class="flex flex-col items-center gap-3 px-6 py-6 text-center">
 						{#if $member.photoUrl}
@@ -239,13 +239,13 @@
 					<nav class="flex flex-row md:flex-col">
 						{#each TABS as tab}
 							<button
-								class="flex flex-1 cursor-pointer items-center justify-center gap-2 border-[var(--arc-line)] px-5 py-4 text-[13px] font-bold tracking-[0.08em] md:justify-start md:border-b md:last:border-b-0 {activeTab ===
+								class="flex min-w-0 flex-1 cursor-pointer flex-col items-center justify-center gap-1 border-[var(--arc-line)] px-1 py-3 text-[10px] font-bold tracking-[0.04em] sm:flex-row sm:gap-2 sm:px-5 sm:py-4 sm:text-[13px] sm:tracking-[0.08em] md:justify-start md:border-b md:last:border-b-0 {activeTab ===
 								tab.id
 									? 'bg-[var(--arc-fill)] text-[var(--arc-accent)]'
 									: 'text-[var(--arc-muted)] hover:text-[var(--arc-ink)]'}"
 								onclick={() => (activeTab = tab.id)}
 							>
-								<Icon icon={tab.icon} class="text-base" />
+								<Icon icon={tab.icon} class="text-lg sm:text-base" />
 								{tab.label}
 							</button>
 						{/each}
@@ -258,7 +258,7 @@
 			<div class="flex flex-col gap-6">
 				{#if activeTab === "profile"}
 					<Panel title="DETAILS" flush>
-						<form class="flex flex-col gap-5 px-6 py-6" onsubmit={submitProfile}>
+						<form class="flex flex-col gap-5 px-4 py-5 sm:px-6 sm:py-6" onsubmit={submitProfile}>
 							{#if profileError}
 								<div class="text-[14px] font-bold text-[var(--arc-warn)]">{profileError}</div>
 							{:else if profileMessage}
@@ -332,7 +332,7 @@
 					</Panel>
 				{:else}
 					<Panel title="PASSWORD" flush>
-						<form class="flex flex-col gap-5 px-6 py-6" onsubmit={submitPassword}>
+						<form class="flex flex-col gap-5 px-4 py-5 sm:px-6 sm:py-6" onsubmit={submitPassword}>
 							{#if passwordError}
 								<div class="text-[14px] font-bold text-[var(--arc-warn)]">{passwordError}</div>
 							{:else if passwordMessage}

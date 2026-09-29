@@ -60,9 +60,9 @@
 <div class="arc-page">
 	<Header />
 
-	<main class="arc-shell py-12">
+	<main class="arc-shell py-8 sm:py-12">
 		<div class="arc-grid md:grid-cols-6">
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6 md:p-12">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6 md:p-12">
 				<nav class="arc-label">
 					<span class="text-[var(--arc-muted)]">MEMBER</span>
 					<span class="mx-2 text-[var(--arc-faint)]">/</span>
@@ -132,7 +132,7 @@
 				{/if}
 			</section>
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-3">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-3">
 				<h2 class="arc-h2">TIME LOGGED</h2>
 				<div class="mt-4 text-[42px] leading-none font-bold text-[var(--arc-ink)]">
 					{formatDuration(profile.minutesLogged)}
@@ -144,7 +144,7 @@
 				</p>
 			</section>
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-3">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-3">
 				<h2 class="arc-h2">PROJECTS</h2>
 				<div class="mt-4 text-[42px] leading-none font-bold text-[var(--arc-ink)]">
 					{profile.projects.length}
@@ -155,7 +155,7 @@
 			</section>
 
 			{#if profile.bio}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">ABOUT</h2>
 					<p class="mt-4 text-[16px] leading-[1.8] whitespace-pre-line text-[var(--arc-ink-2)]">
 						{profile.bio}
@@ -164,7 +164,7 @@
 			{/if}
 
 			{#if gallery.length > 0}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">WORK</h2>
 					<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						{#each gallery as item (item.url)}
@@ -194,21 +194,21 @@
 			{/if}
 
 			{#if activeProjects.length > 0}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">CURRENT PROJECTS</h2>
 					{@render projectList(activeProjects)}
 				</section>
 			{/if}
 
 			{#if completedProjects.length > 0}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">PAST PROJECTS</h2>
 					{@render projectList(completedProjects)}
 				</section>
 			{/if}
 
 			{#if profile.projects.length === 0}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">PROJECTS</h2>
 					<p class="arc-note mt-4">This member is not on a project team yet.</p>
 					<a class="arc-btn-ghost mt-4 inline-block" href="/projects">BROWSE PROJECTS</a>

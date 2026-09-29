@@ -54,9 +54,9 @@
 <div class="arc-page">
 	<Header />
 
-	<main class="arc-shell py-12">
+	<main class="arc-shell py-8 sm:py-12">
 		<div class="arc-grid md:grid-cols-6">
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6 md:p-12">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6 md:p-12">
 				<nav class="arc-label">
 					<a href="/events" class="text-[var(--arc-muted)] no-underline hover:text-[var(--arc-accent)]">
 						EVENTS
@@ -100,7 +100,7 @@
 			</div>
 
 			{#if event.recurring && (event.upcomingDates ?? []).length > 1}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">UPCOMING DATES</h2>
 					<div class="mt-4 flex flex-wrap gap-2">
 						{#each event.upcomingDates ?? [] as occurrence (occurrence)}
@@ -115,14 +115,14 @@
 			{/if}
 
 			{#if event.description}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">ABOUT THIS EVENT</h2>
 					<div class="prose prose-sm md:prose-base max-w-none text-[var(--arc-ink-2)] mt-4">{@html event.description}</div>
 				</section>
 			{/if}
 
 			{#each event.sections ?? [] as section}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">{section.title.toUpperCase()}</h2>
 					<div class="prose prose-sm md:prose-base max-w-none text-[var(--arc-ink-2)] mt-4">{@html section.content}</div>
 				</section>
@@ -130,7 +130,7 @@
 
 			{#if event.eventAddress}
 				<section
-					class="bg-[var(--arc-surface)] p-8 {event.parkingAddress
+					class="bg-[var(--arc-surface)] p-5 sm:p-8 {event.parkingAddress
 						? 'md:col-span-3'
 						: 'md:col-span-6'}"
 				>
@@ -141,7 +141,7 @@
 
 			{#if event.parkingAddress}
 				<section
-					class="bg-[var(--arc-surface)] p-8 {event.eventAddress
+					class="bg-[var(--arc-surface)] p-5 sm:p-8 {event.eventAddress
 						? 'md:col-span-3'
 						: 'md:col-span-6'}"
 				>
@@ -153,7 +153,7 @@
 				</section>
 			{/if}
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 				<div class="flex flex-wrap items-center justify-between gap-4">
 					<h2 class="arc-h2">
 						{event.rsvpUrl ? "RESERVE YOUR SPOT" : "SEE THE FULL SCHEDULE"}

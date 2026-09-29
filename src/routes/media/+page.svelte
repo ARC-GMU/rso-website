@@ -67,9 +67,9 @@
 			<p class="arc-note">Loading...</p>
 		</Panel>
 	{:else}
-		<div class="flex flex-wrap gap-3">
+		<div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
 			<button
-				class="cursor-pointer border px-5 py-2.5 text-[13px] font-bold tracking-[0.1em] {activeTab ===
+				class="cursor-pointer border px-4 py-2.5 sm:px-5 text-[13px] font-bold tracking-[0.1em] {activeTab ===
 				'images'
 					? 'border-[var(--arc-ink)] bg-[var(--arc-ink)] text-[var(--arc-invert-text)]'
 					: 'border-[var(--arc-line)] bg-[var(--arc-surface)] text-[var(--arc-ink)] hover:border-[var(--arc-accent)]'}"
@@ -78,7 +78,7 @@
 				IMAGES ({images.length})
 			</button>
 			<button
-				class="cursor-pointer border px-5 py-2.5 text-[13px] font-bold tracking-[0.1em] {activeTab ===
+				class="cursor-pointer border px-4 py-2.5 sm:px-5 text-[13px] font-bold tracking-[0.1em] {activeTab ===
 				'videos'
 					? 'border-[var(--arc-ink)] bg-[var(--arc-ink)] text-[var(--arc-invert-text)]'
 					: 'border-[var(--arc-line)] bg-[var(--arc-surface)] text-[var(--arc-ink)] hover:border-[var(--arc-accent)]'}"
@@ -94,7 +94,7 @@
 					<p class="arc-note">No images available.</p>
 				</Panel>
 			{:else}
-				<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+				<div class="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
 					{#each images as image}
 						<button
 							class="arc-panel block w-full cursor-pointer overflow-hidden p-0 text-left"
@@ -103,7 +103,7 @@
 							<img
 								src={image.src}
 								alt={image.caption}
-								class="h-48 w-full object-cover"
+								class="h-36 w-full object-cover sm:h-48"
 								loading="lazy"
 								decoding="async"
 							/>

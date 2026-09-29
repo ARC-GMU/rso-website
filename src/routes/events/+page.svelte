@@ -125,7 +125,7 @@
 					<tbody>
 						{#each schedule as entry}
 							<tr>
-								<th class="w-48">{entry.day.toUpperCase()}</th>
+								<th class="w-32 sm:w-48">{entry.day.toUpperCase()}</th>
 								<td>{entry.time}</td>
 							</tr>
 						{/each}

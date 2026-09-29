@@ -155,7 +155,7 @@
 <div class="arc-page">
 	<Header />
 
-	<main class="arc-shell py-12">
+	<main class="arc-shell py-8 sm:py-12">
 		<div class="arc-grid md:grid-cols-6">
 			<!-- Hero -->
 			{#if coverImage}
@@ -168,7 +168,7 @@
 				</div>
 			{/if}
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6 md:p-12">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6 md:p-12">
 				<nav class="arc-label">
 					<a href="/projects" class="text-[var(--arc-muted)] no-underline hover:text-[var(--arc-accent)]">
 						PROJECTS
@@ -194,7 +194,7 @@
 			</section>
 
 			{#if project.description}
-				<section class="bg-[var(--arc-surface)] p-8 {hasTeam || project.requirements?.length || project.links?.length ? 'md:col-span-4' : 'md:col-span-6'}">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 {hasTeam || project.requirements?.length || project.links?.length ? 'md:col-span-4' : 'md:col-span-6'}">
 					<h2 class="arc-h2">ABOUT THIS PROJECT</h2>
 					<div class="prose prose-sm md:prose-base max-w-none text-[var(--arc-ink-2)] mt-4 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-0">{@html project.description}</div>
 				</section>
@@ -203,7 +203,7 @@
 			{#if hasTeam || project.requirements?.length || project.links?.length}
 				<div class="flex flex-col gap-[2px] md:col-span-2">
 					{#if hasTeam}
-						<section class="flex-1 bg-[var(--arc-surface)] p-8">
+						<section class="flex-1 bg-[var(--arc-surface)] p-5 sm:p-8">
 							<h2 class="arc-h2">TEAM</h2>
 
 							{#if project.teamMembers?.length}
@@ -245,7 +245,7 @@
 					{/if}
 
 					{#if project.links?.length}
-						<section class="flex-1 bg-[var(--arc-surface)] p-8">
+						<section class="flex-1 bg-[var(--arc-surface)] p-5 sm:p-8">
 							<h2 class="arc-h2">LINKS</h2>
 							<div class="flex flex-wrap gap-3 mt-4">
 								{#each project.links as link}
@@ -258,7 +258,7 @@
 					{/if}
 
 					{#if project.requirements?.length}
-						<section class="bg-[var(--arc-surface)] p-8">
+						<section class="bg-[var(--arc-surface)] p-5 sm:p-8">
 							<h2 class="arc-h2">REQUIREMENTS</h2>
 							<ul class="mt-4 flex flex-col gap-2">
 								{#each project.requirements as req}
@@ -274,7 +274,7 @@
 			{/if}
 
 			{#if galleryImages.length}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">IMAGES</h2>
 					<div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
 						{#each galleryImages as image}
@@ -291,7 +291,7 @@
 			{/if}
 
 			{#if project.videos?.length}
-				<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+				<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 					<h2 class="arc-h2">VIDEOS</h2>
 					<div class="grid md:grid-cols-2 gap-4 mt-4">
 						{#each project.videos as video}
@@ -304,7 +304,7 @@
 
 			<ProjectUpdates projectId={project.id} {updates} canPost={canPostUpdate} />
 
-			<section class="bg-[var(--arc-surface)] p-8 md:col-span-6">
+			<section class="bg-[var(--arc-surface)] p-5 sm:p-8 md:col-span-6">
 				<div class="flex flex-wrap items-center justify-between gap-4">
 					<h2 class="arc-h2">SEE OUR OTHER WORK</h2>
 					<div class="flex flex-wrap gap-3">

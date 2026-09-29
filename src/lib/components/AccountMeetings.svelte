@@ -44,7 +44,7 @@
 		LOADING...
 	</div>
 {:else if errorMessage}
-	<div class="px-6 py-6 text-[14px] font-bold text-[var(--arc-warn)]">{errorMessage}</div>
+	<div class="px-4 py-5 sm:px-6 sm:py-6 text-[14px] font-bold text-[var(--arc-warn)]">{errorMessage}</div>
 {:else if meetings.length === 0}
 	<div class="px-6 py-12 text-center">
 		<p class="m-0 text-[15px] leading-[1.7] text-[var(--arc-muted)]">
@@ -53,7 +53,7 @@
 		</p>
 	</div>
 {:else}
-	<div class="px-6 py-6">
+	<div class="px-4 py-5 sm:px-6 sm:py-6">
 		<div class="text-[13px] font-bold tracking-[0.08em] text-[var(--arc-muted)]">
 			{meetings.length} MEETING{meetings.length === 1 ? "" : "S"} ATTENDED · {formatDuration(
 				totalMinutes
