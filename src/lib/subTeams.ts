@@ -1,5 +1,7 @@
 import { apiRoot } from "$lib/theme/content";
 
+export const defaultSubTeamIcon = "mdi:account-multiple-outline";
+
 export type SubTeamProject = {
 	id: string;
 	name: string;
@@ -25,6 +27,7 @@ export type SubTeam = {
 	name: string;
 	slug: string;
 	description: string;
+	icon: string;
 	images: string[];
 	members: SubTeamMember[];
 	projects: SubTeamProject[];
@@ -60,6 +63,7 @@ export function toSubTeam(raw: any): SubTeam {
 		name: raw?.name ?? "",
 		slug: raw?.slug ?? "",
 		description: raw?.description ?? "",
+		icon: raw?.icon ?? "",
 		images: Array.isArray(raw?.images) ? raw.images.filter(Boolean) : [],
 		members: Array.isArray(raw?.members) ? raw.members.map(toMember) : [],
 		projects: Array.isArray(raw?.projects) ? raw.projects.map(toProject) : []

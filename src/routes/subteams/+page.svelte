@@ -2,7 +2,7 @@
 	import Icon from "@iconify/svelte";
 	import Page from "$lib/theme/Page.svelte";
 	import Panel from "$lib/theme/Panel.svelte";
-	import { subTeamHref, type SubTeam } from "$lib/subTeams";
+	import { defaultSubTeamIcon, subTeamHref, type SubTeam } from "$lib/subTeams";
 	import type { PageData } from "./$types";
 
 	let { data }: { data: PageData } = $props();
@@ -29,7 +29,7 @@
 					>
 						<div class="flex flex-1 flex-col p-6">
 							<Icon
-								icon="mdi:account-multiple-outline"
+								icon={team.icon || defaultSubTeamIcon}
 								class="mb-4 text-3xl text-[var(--arc-accent)]"
 							/>
 

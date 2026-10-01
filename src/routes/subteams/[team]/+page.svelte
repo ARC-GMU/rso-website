@@ -2,7 +2,12 @@
 	import Icon from "@iconify/svelte";
 	import Page from "$lib/theme/Page.svelte";
 	import Panel from "$lib/theme/Panel.svelte";
-	import type { SubTeam, SubTeamMember, SubTeamProject } from "$lib/subTeams";
+	import {
+		defaultSubTeamIcon,
+		type SubTeam,
+		type SubTeamMember,
+		type SubTeamProject
+	} from "$lib/subTeams";
 	import type { PageData } from "./$types";
 
 	let { data }: { data: PageData } = $props();
@@ -36,13 +41,19 @@
 	</a>
 
 	<Panel title="ABOUT THIS SUB TEAM">
-		{#if team.description}
-			<p class="arc-body m-0">{team.description}</p>
-		{:else}
-			<p class="arc-note m-0">
-				{team.members.length} member{team.members.length === 1 ? "" : "s"} building together at ARC.
-			</p>
-		{/if}
+		<div class="flex items-start gap-4">
+			<Icon
+				icon={team.icon || defaultSubTeamIcon}
+				class="shrink-0 text-4xl text-[var(--arc-accent)]"
+			/>
+			{#if team.description}
+				<p class="arc-body m-0">{team.description}</p>
+			{:else}
+				<p class="arc-note m-0">
+					{team.members.length} member{team.members.length === 1 ? "" : "s"} building together at ARC.
+				</p>
+			{/if}
+		</div>
 	</Panel>
 
 	{#if team.projects.length > 0}
