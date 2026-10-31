@@ -2,21 +2,35 @@
 	import { onMount } from "svelte";
 	import Page from "$lib/theme/Page.svelte";
 	import Panel from "$lib/theme/Panel.svelte";
+	import MediaTimeline from "$lib/components/MediaTimeline.svelte";
 	import { apiRoot } from "$lib/theme/content";
+	import {
+		buildTimeline,
+		formatMediaDate,
+		toTimelineMedia,
+		type TimelineMedia
+	} from "$lib/mediaTimeline";
 
-	type Image = { src: string; caption: string; altText: string; date: string };
-	type Video = { src: string; caption: string; date: string };
+	type MediaFilter = "all" | "image" | "video";
 
-	let images = $state<Image[]>([]);
-	let videos = $state<Video[]>([]);
+	const filters: { value: MediaFilter; label: string }[] = [
+		{ value: "all", label: "ALL" },
+		{ value: "image", label: "IMAGES" },
+		{ value: "video", label: "VIDEOS" }
+	];
+
+	let media = $state<TimelineMedia[]>([]);
 	let loading = $state(true);
-	let activeTab = $state<"images" | "videos">("images");
-	let lightboxSrc = $state("");
-	let lightboxCaption = $state("");
-	let lightboxAlt = $state("");
+	let activeFilter = $state<MediaFilter>("all");
+	let lightboxItem = $state<TimelineMedia | null>(null);
 
-	function cleanName(originalName: string) {
-		return originalName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+	let visibleMedia = $derived(
+		activeFilter === "all" ? media : media.filter((item) => item.kind === activeFilter)
+	);
+	let years = $derived(buildTimeline(visibleMedia));
+
+	function filterCount(filter: MediaFilter): number {
+		return filter === "all" ? media.length : media.filter((item) => item.kind === filter).length;
 	}
 
 	onMount(async () => {
@@ -24,26 +38,9 @@
 			const res = await fetch(`${apiRoot}/public/media`, { cache: "no-store" });
 			if (res.ok) {
 				const data = await res.json();
-				const mediaList: any[] = data.media || [];
-
-				images = mediaList
-					.filter((item) => item.category === "image")
-					.map((item) => ({
-						src: item.url,
-						caption: (item.caption ?? "").trim(),
-						altText: (item.caption ?? "").trim() || cleanName(item.originalName),
-						date: item.uploadedAt ? item.uploadedAt.split("T")[0] : ""
-					}))
-					.sort((a, b) => b.date.localeCompare(a.date));
-
-				videos = mediaList
-					.filter((item) => item.category === "video")
-					.map((item) => ({
-						src: item.url,
-						caption: (item.caption ?? "").trim(),
-						date: item.uploadedAt ? item.uploadedAt.split("T")[0] : ""
-					}))
-					.sort((a, b) => b.date.localeCompare(a.date));
+				media = (data.media || [])
+					.map(toTimelineMedia)
+					.filter((item: TimelineMedia | null): item is TimelineMedia => item !== null);
 			}
 		} catch (e) {
 			console.error("Error fetching media:", e);
@@ -51,19 +48,9 @@
 			loading = false;
 		}
 	});
-
-	function openLightbox(image: Image) {
-		lightboxSrc = image.src;
-		lightboxCaption = image.caption;
-		lightboxAlt = image.altText;
-	}
-
-	function closeLightbox() {
-		lightboxSrc = "";
-		lightboxCaption = "";
-		lightboxAlt = "";
-	}
 </script>
+
+<svelte:window onkeydown={(e) => e.key === "Escape" && (lightboxItem = null)} />
 
 <Page title="Media" heading="Media Gallery">
 	{#if loading}
@@ -71,76 +58,31 @@
 			<p class="arc-note">Loading...</p>
 		</Panel>
 	{:else}
-		<div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
-			<button
-				class="cursor-pointer border px-4 py-2.5 sm:px-5 text-[13px] font-bold tracking-[0.1em] {activeTab ===
-				'images'
-					? 'border-[var(--arc-ink)] bg-[var(--arc-ink)] text-[var(--arc-invert-text)]'
-					: 'border-[var(--arc-line)] bg-[var(--arc-surface)] text-[var(--arc-ink)] hover:border-[var(--arc-accent)]'}"
-				onclick={() => (activeTab = "images")}
-			>
-				IMAGES ({images.length})
-			</button>
-			<button
-				class="cursor-pointer border px-4 py-2.5 sm:px-5 text-[13px] font-bold tracking-[0.1em] {activeTab ===
-				'videos'
-					? 'border-[var(--arc-ink)] bg-[var(--arc-ink)] text-[var(--arc-invert-text)]'
-					: 'border-[var(--arc-line)] bg-[var(--arc-surface)] text-[var(--arc-ink)] hover:border-[var(--arc-accent)]'}"
-				onclick={() => (activeTab = "videos")}
-			>
-				VIDEOS ({videos.length})
-			</button>
+		<div class="grid grid-cols-3 gap-3 sm:flex sm:flex-wrap">
+			{#each filters as filter (filter.value)}
+				<button
+					class="cursor-pointer border px-4 py-2.5 sm:px-5 text-[13px] font-bold tracking-[0.1em] {activeFilter ===
+					filter.value
+						? 'border-[var(--arc-ink)] bg-[var(--arc-ink)] text-[var(--arc-invert-text)]'
+						: 'border-[var(--arc-line)] bg-[var(--arc-surface)] text-[var(--arc-ink)] hover:border-[var(--arc-accent)]'}"
+					onclick={() => (activeFilter = filter.value)}
+				>
+					{filter.label} ({filterCount(filter.value)})
+				</button>
+			{/each}
 		</div>
 
-		{#if activeTab === "images"}
-			{#if images.length === 0}
-				<Panel>
-					<p class="arc-note">No images available.</p>
-				</Panel>
-			{:else}
-				<div class="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
-					{#each images as image}
-						<button
-							class="arc-panel block w-full cursor-pointer overflow-hidden p-0 text-left"
-							onclick={() => openLightbox(image)}
-						>
-							<img
-								src={image.src}
-								alt={image.altText}
-								class="h-36 w-full object-cover sm:h-48"
-								loading="lazy"
-								decoding="async"
-							/>
-							{#if image.caption}
-								<span class="block px-3 py-2 text-[13px] text-[var(--arc-muted)]">{image.caption}</span>
-							{/if}
-						</button>
-					{/each}
-				</div>
-			{/if}
-		{:else if videos.length === 0}
+		{#if years.length === 0}
 			<Panel>
-				<p class="arc-note">No videos available.</p>
+				<p class="arc-note">Nothing has been shared here yet.</p>
 			</Panel>
 		{:else}
-			<div class="grid gap-5 lg:grid-cols-2">
-				{#each videos as video}
-					<div class="arc-panel overflow-hidden">
-						<video controls class="aspect-video w-full">
-							<source src={video.src} />
-							<track kind="captions" />
-						</video>
-						{#if video.caption}
-							<p class="m-0 px-4 py-3 text-[14px] text-[var(--arc-muted)]">{video.caption}</p>
-						{/if}
-					</div>
-				{/each}
-			</div>
+			<MediaTimeline {years} onOpenImage={(item) => (lightboxItem = item)} />
 		{/if}
 	{/if}
 </Page>
 
-{#if lightboxSrc}
+{#if lightboxItem}
 	<div
 		class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
 		role="dialog"
@@ -149,23 +91,28 @@
 		<button
 			class="absolute inset-0 h-full w-full cursor-pointer border-none bg-transparent"
 			aria-label="Close image"
-			onclick={closeLightbox}
+			onclick={() => (lightboxItem = null)}
 		></button>
 		<button
 			class="absolute top-4 right-4 z-50 cursor-pointer border-none bg-transparent px-3 py-2 text-[13px] font-bold tracking-[0.1em] text-white hover:text-[#a3d9b8]"
-			onclick={closeLightbox}
+			onclick={() => (lightboxItem = null)}
 		>
 			CLOSE
 		</button>
 		<figure class="pointer-events-none m-0 flex max-w-full flex-col items-center">
 			<img
-				src={lightboxSrc}
-				alt={lightboxAlt}
-				class="max-h-[80vh] w-auto max-w-full object-contain"
+				src={lightboxItem.src}
+				alt={lightboxItem.altText}
+				class="max-h-[78vh] w-auto max-w-full object-contain"
 			/>
-			{#if lightboxCaption}
-				<figcaption class="mt-3 max-w-2xl text-center text-[14px] text-white">{lightboxCaption}</figcaption>
-			{/if}
+			<figcaption class="mt-3 flex max-w-2xl flex-col items-center gap-1 text-center text-white">
+				<span class="text-[12px] font-bold tracking-[0.1em] text-[#a3d9b8]">
+					{formatMediaDate(lightboxItem).toUpperCase()}
+				</span>
+				{#if lightboxItem.caption}
+					<span class="text-[14px]">{lightboxItem.caption}</span>
+				{/if}
+			</figcaption>
 		</figure>
 	</div>
 {/if}
