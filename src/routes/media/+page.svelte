@@ -3,6 +3,7 @@
 	import Page from "$lib/theme/Page.svelte";
 	import Panel from "$lib/theme/Panel.svelte";
 	import MediaTimeline from "$lib/components/MediaTimeline.svelte";
+	import MediaGrid from "$lib/components/MediaGrid.svelte";
 	import { apiRoot } from "$lib/theme/content";
 	import {
 		buildTimeline,
@@ -27,7 +28,7 @@
 	let visibleMedia = $derived(
 		activeFilter === "all" ? media : media.filter((item) => item.kind === activeFilter)
 	);
-	let years = $derived(buildTimeline(visibleMedia));
+	let years = $derived(activeFilter === "all" ? buildTimeline(media) : []);
 
 	function filterCount(filter: MediaFilter): number {
 		return filter === "all" ? media.length : media.filter((item) => item.kind === filter).length;
@@ -72,12 +73,14 @@
 			{/each}
 		</div>
 
-		{#if years.length === 0}
+		{#if visibleMedia.length === 0}
 			<Panel>
 				<p class="arc-note">Nothing has been shared here yet.</p>
 			</Panel>
-		{:else}
+		{:else if activeFilter === "all"}
 			<MediaTimeline {years} onOpenImage={(item) => (lightboxItem = item)} />
+		{:else}
+			<MediaGrid items={visibleMedia} onOpenImage={(item) => (lightboxItem = item)} />
 		{/if}
 	{/if}
 </Page>
