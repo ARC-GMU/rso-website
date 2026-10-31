@@ -109,13 +109,18 @@
 		<Panel title="PHOTOS">
 			<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
 				{#each team.images as image (image)}
-					<img
-						src={image}
-						alt="{team.name} photo"
-						class="h-40 w-full border border-[var(--arc-line)] object-cover sm:h-48"
-						loading="lazy"
-						decoding="async"
-					/>
+					<figure class="m-0">
+						<img
+							src={image}
+							alt={team.captions[image] || `${team.name} photo`}
+							class="h-40 w-full border border-[var(--arc-line)] object-cover sm:h-48"
+							loading="lazy"
+							decoding="async"
+						/>
+						{#if team.captions[image]}
+							<figcaption class="mt-2 text-[14px] text-[var(--arc-muted)]">{team.captions[image]}</figcaption>
+						{/if}
+					</figure>
 				{/each}
 			</div>
 		</Panel>

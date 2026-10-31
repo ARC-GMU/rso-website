@@ -1,3 +1,5 @@
+import { toCaptionMap } from "$lib/mediaCaptions";
+
 import { apiRoot } from "$lib/theme/content";
 
 export const defaultSubTeamIcon = "mdi:account-multiple-outline";
@@ -29,6 +31,7 @@ export type SubTeam = {
 	description: string;
 	icon: string;
 	images: string[];
+	captions: Record<string, string>;
 	members: SubTeamMember[];
 	projects: SubTeamProject[];
 };
@@ -65,6 +68,7 @@ export function toSubTeam(raw: any): SubTeam {
 		description: raw?.description ?? "",
 		icon: raw?.icon ?? "",
 		images: Array.isArray(raw?.images) ? raw.images.filter(Boolean) : [],
+		captions: toCaptionMap(raw?.captions),
 		members: Array.isArray(raw?.members) ? raw.members.map(toMember) : [],
 		projects: Array.isArray(raw?.projects) ? raw.projects.map(toProject) : []
 	};

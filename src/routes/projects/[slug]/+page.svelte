@@ -7,6 +7,7 @@
 	import { parseProjectMember } from "$lib/projectMember";
 	import ProjectUpdates from "$lib/components/ProjectUpdates.svelte";
 	import { loadProfile, member, type ProjectUpdate } from "$lib/memberSession";
+	import { toCaptionMap, type MediaCaption } from "$lib/mediaCaptions";
 
 	type ProjectLink = { label: string; url: string };
 
@@ -30,6 +31,7 @@
 		updates?: ProjectUpdate[];
 		images?: string[];
 		videos?: string[];
+		captions?: MediaCaption[];
 		external?: boolean;
 		externalUrl?: string;
 	};
@@ -101,6 +103,7 @@
 
 	let coverImage = $derived(project.images?.[0]);
 	let galleryImages = $derived(project.images?.slice(1) ?? []);
+	let captions = $derived(toCaptionMap(project.captions));
 	let metaDescription = $derived(
 		project.description
 			? stripHtml(project.description).slice(0, 200)
@@ -278,13 +281,18 @@
 					<h2 class="arc-h2">IMAGES</h2>
 					<div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
 						{#each galleryImages as image}
-							<img
-								src={image}
-								alt={project.name}
-								class="w-full h-auto object-cover"
-								loading="lazy"
-								decoding="async"
-							/>
+							<figure class="m-0">
+								<img
+									src={image}
+									alt={captions[image] || project.name}
+									class="w-full h-auto object-cover"
+									loading="lazy"
+									decoding="async"
+								/>
+								{#if captions[image]}
+									<figcaption class="mt-2 text-[14px] text-[var(--arc-muted)]">{captions[image]}</figcaption>
+								{/if}
+							</figure>
 						{/each}
 					</div>
 				</section>
@@ -295,8 +303,13 @@
 					<h2 class="arc-h2">VIDEOS</h2>
 					<div class="grid md:grid-cols-2 gap-4 mt-4">
 						{#each project.videos as video}
-							<!-- svelte-ignore a11y_media_has_caption -->
-							<video src={video} controls class="w-full h-auto"></video>
+							<figure class="m-0">
+								<!-- svelte-ignore a11y_media_has_caption -->
+								<video src={video} controls class="w-full h-auto"></video>
+								{#if captions[video]}
+									<figcaption class="mt-2 text-[14px] text-[var(--arc-muted)]">{captions[video]}</figcaption>
+								{/if}
+							</figure>
 						{/each}
 					</div>
 				</section>

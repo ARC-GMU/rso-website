@@ -4,8 +4,8 @@
 	import Panel from "$lib/theme/Panel.svelte";
 	import { apiRoot } from "$lib/theme/content";
 
-	type Image = { src: string; caption: string; date: string };
-	type Video = { src: string; title: string; date: string };
+	type Image = { src: string; caption: string; altText: string; date: string };
+	type Video = { src: string; caption: string; date: string };
 
 	let images = $state<Image[]>([]);
 	let videos = $state<Video[]>([]);
@@ -13,6 +13,7 @@
 	let activeTab = $state<"images" | "videos">("images");
 	let lightboxSrc = $state("");
 	let lightboxCaption = $state("");
+	let lightboxAlt = $state("");
 
 	function cleanName(originalName: string) {
 		return originalName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
@@ -29,7 +30,8 @@
 					.filter((item) => item.category === "image")
 					.map((item) => ({
 						src: item.url,
-						caption: cleanName(item.originalName),
+						caption: (item.caption ?? "").trim(),
+						altText: (item.caption ?? "").trim() || cleanName(item.originalName),
 						date: item.uploadedAt ? item.uploadedAt.split("T")[0] : ""
 					}))
 					.sort((a, b) => b.date.localeCompare(a.date));
@@ -38,7 +40,7 @@
 					.filter((item) => item.category === "video")
 					.map((item) => ({
 						src: item.url,
-						title: cleanName(item.originalName),
+						caption: (item.caption ?? "").trim(),
 						date: item.uploadedAt ? item.uploadedAt.split("T")[0] : ""
 					}))
 					.sort((a, b) => b.date.localeCompare(a.date));
@@ -50,14 +52,16 @@
 		}
 	});
 
-	function openLightbox(src: string, caption: string) {
-		lightboxSrc = src;
-		lightboxCaption = caption;
+	function openLightbox(image: Image) {
+		lightboxSrc = image.src;
+		lightboxCaption = image.caption;
+		lightboxAlt = image.altText;
 	}
 
 	function closeLightbox() {
 		lightboxSrc = "";
 		lightboxCaption = "";
+		lightboxAlt = "";
 	}
 </script>
 
@@ -98,15 +102,18 @@
 					{#each images as image}
 						<button
 							class="arc-panel block w-full cursor-pointer overflow-hidden p-0 text-left"
-							onclick={() => openLightbox(image.src, image.caption)}
+							onclick={() => openLightbox(image)}
 						>
 							<img
 								src={image.src}
-								alt={image.caption}
+								alt={image.altText}
 								class="h-36 w-full object-cover sm:h-48"
 								loading="lazy"
 								decoding="async"
 							/>
+							{#if image.caption}
+								<span class="block px-3 py-2 text-[13px] text-[var(--arc-muted)]">{image.caption}</span>
+							{/if}
 						</button>
 					{/each}
 				</div>
@@ -123,6 +130,9 @@
 							<source src={video.src} />
 							<track kind="captions" />
 						</video>
+						{#if video.caption}
+							<p class="m-0 px-4 py-3 text-[14px] text-[var(--arc-muted)]">{video.caption}</p>
+						{/if}
 					</div>
 				{/each}
 			</div>
@@ -147,10 +157,15 @@
 		>
 			CLOSE
 		</button>
-		<img
-			src={lightboxSrc}
-			alt={lightboxCaption}
-			class="pointer-events-none max-h-[85vh] w-auto max-w-full object-contain"
-		/>
+		<figure class="pointer-events-none m-0 flex max-w-full flex-col items-center">
+			<img
+				src={lightboxSrc}
+				alt={lightboxAlt}
+				class="max-h-[80vh] w-auto max-w-full object-contain"
+			/>
+			{#if lightboxCaption}
+				<figcaption class="mt-3 max-w-2xl text-center text-[14px] text-white">{lightboxCaption}</figcaption>
+			{/if}
+		</figure>
 	</div>
 {/if}
